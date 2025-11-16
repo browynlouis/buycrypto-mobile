@@ -1,0 +1,21 @@
+{
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports"
+  ],
+  "importOrder": [
+    "^(node:|fs|path|os|url|crypto|http|https)(/.*)?$",
+    "^(?!@/)([a-zA-Z0-9@]).*$",
+    "^[a-zA-Z0-9@].*$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "semi": true,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "importOrderParserPlugins": [
+    "typescript",
+    "jsx"
+  ]
+}
