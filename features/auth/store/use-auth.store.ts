@@ -3,26 +3,35 @@ import * as secureStore from 'expo-secure-store';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants/common';
+import { paths } from '@/libs/api';
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/shared/constants/common';
+
+type Auth = paths['/auth']['get']['responses']['200']['content']['application/json'];
 
 interface AuthState {
   tokens: {
     [ACCESS_TOKEN]: string | null;
     [REFRESH_TOKEN]: string | null;
   };
+  auth: Auth | null;
+  isAuth: boolean;
   clearTokens: () => void;
+  setAuth: (auth: Auth | null) => void;
   refreshAccessToken: () => Promise<string | null>;
   setTokens: (access: string | null, refresh: string | null) => void;
 }
 
 const initialState = {
+  auth: null,
+  isAuth: false,
   tokens: {
     [ACCESS_TOKEN]: null,
     [REFRESH_TOKEN]: null,
   },
 };
 
-const SECURE_KEYS = [ACCESS_TOKEN, REFRESH_TOKEN];
+const SECURE_KEYS = [ACCESS_TOKEN, REFRESH_TOKEN]; // Keys that are expected to be persisted securely
+
 let _refreshPromise: Promise<string | null> | null = null;
 
 export const useAuthStore = create<AuthState>()(
@@ -31,9 +40,10 @@ export const useAuthStore = create<AuthState>()(
       ...initialState,
 
       setTokens: (access, refresh) =>
-        set({
+        set((state) => ({
+          ...state,
           tokens: { [ACCESS_TOKEN]: access, [REFRESH_TOKEN]: refresh },
-        }),
+        })),
 
       clearTokens: () => {
         _refreshPromise = null;
@@ -41,37 +51,47 @@ export const useAuthStore = create<AuthState>()(
         set(initialState);
       },
 
+      setAuth: (auth) =>
+        set((state) => ({
+          ...state,
+          isAuth: !!auth,
+          auth,
+        })),
+
+      /**
+       * Refreshes access token if refresh token is present
+       *
+       */
       refreshAccessToken: async () => {
         const { tokens, setTokens, clearTokens } = get();
 
+        // If o refresh token, return null
         if (!tokens[REFRESH_TOKEN]) return null;
+        const baseUrl = process.env.EXPO_PUBLIC_API_URL;
 
-        if (_refreshPromise) return _refreshPromise;
+        try {
+          const res = await fetch(`${baseUrl}/auth/refresh`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ refreshToken: tokens[REFRESH_TOKEN] }),
+          });
 
-        _refreshPromise = (async () => {
-          const baseUrl = process.env.EXPO_PUBLIC_API_URL;
+          // If request fails, return null
+          if (!res.ok) return null;
 
-          try {
-            const res = await fetch(`${baseUrl}/auth/refresh`, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ refreshToken: tokens[REFRESH_TOKEN] }),
-            });
+          const data = await res.json();
 
-            if (!res.ok) throw new Error('Refresh failed');
+          //  Set tokens with newly returned acessToken and old refreshToken
+          setTokens(data.accessToken, tokens[REFRESH_TOKEN]);
 
-            const data = await res.json();
-            setTokens(data.accessToken, data.refreshToken);
+          return data.accessToken;
+        } catch (err) {
+          clearTokens();
 
-            return data.accessToken;
-          } catch (err) {
-            clearTokens();
-
-            return null;
-          } finally {
-            _refreshPromise = null;
-          }
-        })();
+          return null;
+        } finally {
+          _refreshPromise = null;
+        }
 
         return _refreshPromise;
       },

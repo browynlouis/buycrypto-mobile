@@ -1,14 +1,22 @@
-import { Stack } from 'expo-router';
+import { SplashScreen, Stack } from 'expo-router';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ThemeProvider } from '@/components/providers/theme-provider';
+import { useAuthStore } from '@/features/auth/store';
 import { useTheme } from '@/libs/hooks';
+import { AuthProvider, QueryProvider, ThemeProvider } from '@/shared/components/providers';
+
+// Keep SplashScreen open and close laters
+SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   return (
     <ThemeProvider>
-      <Routes />
+      <QueryProvider>
+        <AuthProvider>
+          <Routes />
+        </AuthProvider>
+      </QueryProvider>
     </ThemeProvider>
   );
 }
@@ -16,6 +24,8 @@ export default function RootLayout() {
 function Routes() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
+
+  const { auth } = useAuthStore();
 
   return (
     <View
@@ -27,7 +37,6 @@ function Routes() {
       }}
     >
       <Stack
-        initialRouteName="(auth)"
         screenOptions={{
           headerShown: false,
           contentStyle: {
@@ -35,7 +44,7 @@ function Routes() {
           },
         }}
       >
-        <Stack.Protected guard={true}>
+        <Stack.Protected guard={!auth}>
           <Stack.Screen name="(auth)" />
         </Stack.Protected>
       </Stack>

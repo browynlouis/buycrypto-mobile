@@ -1,9 +1,9 @@
 import { ReactNode } from 'react';
 import { View } from 'react-native';
 
-import { Text } from '@/components/ui/text';
+import { Text } from '@/shared/components/ui/text';
 
-export function AuthHeader({ title, subText }: { title: ReactNode; subText: ReactNode }) {
+export function AuthScreenTitle({ title, subText }: { title: ReactNode; subText: ReactNode }) {
   return (
     <View
       style={{

@@ -15,7 +15,7 @@ const InputGroup = styled.View.attrs(() => ({}))`
 
 const InputHelperText = styled(Text)`
   opacity: 0.8;
-  font-size: ${(props) => props.theme.fontSizes['text-xs']};
+  font-size: ${(props) => props.theme.fontSizes['text-sm']}px;
 `;
 
 const InputWrapper = styled.View<{ borderColor?: string; bg?: string }>`

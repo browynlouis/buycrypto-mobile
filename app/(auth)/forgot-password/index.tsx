@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { LoginScreen } from '@/features/auth/screens/';
+import { ForgotPasswordScreen } from '@/features/auth/screens/';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 
-export default function Login() {
+export default function ForgotPassword() {
   return (
     <>
-      <Header showBackButton title="Login" />
+      <Header showBackButton title="Forgot Password" />
       <Page>
-        <LoginScreen />
+        <ForgotPasswordScreen />
       </Page>
     </>
   );

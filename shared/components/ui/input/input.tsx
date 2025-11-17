@@ -84,7 +84,6 @@ function Input({
             inputFieldStyle,
           ]}
           placeholder={placeholder}
-          placeholderTextColor={theme.colors.Neutral[400]}
           secureTextEntry={secure}
           onFocus={(e) => {
             setFocus(true);
@@ -94,6 +93,7 @@ function Input({
             setFocus(false);
             onBlur?.(e);
           }}
+          placeholderTextColor={theme.colors.Neutral[400]}
           {...props}
         />
       </InputContainer>

@@ -8,15 +8,11 @@ import { getTheme } from '@/styles';
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const colorScheme = useColorScheme();
 
-  const [fontsLoaded] = useFonts({
+  useFonts({
     'circular-std-black': require('@/assets/fonts/circular-std-black.ttf'),
     'circular-std-bold': require('@/assets/fonts/circular-std-bold.ttf'),
     'circular-std-medium': require('@/assets/fonts/circular-std-medium.ttf'),
   });
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   return (
     <StyledComponentThemeProvider

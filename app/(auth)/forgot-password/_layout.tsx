@@ -8,8 +8,8 @@ export default function Layout() {
   return (
     <Stack
       screenOptions={{
-        presentation: 'modal',
         headerShown: false,
+        presentation: 'modal',
         contentStyle: {
           backgroundColor: theme.colors.Neutral[900],
         },
