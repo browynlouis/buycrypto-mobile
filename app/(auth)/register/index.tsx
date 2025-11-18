@@ -7,7 +7,7 @@ import { Page } from '@/shared/components/layouts/page';
 export default function Register() {
   return (
     <>
-      <Header showBackButton title="Register" />
+      <Header showBackButton />
       <Page>
         <RegisterScreen />
       </Page>

@@ -7,7 +7,7 @@ import { Page } from '@/shared/components/layouts/page';
 export default function ForgotPassword() {
   return (
     <>
-      <Header showBackButton title="Forgot Password" />
+      <Header showBackButton />
       <Page>
         <ForgotPasswordScreen />
       </Page>

@@ -164,23 +164,23 @@ export interface components {
             /** Format: date-time */
             createdAt: string;
         };
-        LoginDto: {
-            email: string;
-            password: string;
-        };
         LoginResponseDto: {
             accessToken: string;
             refreshToken: string;
+        };
+        LoginDto: {
+            email: string;
+            password: string;
         };
         RegisterDto: {
             email: string;
             password: string;
         };
-        RefreshDto: {
-            refreshToken: string;
-        };
         RefreshResponseDto: {
             accessToken: string;
+        };
+        RefreshDto: {
+            refreshToken: string;
         };
         VerifyEmailRequestDto: {
             /** Format: email */
@@ -203,6 +203,30 @@ export interface components {
             email: string;
             token: string;
         };
+        AppResponseSchema: {
+            /** @description Actual response payload */
+            data: Record<string, never>;
+            /**
+             * @description HTTP status code
+             * @example 200
+             */
+            statusCode: number;
+            /**
+             * @description Readable message for the response
+             * @example Request successful
+             */
+            message: string;
+        };
+        BaseExceptionSchema: {
+            /** @description Name of the error */
+            error: string;
+            /** @description Human-readable error message */
+            message: string;
+            /** @description HTTP status code */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: Record<string, never>;
+        };
     };
     responses: never;
     parameters: never;
@@ -221,12 +245,31 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
+            /** @description Successfully fetched */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AuthResponseDto"];
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["AuthResponseDto"];
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default ForbiddenActionException */
+                        error: string;
+                        /** @default Unauthorized access */
+                        message: string;
+                        /** @default 401 */
+                        statusCode: number;
+                        details?: Record<string, never>;
+                    };
                 };
             };
         };
@@ -250,7 +293,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["LoginResponseDto"][];
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["LoginResponseDto"];
+                    };
                 };
             };
         };
@@ -268,11 +313,30 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            /** @description Successfully registered */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @default EmailAlreadyExistsException */
+                        error: string;
+                        /** @default Email already exists */
+                        message: string;
+                        /** @default 400 */
+                        statusCode: number;
+                        details?: Record<string, never>;
+                    };
+                };
             };
         };
     };
@@ -289,12 +353,15 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            /** @description Successfully refreshed access token */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["RefreshResponseDto"];
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["RefreshResponseDto"];
+                    };
                 };
             };
         };
@@ -312,11 +379,14 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            /** @description Successfully resent email verification */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
             };
         };
     };
@@ -333,11 +403,14 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            /** @description Successfully verified email address */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
             };
         };
     };
@@ -354,11 +427,14 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            /** @description Successful password reset request */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
             };
         };
     };
@@ -378,11 +454,14 @@ export interface operations {
             };
         };
         responses: {
-            201: {
+            /** @description Successful password reset */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
             };
         };
     };
@@ -399,6 +478,15 @@ export interface operations {
             };
         };
         responses: {
+            /** @description Successfully verified forgot password request */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
+            };
             201: {
                 headers: {
                     /** @description A signed token with limited time. It is expected to be sent along with the request that triggered the verification */

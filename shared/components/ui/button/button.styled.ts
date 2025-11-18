@@ -6,7 +6,7 @@ export const StyledButton = styled.Pressable.attrs<{ size?: ButtonSize; variant?
   () => ({}),
 )`
   gap: 8px;
-  border-radius: 24px;
+  border-radius: 12px;
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -32,13 +32,13 @@ export const StyledButton = styled.Pressable.attrs<{ size?: ButtonSize; variant?
   /* Padding based on size */
   padding: ${(props) => {
     switch (props.size) {
-      case 'sm':
-        return '12px 4px';
       case 'md':
         return '16px 8px';
       case 'lg':
-      default:
         return '20px 12px';
+      case 'sm':
+      default:
+        return '12px 4px';
     }
   }};
 `;

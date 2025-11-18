@@ -10,10 +10,11 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "format": "prettier --write \"**/*.{ts,tsx}\"",
-    "gen:api": "bunx openapi-typescript ../buy-crypto-be/api.json -o ./libs/api/schema.d.ts"
+    "gen:api": "bunx openapi-typescript ../buy-crypto-be/api.json -o ./libs/api/schema.ts"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
+    "@hookform/resolvers": "^5.2.2",
     "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
@@ -49,6 +50,7 @@
     "react-native-web": "~0.21.0",
     "react-native-worklets": "0.5.1",
     "styled-components": "^6.1.19",
+    "zod": "^4.1.12",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

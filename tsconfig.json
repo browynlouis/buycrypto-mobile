@@ -20,6 +20,5 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "/types/styled-components.d.ts"
   ]
 }

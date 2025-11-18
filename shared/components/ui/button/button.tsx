@@ -24,15 +24,15 @@ function Button({ children, style, startAdornment, endAdornment, ...props }: But
   let textSize: keyof AppTheme['fontSizes'];
 
   switch (props.size) {
-    case 'sm':
-      textSize = 'text-md';
-      break;
     case 'md':
       textSize = 'text-lg';
       break;
     case 'lg':
-    default:
       textSize = 'text-xl';
+    case 'sm':
+      textSize = 'text-md';
+      break;
+    default:
   }
 
   return (

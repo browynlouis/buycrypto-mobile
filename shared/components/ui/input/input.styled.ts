@@ -5,7 +5,7 @@ import { Text } from '../text';
 
 const InputLabel = styled(Text)`
   font-weight: 500;
-  font-size: ${(props) => props.theme.fontSizes['text-sm']};
+  font-size: ${(props) => props.theme.fontSizes['text-sm']}px;
 `;
 
 const InputGroup = styled.View.attrs(() => ({}))`
@@ -24,7 +24,7 @@ const InputWrapper = styled.View<{ borderColor?: string; bg?: string }>`
   border-radius: 12px;
   width: 100%;
   min-height: 42px;
-  padding: 0 6px;
+  padding: 0px 4px;
   border-width: 1px;
   background-color: ${(p) => p.bg};
   border-color: ${(p) => p.borderColor};

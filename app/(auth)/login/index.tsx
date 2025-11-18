@@ -7,7 +7,7 @@ import { Page } from '@/shared/components/layouts/page';
 export default function Login() {
   return (
     <>
-      <Header showBackButton title="Login" />
+      <Header showBackButton />
       <Page>
         <LoginScreen />
       </Page>

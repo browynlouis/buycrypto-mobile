@@ -132,7 +132,7 @@ function ControlledInput<T extends FieldValues>({
         fieldState: { error, invalid },
       }) => {
         return (
-          <InputWrapper>
+          <InputGroup>
             {label && <InputLabel weight={500}>{label}</InputLabel>}
             <Input
               value={value}
@@ -156,7 +156,7 @@ function ControlledInput<T extends FieldValues>({
                 {error?.message ?? helperText}
               </InputHelperText>
             )}
-          </InputWrapper>
+          </InputGroup>
         );
       }}
     />

@@ -13,4 +13,4 @@ export const $fetchApi = createFetchClient<paths>({
 
 $fetchApi.use(AuthMiddleWare);
 
-export const $api = createClient($fetchApi);
+export const $api = createClient<paths>($fetchApi);
