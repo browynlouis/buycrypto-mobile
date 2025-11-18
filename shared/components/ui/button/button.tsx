@@ -54,7 +54,6 @@ function Button({ children, style, startAdornment, endAdornment, ...props }: But
       }}
       {...props}
     >
-      {}
       {(state) => {
         return typeof children === 'function' ? (
           <>

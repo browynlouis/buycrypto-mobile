@@ -1,16 +1,16 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
+import z from 'zod';
 
-import { Button } from '@/shared/components/ui/button';
+import { toast } from '@/libs/utils/toast';
+import { Button, StyledButton } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
+import { Text } from '@/shared/components/ui/text';
 
 import { VerificationType } from '../types';
-
-type FormValues = {
-  [key in VerificationType]?: string;
-};
 
 const verificationMap: Record<
   VerificationType,
@@ -34,14 +34,43 @@ const verificationMap: Record<
 
 type Props = {
   types: VerificationType[];
-  onSubmit?: (value: FormValues) => void;
+  onSubmit?: (value: { [key in VerificationType]?: string }) => void;
   resendRequest?: (type: VerificationType) => void;
 };
 
-export function VerificationForm({ types, onSubmit, resendRequest }: Props) {
-  const { control, handleSubmit } = useForm<FormValues>();
+function buildVerificationSchema(types: VerificationType[]) {
+  const shape: Record<string, z.ZodTypeAny> = {};
 
-  const defaultOnSubmit: SubmitHandler<FormValues> = (values) => {};
+  types.forEach((type) => {
+    shape[type] = z.string().min(1);
+  });
+
+  return z.object(shape);
+}
+
+export function VerificationForm({ types, onSubmit, resendRequest }: Props) {
+  if (!types || !types.length) {
+    toast().error('2FA required, but no verification mode provided');
+
+    return null;
+  }
+
+  const {
+    control,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm<{ [key in VerificationType]?: string }>({
+    mode: 'all',
+    resolver: zodResolver(buildVerificationSchema(types)),
+  });
+
+  if (!types || !types.length) {
+    toast().error('2FA required, but no verification mode provided');
+
+    return null;
+  }
+
+  const defaultOnSubmit: SubmitHandler<{ [key in VerificationType]?: string }> = (values) => {};
 
   const defaultResendRequest = (type: VerificationType) => {};
 
@@ -65,20 +94,22 @@ export function VerificationForm({ types, onSubmit, resendRequest }: Props) {
             startAdornment={config.startIcon}
             endAdornment={
               config.showResend && (
-                <Button
+                <StyledButton
                   variant="text"
                   style={{ height: 'auto' }}
                   onPress={() => resendHandler(type)}
                 >
-                  Resend
-                </Button>
+                  <Text>Resend</Text>
+                </StyledButton>
               )
             }
           />
         );
       })}
 
-      <Button onPress={handleSubmit(submitHandler)}>Submit</Button>
+      <Button disabled={!isValid} onPress={handleSubmit(submitHandler)}>
+        Submit
+      </Button>
     </View>
   );
 }

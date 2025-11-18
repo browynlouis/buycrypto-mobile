@@ -4,7 +4,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAuthStore } from '@/features/auth/store';
 import { useTheme } from '@/libs/hooks';
-import { AuthProvider, QueryProvider, ThemeProvider } from '@/shared/components/providers';
+import {
+  AuthProvider,
+  QueryProvider,
+  ThemeProvider,
+  ToastProvider,
+} from '@/shared/components/providers';
 
 // Keep SplashScreen open and close laters
 SplashScreen.preventAutoHideAsync();
@@ -16,6 +21,7 @@ export default function RootLayout() {
         <AuthProvider>
           <Routes />
         </AuthProvider>
+        <ToastProvider />
       </QueryProvider>
     </ThemeProvider>
   );
@@ -46,6 +52,10 @@ function Routes() {
       >
         <Stack.Protected guard={!auth}>
           <Stack.Screen name="(auth)" />
+        </Stack.Protected>
+
+        <Stack.Protected guard={!!auth}>
+          <Stack.Screen name="(protected)/index" />
         </Stack.Protected>
       </Stack>
     </View>

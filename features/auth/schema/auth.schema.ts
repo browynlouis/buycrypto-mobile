@@ -11,4 +11,9 @@ const registerSchema = z
     message: 'Passwords do not match',
   });
 
-export { registerSchema };
+const loginSchema = z.object({
+  email: z.email(),
+  password: z.string().min(1),
+});
+
+export { loginSchema, registerSchema };

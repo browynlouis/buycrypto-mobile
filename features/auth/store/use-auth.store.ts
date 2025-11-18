@@ -3,10 +3,12 @@ import * as secureStore from 'expo-secure-store';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-import { paths } from '@/libs/api';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/shared/constants/common';
 
-type Auth = paths['/auth']['get']['responses']['200']['content']['application/json'];
+type Auth = {
+  id: string;
+  email: string;
+};
 
 interface AuthState {
   tokens: {

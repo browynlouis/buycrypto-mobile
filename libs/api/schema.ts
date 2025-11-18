@@ -116,22 +116,6 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/forgot-password/reset": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["AuthController_forgotPasswordReset"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/forgot-password/verify": {
         parameters: {
             query?: never;
@@ -142,6 +126,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["AuthController_forgotPasswordVerify"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/forgot-password/reset": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthController_forgotPasswordReset"];
         delete?: never;
         options?: never;
         head?: never;
@@ -195,13 +195,17 @@ export interface components {
             /** Format: email */
             email: string;
         };
-        ForgotPasswordResetDto: {
-            password: string;
-        };
         VerifyForgotPasswordRequestDto: {
             /** Format: email */
             email: string;
             token: string;
+        };
+        ForgotPasswordResetDto: {
+            password: string;
+        };
+        FormError: {
+            field: string;
+            message: string;
         };
         AppResponseSchema: {
             /** @description Actual response payload */
@@ -217,7 +221,7 @@ export interface components {
              */
             message: string;
         };
-        BaseExceptionSchema: {
+        AppExceptionSchema: {
             /** @description Name of the error */
             error: string;
             /** @description Human-readable error message */
@@ -225,7 +229,257 @@ export interface components {
             /** @description HTTP status code */
             statusCode: number;
             /** @description Additional details about the error */
-            details?: Record<string, never>;
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        AccountNotFoundException: {
+            /**
+             * @description Name of the error
+             * @default AccountNotFoundException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Account not found
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 404
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        EmailAlreadyExistsException: {
+            /**
+             * @description Name of the error
+             * @default EmailAlreadyExistsException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Email already exists
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 400
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        ForbiddenActionException: {
+            /**
+             * @description Name of the error
+             * @default ForbiddenActionException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default You do not have permission to perform this action
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 403
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        InvalidCredentialsException: {
+            /**
+             * @description Name of the error
+             * @default InvalidCredentialsException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Invalid credentials
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 401
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        InvalidOrExpiredTokenException: {
+            /**
+             * @description Name of the error
+             * @default InvalidOrExpiredTokenException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Invalid or expired token
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 401
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        InvalidOrExpiredVerificationException: {
+            /**
+             * @description Name of the error
+             * @default InvalidOrExpiredVerificationException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Invalid or expired verification
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 400
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        TwoFactorAuthRequiredException: {
+            /**
+             * @description Name of the error
+             * @default TwoFactorAuthRequiredException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Two-factor authentication required
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 401
+             */
+            statusCode: number;
+            /**
+             * @description Additional details about the error
+             * @default {
+             *       "twoFactorAuths": []
+             *     }
+             */
+            details: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        UnauthorizedAccessException: {
+            /**
+             * @description Name of the error
+             * @default UnauthorizedAccessException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Unauthorized access
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 401
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        UnprocessableEntityException: {
+            /**
+             * @description Name of the error
+             * @default UnprocessableEntityException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Input validation failed
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 422
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
+        VerificationAlreadyUsedException: {
+            /**
+             * @description Name of the error
+             * @default VerificationAlreadyUsedException
+             */
+            error: string;
+            /**
+             * @description Human-readable error message
+             * @default Replay detected! Verification has already been used
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 400
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
         };
     };
     responses: never;
@@ -261,15 +515,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @default ForbiddenActionException */
-                        error: string;
-                        /** @default Unauthorized access */
-                        message: string;
-                        /** @default 401 */
-                        statusCode: number;
-                        details?: Record<string, never>;
-                    };
+                    "application/json": components["schemas"]["InvalidOrExpiredTokenException"] | components["schemas"]["UnauthorizedAccessException"];
                 };
             };
         };
@@ -296,6 +542,14 @@ export interface operations {
                     "application/json": components["schemas"]["AppResponseSchema"] & {
                         data?: components["schemas"]["LoginResponseDto"];
                     };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidCredentialsException"] | components["schemas"]["InvalidOrExpiredTokenException"] | components["schemas"]["UnauthorizedAccessException"] | components["schemas"]["TwoFactorAuthRequiredException"];
                 };
             };
         };
@@ -327,15 +581,15 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": {
-                        /** @default EmailAlreadyExistsException */
-                        error: string;
-                        /** @default Email already exists */
-                        message: string;
-                        /** @default 400 */
-                        statusCode: number;
-                        details?: Record<string, never>;
-                    };
+                    "application/json": components["schemas"]["EmailAlreadyExistsException"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
                 };
             };
         };
@@ -364,6 +618,14 @@ export interface operations {
                     };
                 };
             };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidOrExpiredTokenException"];
+                };
+            };
         };
     };
     AuthController_resendEmailVerification: {
@@ -388,6 +650,22 @@ export interface operations {
                     "application/json": components["schemas"]["AppResponseSchema"] & unknown;
                 };
             };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmailAlreadyExistsException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountNotFoundException"];
+                };
+            };
         };
     };
     AuthController_verifyEmailVerification: {
@@ -403,13 +681,39 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Successfully verified email address */
+            /** @description Successfully verified */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["LoginResponseDto"];
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmailAlreadyExistsException"];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidOrExpiredTokenException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountNotFoundException"];
                 };
             };
         };
@@ -436,31 +740,12 @@ export interface operations {
                     "application/json": components["schemas"]["AppResponseSchema"] & unknown;
                 };
             };
-        };
-    };
-    AuthController_forgotPasswordReset: {
-        parameters: {
-            query?: never;
-            header?: {
-                /** @description A signed token previously sent in the response after a twofa verification */
-                "x-verified-request"?: string;
-            };
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["ForgotPasswordResetDto"];
-            };
-        };
-        responses: {
-            /** @description Successful password reset */
-            200: {
+            404: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                    "application/json": components["schemas"]["AccountNotFoundException"];
                 };
             };
         };
@@ -494,6 +779,57 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidOrExpiredVerificationException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountNotFoundException"];
+                };
+            };
+        };
+    };
+    AuthController_forgotPasswordReset: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description A signed token previously sent in the response after a twofa verification */
+                "x-verified-request"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ForgotPasswordResetDto"];
+            };
+        };
+        responses: {
+            /** @description Successful password reset */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedAccessException"] | components["schemas"]["InvalidOrExpiredTokenException"];
+                };
             };
         };
     };

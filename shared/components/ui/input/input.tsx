@@ -1,6 +1,6 @@
 import React, { LegacyRef, ReactNode, useState } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
-import { KeyboardType, TextInputProps, TouchableOpacity } from 'react-native';
+import { KeyboardType, TextInputProps, TouchableOpacity, ViewStyle } from 'react-native';
 import { useTheme } from 'styled-components/native';
 
 import { AppTheme } from '@/styles';
@@ -22,8 +22,8 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
   type?: KeyboardType;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
-  wrapperStyle?: any;
-  inputFieldStyle?: any;
+  wrapperStyle?: ViewStyle;
+  inputFieldStyle?: TextInputProps['style'];
   inputRef?: LegacyRef<any>;
   hiddenField?: boolean;
   variant?: InputVariants;
@@ -38,7 +38,7 @@ interface ControlledInputProps<T extends FieldValues> extends InputProps {
 
 const inputVariants = (theme: AppTheme, variants: InputVariants) => {
   const styles = {
-    default: theme.colors.Neutral[500],
+    default: 'transparent',
     danger: theme.colors.Error[400],
     success: theme.colors.Success[400],
   };
@@ -68,7 +68,10 @@ function Input({
   const borderColor = focus ? theme.colors.Primary[500] : inputVariants(theme, variant);
 
   return (
-    <InputWrapper style={wrapperStyle} borderColor={borderColor} bg={theme.colors.Neutral[700]}>
+    <InputWrapper
+      bg={theme.colors.Neutral[700]}
+      style={[{ borderColor: borderColor }, wrapperStyle]}
+    >
       {startAdornment && <Adornment>{startAdornment}</Adornment>}
 
       <InputContainer>
@@ -140,6 +143,7 @@ function ControlledInput<T extends FieldValues>({
               editable={field.disabled}
               placeholder={placeholder}
               defaultValue={value?.toString()}
+              wrapperStyle={invalid ? { borderColor: inputVariants(theme, 'danger') } : undefined}
               onChangeText={(text: string) => {
                 if (numericField.includes((inputProps.type ?? '') as string)) {
                   onChange(text.replace(/[^0-9]/g, ''));
@@ -148,11 +152,10 @@ function ControlledInput<T extends FieldValues>({
                 }
                 onChange(text);
               }}
-              wrapperStyle={invalid ? inputVariants(theme, 'danger') : null}
               {...inputProps}
             />
             {(invalid || helperText) && (
-              <InputHelperText style={[invalid ? { color: theme.colors.Error[400] } : null]}>
+              <InputHelperText style={[invalid ? { color: inputVariants(theme, 'danger') } : null]}>
                 {error?.message ?? helperText}
               </InputHelperText>
             )}
