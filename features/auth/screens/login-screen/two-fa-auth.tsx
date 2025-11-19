@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { $api } from '@/libs/api';
 import { useApiStore } from '@/libs/api/store/use-api.store';
 import { toast } from '@/libs/utils/toast';
+import { Loader } from '@/shared/components/loader';
 import { AppModal } from '@/shared/components/modal';
 import { queryClient } from '@/shared/components/providers';
 import { X_AUTH_ID_REQUEST_HEADER } from '@/shared/constants/common';
@@ -27,8 +28,10 @@ export function TwoFactorAuthentication({
   const { context } = useApiStore();
   const { setTokens } = useAuthStore();
 
-  const twoFaVerification = $api.useMutation('post', '/auth/login/verify', {
+  const { mutate, isPending, reset } = $api.useMutation('post', '/auth/login/verify', {
     async onSuccess({ data }) {
+      reset();
+
       setTwoFaAuthModal(false);
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
@@ -36,7 +39,7 @@ export function TwoFactorAuthentication({
         queryKey: getAuthUser,
       });
 
-      router.navigate('/(auth)'); // relaod the current route so the tokens are used to load the auth user
+      router.replace('/(auth)'); // relaod the current route so the tokens are used to load the auth user
     },
     onError(error) {
       toast().error(error.message);
@@ -44,30 +47,34 @@ export function TwoFactorAuthentication({
   });
 
   return (
-    <AppModal
-      visible={twoFaAuthModal}
-      modalTitle="Verify Your Email"
-      handleClose={() => setTwoFaAuthModal(false)}
-    >
-      <VerificationForm
-        types={types} // Verification type email
-        resendRequest={(type) => {}}
-        onSubmit={(values) => {
-          const authId = context.response?.headers.get(X_AUTH_ID_REQUEST_HEADER);
+    <>
+      <Loader isLoading={isPending} />
 
-          twoFaVerification.mutate({
-            headers: {
-              [X_AUTH_ID_REQUEST_HEADER]: authId,
-            },
-            body: {
-              input: Object.entries(values).map(([key, value]) => ({
-                value,
-                key: key as VerificationType,
-              })),
-            },
-          });
-        }}
-      />
-    </AppModal>
+      <AppModal
+        visible={twoFaAuthModal}
+        modalTitle="Verify Your Email"
+        handleClose={() => setTwoFaAuthModal(false)}
+      >
+        <VerificationForm
+          types={types} // Verification type email
+          resendRequest={(type) => {}}
+          onSubmit={(values) => {
+            const authId = context.response?.headers.get(X_AUTH_ID_REQUEST_HEADER);
+
+            mutate({
+              headers: {
+                [X_AUTH_ID_REQUEST_HEADER]: authId,
+              },
+              body: {
+                input: Object.entries(values).map(([key, value]) => ({
+                  value,
+                  key: key as VerificationType,
+                })),
+              },
+            });
+          }}
+        />
+      </AppModal>
+    </>
   );
 }

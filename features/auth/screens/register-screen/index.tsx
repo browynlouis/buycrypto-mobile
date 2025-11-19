@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
@@ -20,6 +20,7 @@ import { FormError } from '../../types';
 import { EmailVerification } from './email-verification';
 
 export function RegisterScreen() {
+  const router = useRouter();
   const [emailVerificationModal, setEmailVerificationModal] = useState<boolean>(false);
 
   const {
@@ -37,8 +38,9 @@ export function RegisterScreen() {
     },
   });
 
-  const { mutate, isPending } = $api.useMutation('post', '/auth/register', {
+  const { mutate, isPending, reset } = $api.useMutation('post', '/auth/register', {
     onSuccess() {
+      reset();
       /**
        * We toggle the modal open on successful registration request
        * Since we expect email verification afterwards
@@ -63,32 +65,48 @@ export function RegisterScreen() {
   };
 
   return (
-    <View style={{ gap: 32 }}>
-      <AuthScreenTitle title="Register an account!" subText="Welcome to BuyCrypto" />
+    <>
+      <Loader isLoading={isPending} />
 
-      <View style={{ gap: 24 }}>
-        <ControlledInput
-          name="email"
-          control={control}
-          placeholder="e.g jon@doe.com"
-          startAdornment={<Icon name="User" />}
-        />
+      <View style={{ gap: 32 }}>
+        <AuthScreenTitle title="Register an account!" subText="Welcome to BuyCrypto" />
 
-        <ControlledInput
-          hiddenField
-          name="password"
-          control={control}
-          placeholder="e.g Unau!@17"
-          startAdornment={<Icon name="Lock" />}
-        />
+        <View style={{ gap: 24 }}>
+          <ControlledInput
+            name="email"
+            control={control}
+            placeholder="e.g jon@doe.com"
+            startAdornment={<Icon name="User" />}
+          />
 
-        <ControlledInput
-          hiddenField
-          control={control}
-          name="confirmPassword"
-          placeholder="Confirm Password"
-          startAdornment={<Icon name="Lock" />}
-        />
+          <ControlledInput
+            hiddenField
+            name="password"
+            control={control}
+            placeholder="e.g Unau!@17"
+            startAdornment={<Icon name="Lock" />}
+          />
+
+          <ControlledInput
+            hiddenField
+            control={control}
+            name="confirmPassword"
+            placeholder="Confirm Password"
+            startAdornment={<Icon name="Lock" />}
+          />
+        </View>
+
+        <Button size="md" onPress={handleRegister} disabled={!isValid || isPending}>
+          Create account
+        </Button>
+
+        <View style={{ gap: 12 }}>
+          <Text align="center">Already have an account?</Text>
+
+          <Text color="link" onPress={() => router.back()} align="center">
+            Proceed to login
+          </Text>
+        </View>
       </View>
 
       {/* EMAIL VERIFICATION FORM */}
@@ -96,21 +114,6 @@ export function RegisterScreen() {
         emailVerificationModal={emailVerificationModal}
         setEmailVerificationModal={setEmailVerificationModal}
       />
-
-      <Button size="md" onPress={handleRegister} disabled={!isValid || isPending}>
-        Create account
-      </Button>
-
-      <Loader isLoading={isPending} />
-
-      <View style={{ gap: 12 }}>
-        <Text align="center">Already have an account?</Text>
-        <Link href={'/(auth)/login'}>
-          <Text align="center" color="link">
-            Proceed to login
-          </Text>
-        </Link>
-      </View>
-    </View>
+    </>
   );
 }

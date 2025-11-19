@@ -28,14 +28,17 @@ export function EmailVerification({
   /** Email verification request */
   const emailVerification = $api.useMutation('post', '/auth/email-verification/verify', {
     async onSuccess({ data }) {
+      emailVerification.reset();
+
       setEmailVerificationModal(false);
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
+      // Fetch auth user before navigating to ensure state is set
       await queryClient.fetchQuery({
         queryKey: getAuthUser,
       });
 
-      router.navigate('/(auth)'); // relaod the current route so the tokens are used to load the auth user
+      router.replace('/(auth)');
     },
     onError(error) {
       toast().error(error.message);
@@ -53,38 +56,41 @@ export function EmailVerification({
   });
 
   return (
-    <AppModal
-      modalTitle="Verify Your Email"
-      visible={emailVerificationModal}
-      handleClose={() => setEmailVerificationModal(false)}
-    >
-      <VerificationForm
-        types={['EMAIL']} // Verification type email
-        resendRequest={(type) => {
-          const authId = context.response?.headers.get(X_AUTH_ID_REQUEST_HEADER);
-
-          /** Calls the request to resend request for email verification */
-          emailVerificationResend.mutate({
-            headers: {
-              [X_AUTH_ID_REQUEST_HEADER]: authId,
-            },
-          });
-        }}
-        onSubmit={(values) => {
-          const authId = context.response?.headers.get(X_AUTH_ID_REQUEST_HEADER);
-
-          /** Calls the request to validate the email address with input values from the verification form */
-          emailVerification.mutate({
-            headers: {
-              [X_AUTH_ID_REQUEST_HEADER]: authId,
-            },
-            body: {
-              token: values['EMAIL']!,
-            },
-          });
-        }}
-      />
+    <>
       <Loader isLoading={emailVerification.isPending || emailVerificationResend.isPending} />
-    </AppModal>
+
+      <AppModal
+        modalTitle="Verify Your Email"
+        visible={emailVerificationModal}
+        handleClose={() => setEmailVerificationModal(false)}
+      >
+        <VerificationForm
+          types={['EMAIL']} // Verification type email
+          resendRequest={(type) => {
+            const authId = context.response?.headers.get(X_AUTH_ID_REQUEST_HEADER);
+
+            /** Calls the request to resend request for email verification */
+            emailVerificationResend.mutate({
+              headers: {
+                [X_AUTH_ID_REQUEST_HEADER]: authId,
+              },
+            });
+          }}
+          onSubmit={(values) => {
+            const authId = context.response?.headers.get(X_AUTH_ID_REQUEST_HEADER);
+
+            /** Calls the request to validate the email address with input values from the verification form */
+            emailVerification.mutate({
+              headers: {
+                [X_AUTH_ID_REQUEST_HEADER]: authId,
+              },
+              body: {
+                token: values['EMAIL']!,
+              },
+            });
+          }}
+        />
+      </AppModal>
+    </>
   );
 }

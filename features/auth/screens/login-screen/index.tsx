@@ -44,8 +44,10 @@ export function LoginScreen() {
     },
   });
 
-  const { mutate, isPending, error } = $api.useMutation('post', '/auth/login', {
+  const { mutate, isPending, error, reset } = $api.useMutation('post', '/auth/login', {
     async onSuccess({ data }) {
+      reset();
+
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
       await queryClient.fetchQuery({
@@ -53,7 +55,7 @@ export function LoginScreen() {
       });
 
       // We route the user to the app if login was successful
-      router.navigate('/(auth)');
+      router.replace('/(auth)');
     },
     onError(error) {
       toast().error(error.message);
@@ -78,37 +80,48 @@ export function LoginScreen() {
   };
 
   return (
-    <View style={{ gap: 32 }}>
-      <AuthScreenTitle title="Hi, Welcome!" subText="Please login to your account" />
-
-      <View style={{ gap: 24 }}>
-        <ControlledInput
-          name="email"
-          control={control}
-          placeholder="Your email"
-          startAdornment={<Icon name="User" />}
-        />
-
-        <ControlledInput
-          hiddenField
-          name="password"
-          control={control}
-          placeholder="Your password"
-          startAdornment={<Icon name="Lock" />}
-        />
-
-        <Link href={'/(auth)/forgot-password'}>
-          <Text weight={500} size="text-md" align="left" color="link">
-            Forgot password?
-          </Text>
-        </Link>
-      </View>
-
-      <Button size="md" onPress={handleLogin} disabled={isPending || !isValid}>
-        Proceed to login
-      </Button>
-
+    <>
       <Loader isLoading={isPending} />
+
+      <View style={{ gap: 32 }}>
+        <AuthScreenTitle title="Hi, Welcome!" subText="Please login to your account" />
+
+        <View style={{ gap: 24 }}>
+          <ControlledInput
+            name="email"
+            control={control}
+            placeholder="Your email"
+            startAdornment={<Icon name="User" />}
+          />
+
+          <ControlledInput
+            hiddenField
+            name="password"
+            control={control}
+            placeholder="Your password"
+            startAdornment={<Icon name="Lock" />}
+          />
+
+          <Link href={'/(auth)/forgot-password'}>
+            <Text weight={500} size="text-md" align="left" color="link">
+              Forgot password?
+            </Text>
+          </Link>
+        </View>
+
+        <Button size="md" onPress={handleLogin} disabled={isPending || !isValid}>
+          Proceed to login
+        </Button>
+
+        <View style={{ gap: 12 }}>
+          <Text align="center">Don't have an account yet?</Text>
+          <Link href={'/(auth)/register'}>
+            <Text align="center" color="link">
+              Register an account
+            </Text>
+          </Link>
+        </View>
+      </View>
 
       {/* Two Factor Auth Verification */}
 
@@ -117,15 +130,6 @@ export function LoginScreen() {
         setTwoFaAuthModal={setTwoFaAuthModal}
         types={error?.details?.['twoFaAuths']!}
       />
-
-      <View style={{ gap: 12 }}>
-        <Text align="center">Don't have an account yet?</Text>
-        <Link href={'/(auth)/register'}>
-          <Text align="center" color="link">
-            Register an account
-          </Text>
-        </Link>
-      </View>
-    </View>
+    </>
   );
 }

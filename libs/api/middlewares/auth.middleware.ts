@@ -67,7 +67,6 @@ export const AuthMiddleWare: Middleware = {
         retry = await fetch(new Request(request));
 
         if (retry.ok) {
-          console.log('omo');
           return retry;
         }
 
