@@ -10,6 +10,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { data, isLoading } = $api.useQuery(...getAuthUser);
 
   useEffect(() => {
+    console.log(data);
+
     if (data) {
       const { data: user } = data;
 

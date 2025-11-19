@@ -1,27 +1,33 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from 'expo-router';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient } from '@/libs/utils/map-server-errors';
 import { toast } from '@/libs/utils/toast';
-import { AppModal } from '@/shared/components/modal';
+import { Loader } from '@/shared/components/loader';
+import { queryClient } from '@/shared/components/providers';
 import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
-import { Spinner } from '@/shared/components/ui/spinner';
 import { Text } from '@/shared/components/ui/text';
+import {
+  TwoFactorAuthRequiredException,
+  UnprocessableEntityException,
+} from '@/shared/constants/exceptions';
 
-import { AuthScreenTitle } from '../components/auth-screen-title';
-import { VerificationForm } from '../components/verification-form';
-import { loginSchema } from '../schema/auth.schema';
-import { useAuthStore } from '../store';
-import { VerificationType } from '../types';
+import { getAuthUser } from '../../api';
+import { AuthScreenTitle } from '../../components/auth-screen-title';
+import { loginSchema } from '../../schema/auth.schema';
+import { useAuthStore } from '../../store';
+import { FormError } from '../../types';
+import { TwoFactorAuthentication } from './two-fa-auth';
 
 export function LoginScreen() {
   const router = useRouter();
+  const { setTokens } = useAuthStore();
   const [twoFaAuthModal, setTwoFaAuthModal] = useState<boolean>(false);
 
   const {
@@ -38,21 +44,27 @@ export function LoginScreen() {
     },
   });
 
-  const { mutate, isPending, variables, error } = $api.useMutation('post', '/auth/login', {
-    onSuccess() {
+  const { mutate, isPending, error } = $api.useMutation('post', '/auth/login', {
+    async onSuccess({ data }) {
+      setTokens(data.accessToken, data.refreshToken); // set auth tokens
+
+      await queryClient.fetchQuery({
+        queryKey: getAuthUser,
+      });
+
       // We route the user to the app if login was successful
       router.navigate('/(auth)');
     },
     onError(error) {
+      toast().error(error.message);
+
       /** Meaning two fa is required */
-      if (error.error === 'TwoFactorAuthRequiredException') {
+      if (error.name === TwoFactorAuthRequiredException) {
         setTwoFaAuthModal(true);
       }
 
-      toast().error(error.message);
-
-      if (error.details?.formErrors) {
-        mapServerErrorsToClient(setError, error.details?.formErrors);
+      if (error.name == UnprocessableEntityException) {
+        mapServerErrorsToClient(setError, error.details?.formErrors as FormError[]);
       }
     },
   });
@@ -93,8 +105,10 @@ export function LoginScreen() {
       </View>
 
       <Button size="md" onPress={handleLogin} disabled={isPending || !isValid}>
-        {isPending ? <Spinner /> : 'Proceed to login'}
+        Proceed to login
       </Button>
+
+      <Loader isLoading={isPending} />
 
       {/* Two Factor Auth Verification */}
 
@@ -113,32 +127,5 @@ export function LoginScreen() {
         </Link>
       </View>
     </View>
-  );
-}
-
-function TwoFactorAuthentication({
-  types,
-  twoFaAuthModal,
-  setTwoFaAuthModal,
-}: {
-  types: VerificationType[];
-  twoFaAuthModal: boolean;
-  setTwoFaAuthModal: Dispatch<SetStateAction<boolean>>;
-}) {
-  const router = useRouter();
-  const { setTokens } = useAuthStore();
-
-  return (
-    <AppModal
-      visible={twoFaAuthModal}
-      modalTitle="Verify Your Email"
-      handleClose={() => setTwoFaAuthModal(false)}
-    >
-      <VerificationForm
-        types={types} // Verification type email
-        resendRequest={(type) => {}}
-        onSubmit={(values) => {}}
-      />
-    </AppModal>
   );
 }

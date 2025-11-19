@@ -3,12 +3,11 @@ import { Middleware, MiddlewareCallbackParams } from 'openapi-fetch';
 import { useAuthStore } from '@/features/auth/store';
 import { ACCESS_TOKEN } from '@/shared/constants/common';
 
-const MAX_RETRY = 1;
-let _retryCount = 0;
+import { useApiStore } from '../store/use-api.store';
 
 export const AuthMiddleWare: Middleware = {
   onRequest(options: MiddlewareCallbackParams): Request {
-    const { request } = options;
+    const { request, params } = options;
     const accessToken = useAuthStore.getState().tokens[ACCESS_TOKEN];
 
     if (accessToken) {
@@ -20,18 +19,23 @@ export const AuthMiddleWare: Middleware = {
       request.headers.set('x-retry-count', '0');
     }
 
+    useApiStore.getState().setContext({ request, params });
+
     return request;
   },
 
   onError(options: MiddlewareCallbackParams & { error: unknown }): Response {
-    const { error } = options;
+    const { error, request, params } = options;
+
     console.log(error);
 
-    return Response.json(
-      {
+    useApiStore.getState().setContext({ request, params });
+
+    return new Response(
+      JSON.stringify({
         error: 'INTERNAL_ERROR',
         message: 'An unexpected error occurred',
-      },
+      }),
       { status: 500, statusText: 'Internal Error' },
     );
   },
@@ -40,6 +44,7 @@ export const AuthMiddleWare: Middleware = {
     const {
       request,
       response,
+      params,
       options: { fetch },
     } = options;
 
@@ -75,6 +80,8 @@ export const AuthMiddleWare: Middleware = {
         Promise.reject(retry);
       }
     }
+
+    useApiStore.getState().setContext({ request, params, response });
 
     return response;
   },

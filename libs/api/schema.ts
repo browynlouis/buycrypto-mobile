@@ -36,6 +36,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/login/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["AuthController_loginVerify"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/register": {
         parameters: {
             query?: never;
@@ -158,7 +174,6 @@ export interface components {
             twofaAuths: components["schemas"]["VerificationType"][];
             id: string;
             email: string;
-            user: Record<string, never>;
             /** Format: date-time */
             emailVerifiedAt: string;
             /** Format: date-time */
@@ -172,6 +187,14 @@ export interface components {
             email: string;
             password: string;
         };
+        InputDto: {
+            /** @enum {string} */
+            key: "SMS" | "TOTP" | "EMAIL";
+            value: string;
+        };
+        TwoFactorAuthDto: {
+            input: components["schemas"]["InputDto"][];
+        };
         RegisterDto: {
             email: string;
             password: string;
@@ -182,13 +205,7 @@ export interface components {
         RefreshDto: {
             refreshToken: string;
         };
-        VerifyEmailRequestDto: {
-            /** Format: email */
-            email: string;
-        };
         VerifyEmailDto: {
-            /** Format: email */
-            email: string;
             token: string;
         };
         ForgotPasswordDto: {
@@ -196,8 +213,6 @@ export interface components {
             email: string;
         };
         VerifyForgotPasswordRequestDto: {
-            /** Format: email */
-            email: string;
             token: string;
         };
         ForgotPasswordResetDto: {
@@ -223,7 +238,7 @@ export interface components {
         };
         AppExceptionSchema: {
             /** @description Name of the error */
-            error: string;
+            name: string;
             /** @description Human-readable error message */
             message: string;
             /** @description HTTP status code */
@@ -241,7 +256,7 @@ export interface components {
              * @description Name of the error
              * @default AccountNotFoundException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Account not found
@@ -265,7 +280,7 @@ export interface components {
              * @description Name of the error
              * @default EmailAlreadyExistsException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Email already exists
@@ -289,7 +304,7 @@ export interface components {
              * @description Name of the error
              * @default ForbiddenActionException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default You do not have permission to perform this action
@@ -313,7 +328,7 @@ export interface components {
              * @description Name of the error
              * @default InvalidCredentialsException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Invalid credentials
@@ -337,7 +352,7 @@ export interface components {
              * @description Name of the error
              * @default InvalidOrExpiredTokenException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Invalid or expired token
@@ -361,7 +376,7 @@ export interface components {
              * @description Name of the error
              * @default InvalidOrExpiredVerificationException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Invalid or expired verification
@@ -385,7 +400,7 @@ export interface components {
              * @description Name of the error
              * @default TwoFactorAuthRequiredException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Two-factor authentication required
@@ -414,7 +429,7 @@ export interface components {
              * @description Name of the error
              * @default UnauthorizedAccessException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Unauthorized access
@@ -438,7 +453,7 @@ export interface components {
              * @description Name of the error
              * @default UnprocessableEntityException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Input validation failed
@@ -462,7 +477,7 @@ export interface components {
              * @description Name of the error
              * @default VerificationAlreadyUsedException
              */
-            error: string;
+            name: string;
             /**
              * @description Human-readable error message
              * @default Replay detected! Verification has already been used
@@ -552,6 +567,56 @@ export interface operations {
                     "application/json": components["schemas"]["InvalidCredentialsException"] | components["schemas"]["InvalidOrExpiredTokenException"] | components["schemas"]["UnauthorizedAccessException"] | components["schemas"]["TwoFactorAuthRequiredException"];
                 };
             };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
+        };
+    };
+    AuthController_loginVerify: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TwoFactorAuthDto"];
+            };
+        };
+        responses: {
+            /** @description Successfully authenticated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["LoginResponseDto"];
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AccountNotFoundException"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
         };
     };
     AuthController_register: {
@@ -635,11 +700,7 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["VerifyEmailRequestDto"];
-            };
-        };
+        requestBody?: never;
         responses: {
             /** @description Successfully resent email verification */
             200: {
@@ -731,13 +792,15 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Successful password reset request */
+            /** @description Account successfully resolved */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["AuthResponseDto"];
+                    };
                 };
             };
             404: {
@@ -763,19 +826,12 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Successfully verified forgot password request */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
-                };
-            };
             201: {
                 headers: {
                     /** @description A signed token with limited time. It is expected to be sent along with the request that triggered the verification */
                     "x-verified-request": string;
+                    /** @description The id of the user making the request */
+                    "x-auth-id": string;
                     [name: string]: unknown;
                 };
                 content?: never;
