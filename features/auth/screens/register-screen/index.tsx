@@ -14,6 +14,7 @@ import { ControlledInput } from '@/shared/components/ui/input';
 import { Text } from '@/shared/components/ui/text';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
+import { register } from '../../api';
 import { AuthScreenTitle } from '../../components/auth-screen-title';
 import { registerSchema } from '../../schema/auth.schema';
 import { FormError } from '../../types';
@@ -38,7 +39,7 @@ export function RegisterScreen() {
     },
   });
 
-  const { mutate, isPending, reset } = $api.useMutation('post', '/auth/register', {
+  const { mutate, isPending, reset } = $api.useMutation(...register, {
     onSuccess() {
       reset();
       /**

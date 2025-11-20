@@ -9,7 +9,7 @@ import { AppModal } from '@/shared/components/modal';
 import { queryClient } from '@/shared/components/providers';
 import { X_AUTH_ID_REQUEST_HEADER } from '@/shared/constants/common';
 
-import { getAuthUser } from '../../api';
+import { getAuth, resendEmailVerification, verifyEmailVerification } from '../../api';
 import { VerificationForm } from '../../components/verification-form';
 import { useAuthStore } from '../../store';
 
@@ -26,7 +26,7 @@ export function EmailVerification({
   const { setTokens } = useAuthStore();
 
   /** Email verification request */
-  const emailVerification = $api.useMutation('post', '/auth/email-verification/verify', {
+  const emailVerification = $api.useMutation(...verifyEmailVerification, {
     async onSuccess({ data }) {
       emailVerification.reset();
 
@@ -35,7 +35,7 @@ export function EmailVerification({
 
       // Fetch auth user before navigating to ensure state is set
       await queryClient.fetchQuery({
-        queryKey: getAuthUser,
+        queryKey: getAuth,
       });
 
       router.replace('/(auth)');
@@ -46,7 +46,7 @@ export function EmailVerification({
   });
 
   /** Email verification resend request */
-  const emailVerificationResend = $api.useMutation('post', '/auth/email-verification/resend', {
+  const emailVerificationResend = $api.useMutation(...resendEmailVerification, {
     onSuccess() {
       toast().success('Email verification code resent');
     },

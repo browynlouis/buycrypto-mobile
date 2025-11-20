@@ -2,6 +2,9 @@ import { Middleware, MiddlewareCallbackParams } from 'openapi-fetch';
 
 import { useApiStore } from '../store/use-api.store';
 
+/**
+ * Stores the context an api requet-response
+ */
 export const StoreMiddleWare: Middleware = {
   onRequest(options: MiddlewareCallbackParams) {
     const { request, params } = options;
@@ -11,6 +14,7 @@ export const StoreMiddleWare: Middleware = {
 
   onError(options: MiddlewareCallbackParams & { error: unknown }) {
     const { request, params } = options;
+
     useApiStore.getState().setContext({ request, params });
   },
 

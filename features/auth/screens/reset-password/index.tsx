@@ -3,7 +3,7 @@ import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
-import { $api, components } from '@/libs/api';
+import { $api } from '@/libs/api';
 import { useApiStore } from '@/libs/api/store/use-api.store';
 import { mapServerErrorsToClient } from '@/libs/utils/map-server-errors';
 import { toast } from '@/libs/utils/toast';
@@ -13,13 +13,12 @@ import { ControlledInput } from '@/shared/components/ui/input';
 import { X_AUTH_ID_REQUEST_HEADER, X_VERIFIED_REQUEST_HEADER } from '@/shared/constants/common';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
+import { resetPassword } from '../../api';
 import { AuthScreenTitle } from '../../components/auth-screen-title';
 import { resetPasswwordSchema } from '../../schema/auth.schema';
 import { FormError } from '../../types';
 
-type ResetPasswordRequestData = components['schemas']['ForgotPasswordResetDto'];
-
-export function ResetPassword() {
+export function ResetPasswordScreen() {
   const router = useRouter();
 
   const { context } = useApiStore();
@@ -40,7 +39,7 @@ export function ResetPassword() {
   });
 
   /** Reset password request */
-  const { mutate, isPending, reset } = $api.useMutation('post', '/auth/forgot-password/reset', {
+  const { mutate, isPending, reset } = $api.useMutation(...resetPassword, {
     onSuccess() {
       reset();
       form.reset();

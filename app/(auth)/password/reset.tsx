@@ -1,13 +1,15 @@
-import { ResetPassword } from '@/features/auth/screens/reset-password';
+import React from 'react';
+
+import { ResetPasswordScreen } from '@/features/auth/screens/reset-password';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 
-export default function ResetPasswordPage() {
+export default function ResetPassword() {
   return (
     <>
       <Header showBackButton />
       <Page>
-        <ResetPassword />
+        <ResetPasswordScreen />
       </Page>
     </>
   );

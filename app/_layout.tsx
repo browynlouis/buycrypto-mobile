@@ -55,7 +55,7 @@ function Routes() {
         </Stack.Protected>
 
         <Stack.Protected guard={!!auth}>
-          <Stack.Screen name="(protected)/index" />
+          <Stack.Screen name="(protected)" />
         </Stack.Protected>
       </Stack>
     </View>

@@ -14,6 +14,7 @@ import { ControlledInput } from '@/shared/components/ui/input';
 import { Text } from '@/shared/components/ui/text';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
+import { forgotPassword } from '../../api';
 import { AuthScreenTitle } from '../../components/auth-screen-title';
 import { forgotPasswordSchema } from '../../schema/auth.schema';
 import { FormError } from '../../types';
@@ -48,7 +49,7 @@ export function ForgotPasswordScreen() {
 
   /** Forgot password request Mutation
    */
-  const forgotPassword = $api.useMutation('post', '/auth/forgot-password', {
+  const { mutate, isPending } = $api.useMutation(...forgotPassword, {
     onSuccess() {
       // Set the modal value to 'verify' to trigger the verification screen
       setModal(true);
@@ -73,8 +74,8 @@ export function ForgotPasswordScreen() {
    *
    */
   const handleForgotPassword = () => {
-    if (isValid && !forgotPassword.isPending) {
-      forgotPassword.mutate({
+    if (isValid && !isPending) {
+      mutate({
         body: getValues(),
       });
     }
@@ -83,7 +84,7 @@ export function ForgotPasswordScreen() {
   return (
     <>
       {/* Displays a loading indicator for ongoing requests */}
-      <Loader isLoading={forgotPassword.isPending} />
+      <Loader isLoading={isPending} />
 
       <View style={{ gap: 32 }}>
         <AuthScreenTitle
@@ -101,11 +102,7 @@ export function ForgotPasswordScreen() {
         {/** Step 1 ends -  Submit handler
          *   Initiate's request
          */}
-        <Button
-          size="md"
-          onPress={handleForgotPassword}
-          disabled={!isValid || forgotPassword.isPending}
-        >
+        <Button size="md" onPress={handleForgotPassword} disabled={!isValid || isPending}>
           Submit
         </Button>
 

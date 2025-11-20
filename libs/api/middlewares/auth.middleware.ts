@@ -27,8 +27,6 @@ export const AuthMiddleWare: Middleware = {
   onError(options: MiddlewareCallbackParams & { error: unknown }): Response {
     const { error, request, params } = options;
 
-    console.log(error);
-
     useApiStore.getState().setContext({ request, params });
 
     return new Response(

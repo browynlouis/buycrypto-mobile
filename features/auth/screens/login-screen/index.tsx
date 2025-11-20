@@ -18,7 +18,7 @@ import {
   UnprocessableEntityException,
 } from '@/shared/constants/exceptions';
 
-import { getAuthUser } from '../../api';
+import { getAuth } from '../../api';
 import { AuthScreenTitle } from '../../components/auth-screen-title';
 import { loginSchema } from '../../schema/auth.schema';
 import { useAuthStore } from '../../store';
@@ -51,7 +51,7 @@ export function LoginScreen() {
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
       await queryClient.fetchQuery({
-        queryKey: getAuthUser,
+        queryKey: getAuth,
       });
 
       // We route the user to the app if login was successful
@@ -102,7 +102,7 @@ export function LoginScreen() {
             startAdornment={<Icon name="Lock" />}
           />
 
-          <Link href={'/(auth)/forgot-password'}>
+          <Link href={'/(auth)/password'}>
             <Text weight={500} size="text-md" align="left" color="link">
               Forgot password?
             </Text>

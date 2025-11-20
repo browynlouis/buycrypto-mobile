@@ -9,7 +9,7 @@ import { AppModal } from '@/shared/components/modal';
 import { queryClient } from '@/shared/components/providers';
 import { X_AUTH_ID_REQUEST_HEADER } from '@/shared/constants/common';
 
-import { getAuthUser } from '../../api';
+import { getAuth, verifyLogin } from '../../api';
 import { VerificationForm } from '../../components/verification-form';
 import { useAuthStore } from '../../store';
 import { VerificationType } from '../../types';
@@ -28,7 +28,7 @@ export function TwoFactorAuthentication({
   const { context } = useApiStore();
   const { setTokens } = useAuthStore();
 
-  const { mutate, isPending, reset } = $api.useMutation('post', '/auth/login/verify', {
+  const { mutate, isPending, reset } = $api.useMutation(...verifyLogin, {
     async onSuccess({ data }) {
       reset();
 
@@ -36,7 +36,7 @@ export function TwoFactorAuthentication({
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
       await queryClient.fetchQuery({
-        queryKey: getAuthUser,
+        queryKey: getAuth,
       });
 
       router.replace('/(auth)'); // relaod the current route so the tokens are used to load the auth user
