@@ -3,10 +3,8 @@ import { useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
-import { $api } from '@/libs/api';
-import { useApiStore } from '@/libs/api/store/use-api.store';
-import { mapServerErrorsToClient } from '@/libs/utils/map-server-errors';
-import { toast } from '@/libs/utils/toast';
+import { $api, useApiStore } from '@/libs/api';
+import { mapServerErrorsToClient, toast } from '@/libs/utils';
 import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
 import { ControlledInput } from '@/shared/components/ui/input';
@@ -14,8 +12,8 @@ import { X_AUTH_ID_REQUEST_HEADER, X_VERIFIED_REQUEST_HEADER } from '@/shared/co
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
 import { resetPassword } from '../../api';
-import { AuthScreenTitle } from '../../components/auth-screen-title';
-import { resetPasswwordSchema } from '../../schema/auth.schema';
+import { AuthScreenTitle } from '../../components';
+import { resetPasswwordSchema } from '../../schema';
 import { FormError } from '../../types';
 
 export function ResetPasswordScreen() {

@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import z from 'zod';
 
-import { toast } from '@/libs/utils/toast';
+import { toast } from '@/libs/utils';
 import { Button, StyledButton } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';

@@ -1,8 +1,7 @@
 import createFetchClient from 'openapi-fetch';
 import createClient from 'openapi-react-query';
 
-import { AuthMiddleWare } from './middlewares/auth.middleware';
-import { StoreMiddleWare } from './middlewares/store.middleware';
+import { AuthMiddleWare, StoreMiddleWare } from './middlewares';
 import type { paths } from './schema';
 
 const $fetchApi = createFetchClient<paths>({

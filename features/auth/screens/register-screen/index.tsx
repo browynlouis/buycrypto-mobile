@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { $api } from '@/libs/api';
-import { mapServerErrorsToClient } from '@/libs/utils/map-server-errors';
-import { toast } from '@/libs/utils/toast';
+import { mapServerErrorsToClient, toast } from '@/libs/utils';
 import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
@@ -15,8 +14,8 @@ import { Text } from '@/shared/components/ui/text';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
 import { register } from '../../api';
-import { AuthScreenTitle } from '../../components/auth-screen-title';
-import { registerSchema } from '../../schema/auth.schema';
+import { AuthScreenTitle } from '../../components';
+import { registerSchema } from '../../schema';
 import { FormError } from '../../types';
 import { EmailVerification } from './email-verification';
 

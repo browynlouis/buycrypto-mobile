@@ -3,8 +3,6 @@ import { Middleware, MiddlewareCallbackParams } from 'openapi-fetch';
 import { useAuthStore } from '@/features/auth/store';
 import { ACCESS_TOKEN } from '@/shared/constants/common';
 
-import { useApiStore } from '../store/use-api.store';
-
 export const AuthMiddleWare: Middleware = {
   onRequest(options: MiddlewareCallbackParams): Request {
     const { request, params } = options;
@@ -19,16 +17,10 @@ export const AuthMiddleWare: Middleware = {
       request.headers.set('x-retry-count', '0');
     }
 
-    useApiStore.getState().setContext({ request, params });
-
     return request;
   },
 
   onError(options: MiddlewareCallbackParams & { error: unknown }): Response {
-    const { error, request, params } = options;
-
-    useApiStore.getState().setContext({ request, params });
-
     return new Response(
       JSON.stringify({
         error: 'INTERNAL_ERROR',
@@ -77,8 +69,6 @@ export const AuthMiddleWare: Middleware = {
         Promise.reject(retry);
       }
     }
-
-    useApiStore.getState().setContext({ request, params, response });
 
     return response;
   },

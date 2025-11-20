@@ -5,8 +5,7 @@ import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { $api } from '@/libs/api';
-import { mapServerErrorsToClient } from '@/libs/utils/map-server-errors';
-import { toast } from '@/libs/utils/toast';
+import { mapServerErrorsToClient, toast } from '@/libs/utils';
 import { Loader } from '@/shared/components/loader';
 import { queryClient } from '@/shared/components/providers';
 import { Button } from '@/shared/components/ui/button';
@@ -19,8 +18,8 @@ import {
 } from '@/shared/constants/exceptions';
 
 import { getAuth } from '../../api';
-import { AuthScreenTitle } from '../../components/auth-screen-title';
-import { loginSchema } from '../../schema/auth.schema';
+import { AuthScreenTitle } from '../../components';
+import { loginSchema } from '../../schema';
 import { useAuthStore } from '../../store';
 import { FormError } from '../../types';
 import { TwoFactorAuthentication } from './two-fa-auth';

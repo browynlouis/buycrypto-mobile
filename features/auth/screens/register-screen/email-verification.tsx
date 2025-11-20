@@ -1,16 +1,15 @@
 import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction } from 'react';
 
-import { $api } from '@/libs/api';
-import { useApiStore } from '@/libs/api/store/use-api.store';
-import { toast } from '@/libs/utils/toast';
+import { $api, useApiStore } from '@/libs/api';
+import { toast } from '@/libs/utils';
 import { Loader } from '@/shared/components/loader';
 import { AppModal } from '@/shared/components/modal';
 import { queryClient } from '@/shared/components/providers';
 import { X_AUTH_ID_REQUEST_HEADER } from '@/shared/constants/common';
 
 import { getAuth, resendEmailVerification, verifyEmailVerification } from '../../api';
-import { VerificationForm } from '../../components/verification-form';
+import { VerificationForm } from '../../components';
 import { useAuthStore } from '../../store';
 
 export function EmailVerification({
