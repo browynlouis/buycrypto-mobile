@@ -19,7 +19,7 @@ const Container = styled.KeyboardAvoidingView`
 
 const Background = styled.View<{ themeColors: string }>`
   flex: 1;
-  padding: 16px;
+  padding: 18px;
   background-color: ${(props) => props.themeColors};
 `;
 

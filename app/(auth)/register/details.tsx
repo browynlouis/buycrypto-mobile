@@ -1,26 +1,26 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import { LoginScreen } from '@/features/auth/screens/';
+import { RegisterScreen } from '@/features/auth/screens';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 import { Text } from '@/shared/components/ui/text';
 
-export default function Login() {
+export default function RegisterScreenTwo() {
   return (
     <>
       <Header
         showBackButton
         rightElement={
-          <Link href={'/(auth)/register'}>
+          <Link href={'/(auth)/login'}>
             <Text align="center" color="link">
-              Register
+              Login
             </Text>
           </Link>
         }
       />
       <Page>
-        <LoginScreen />
+        <RegisterScreen />
       </Page>
     </>
   );

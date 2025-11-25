@@ -10,7 +10,6 @@ import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
-import { Text } from '@/shared/components/ui/text';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
 import { forgotPassword } from '../../api';
@@ -104,10 +103,6 @@ export function ForgotPasswordScreen() {
         <Button size="md" onPress={handleForgotPassword} disabled={!isValid || isPending}>
           Submit
         </Button>
-
-        <Text color="link" onPress={() => router.back()} align="center">
-          Back to login?
-        </Text>
       </View>
 
       {/* Modals for Step 2  */}

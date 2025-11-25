@@ -111,15 +111,6 @@ export function LoginScreen() {
         <Button size="md" onPress={handleLogin} disabled={isPending || !isValid}>
           Proceed to login
         </Button>
-
-        <View style={{ gap: 12 }}>
-          <Text align="center">Don't have an account yet?</Text>
-          <Link href={'/(auth)/register'}>
-            <Text align="center" color="link">
-              Register an account
-            </Text>
-          </Link>
-        </View>
       </View>
 
       {/* Two Factor Auth Verification */}

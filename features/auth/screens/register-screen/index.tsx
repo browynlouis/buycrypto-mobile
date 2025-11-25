@@ -1,5 +1,4 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
@@ -10,7 +9,6 @@ import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
-import { Text } from '@/shared/components/ui/text';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
 import { register } from '../../api';
@@ -20,7 +18,6 @@ import { FormError } from '../../types';
 import { EmailVerification } from './email-verification';
 
 export function RegisterScreen() {
-  const router = useRouter();
   const [emailVerificationModal, setEmailVerificationModal] = useState<boolean>(false);
 
   const {
@@ -34,7 +31,6 @@ export function RegisterScreen() {
     defaultValues: {
       email: '',
       password: '',
-      confirmPassword: '',
     },
   });
 
@@ -86,27 +82,11 @@ export function RegisterScreen() {
             placeholder="e.g Unau!@17"
             startAdornment={<Icon name="Lock" />}
           />
-
-          <ControlledInput
-            hiddenField
-            control={control}
-            name="confirmPassword"
-            placeholder="Confirm Password"
-            startAdornment={<Icon name="Lock" />}
-          />
         </View>
 
         <Button size="md" onPress={handleRegister} disabled={!isValid || isPending}>
           Create account
         </Button>
-
-        <View style={{ gap: 12 }}>
-          <Text align="center">Already have an account?</Text>
-
-          <Text color="link" onPress={() => router.back()} align="center">
-            Proceed to login
-          </Text>
-        </View>
       </View>
 
       {/* EMAIL VERIFICATION FORM */}

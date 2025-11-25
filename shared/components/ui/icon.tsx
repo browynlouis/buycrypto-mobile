@@ -75,7 +75,7 @@ export const Icon: React.FC<IconProps> = ({
   size = 20,
   color,
   style,
-  variant = 'Linear',
+  variant = 'Broken',
 }) => {
   const theme = useTheme();
 

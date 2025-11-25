@@ -1,15 +1,26 @@
+import { Link } from 'expo-router';
 import React from 'react';
 
-import { RegisterScreen } from '@/features/auth/screens';
+import { CountrySelectionScreen } from '@/features/auth/screens/register-screen/country-selection';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
+import { Text } from '@/shared/components/ui/text';
 
-export default function Register() {
+export default function RegisterScreenOne() {
   return (
     <>
-      <Header showBackButton />
+      <Header
+        showBackButton
+        rightElement={
+          <Link href={'/(auth)/login'}>
+            <Text align="center" color="link">
+              Login
+            </Text>
+          </Link>
+        }
+      />
       <Page>
-        <RegisterScreen />
+        <CountrySelectionScreen />
       </Page>
     </>
   );

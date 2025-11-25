@@ -18,7 +18,7 @@ import {
 
 type InputVariants = 'default' | 'danger' | 'success';
 
-interface InputProps extends Omit<TextInputProps, 'style'> {
+export interface InputProps extends Omit<TextInputProps, 'style'> {
   type?: KeyboardType;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
@@ -29,7 +29,7 @@ interface InputProps extends Omit<TextInputProps, 'style'> {
   variant?: InputVariants;
 }
 
-interface ControlledInputProps<T extends FieldValues> extends InputProps {
+export interface ControlledInputProps<T extends FieldValues> extends InputProps {
   label?: React.ReactNode;
   control: Control<T>;
   name: Path<T>;
