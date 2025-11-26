@@ -50,7 +50,7 @@ interface IconProps {
   /** Icon family (e.g., 'Feather', 'Iconsax', 'Ionicons') */
   family?: IconFamily;
   /** Size in pixels */
-  size?: number;
+  size?: 'sm' | 'md' | 'lg' | number;
   /** Icon color */
   color?: string;
   /** Optional style */
@@ -72,14 +72,31 @@ interface IconProps {
 export const Icon: React.FC<IconProps> = ({
   name,
   family = 'Iconsax',
-  size = 20,
+  size = 'md',
   color,
   style,
   variant = 'Broken',
 }) => {
   const theme = useTheme();
 
+  let iconSize: number;
   const IconSet = ICON_FAMILIES[family];
+
+  switch (size) {
+    case 'sm':
+      iconSize = 20;
+      break;
+    case 'lg':
+      iconSize = 28;
+    case 'md':
+    default:
+      iconSize = 24;
+      break;
+  }
+
+  if (typeof size === 'number') {
+    iconSize = size;
+  }
 
   // Handle Iconsax separately
   if (family === 'Iconsax') {
@@ -89,7 +106,7 @@ export const Icon: React.FC<IconProps> = ({
 
     return (
       <IconComponent
-        size={size}
+        size={iconSize}
         color={color ?? theme.colors.Neutral[400]}
         variant={variant}
         style={style}
@@ -103,7 +120,7 @@ export const Icon: React.FC<IconProps> = ({
   return (
     <IconSet
       name={name as any}
-      size={size}
+      size={iconSize}
       color={color ?? theme.colors.Neutral[400]}
       style={style}
     />

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ResetPasswordScreen } from '@/features/auth/screens/reset-password';
+import { ResetPasswordScreen } from '@/features/auth/screens';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 

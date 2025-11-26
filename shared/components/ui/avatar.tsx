@@ -12,7 +12,7 @@ export function Avatar({ imageSource, size = 48, style }: AvatarProps) {
       {imageSource ? (
         <StyledImage source={imageSource} size={size} radius={radius} resizeMode="cover" />
       ) : (
-        <Icon name="Happyemoji" size={size * 0.5} />
+        <Icon name="Happyemoji" size="sm" />
       )}
     </Container>
   );

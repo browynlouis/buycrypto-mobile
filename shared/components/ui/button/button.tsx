@@ -58,17 +58,13 @@ function Button({ children, style, startAdornment, endAdornment, ...props }: But
         return typeof children === 'function' ? (
           <>
             {startAdornment}
-            <Text color={theme.colors.Shades.White} size={textSize}>
-              {children(state)}
-            </Text>
+            <Text size={textSize}>{children(state)}</Text>
             {endAdornment}
           </>
         ) : (
           <>
             {startAdornment}
-            <Text color={theme.colors.Shades.White} size={textSize}>
-              {children}
-            </Text>
+            <Text size={textSize}>{children}</Text>
             {endAdornment}
           </>
         );

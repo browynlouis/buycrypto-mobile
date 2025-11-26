@@ -5,7 +5,7 @@ import { ButtonSize, ButtonVariant } from './button';
 export const StyledButton = styled.Pressable.attrs<{ size?: ButtonSize; variant?: ButtonVariant }>(
   () => ({}),
 )`
-  gap: 8px;
+  gap: 12px;
   border-radius: 12px;
   flex-direction: row;
   align-items: center;

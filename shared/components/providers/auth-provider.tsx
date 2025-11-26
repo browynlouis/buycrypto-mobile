@@ -9,8 +9,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { setAuth } = useAuthStore();
   const { data, isLoading, error } = $api.useQuery(...getAuth);
 
-  console.log(error?.message);
-
   useEffect(() => {
     if (data) {
       const { data: user } = data;

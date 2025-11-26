@@ -1,11 +1,14 @@
 import { ErrorBoundary } from '@suspensive/react';
 import { QueryErrorResetBoundary } from '@tanstack/react-query';
 import { SplashScreen, Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { useAuthStore } from '@/features/auth/store';
 import { useTheme } from '@/libs/hooks';
+import { useAppStore } from '@/libs/store';
 import { Page } from '@/shared/components/layouts/page';
 import {
   AuthProvider,
@@ -41,6 +44,7 @@ function Routes() {
   const insets = useSafeAreaInsets();
 
   const { auth } = useAuthStore();
+  const { resolvedTheme } = useAppStore();
 
   return (
     <View
@@ -51,6 +55,7 @@ function Routes() {
         backgroundColor: theme.colors.Neutral[900],
       }}
     >
+      <StatusBar style={resolvedTheme === 'light' ? 'dark' : 'light'} />
       <Stack
         screenOptions={{
           headerShown: false,

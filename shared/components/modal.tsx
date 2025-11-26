@@ -80,7 +80,7 @@ export function AppModal({
                 </Text>
               )}
               <Button variant="text" onPress={() => handleClose?.()} style={{ marginLeft: 'auto' }}>
-                <Icon name="close" family="AntDesign" size={20} color={theme.colors.Neutral[300]} />
+                <Icon name="close" family="AntDesign" size="sm" color={theme.colors.Neutral[300]} />
               </Button>
             </Header>
 

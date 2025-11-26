@@ -41,7 +41,7 @@ export function Header({
             onPress={onBack ? onBack : router.back}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Icon name="ArrowLeft" size={24} />
+            <Icon name="ArrowLeft" size="lg" />
           </BackButton>
         )}
         {leftElement}
@@ -50,7 +50,7 @@ export function Header({
       {/* Title */}
       <TitleSection titlePosition={titlePosition}>
         {title && (
-          <StyledTitle size="text-sm" weight={700} style={titleStyle}>
+          <StyledTitle size="text-md" weight={700} style={titleStyle}>
             {title}
           </StyledTitle>
         )}

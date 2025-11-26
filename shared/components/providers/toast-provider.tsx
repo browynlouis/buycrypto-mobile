@@ -16,16 +16,16 @@ export function ToastProvider() {
         success: (props) => (
           <Toaster
             {...props}
-            icon={<Icon size={16} name="TickCircle" color={theme.colors.Success['500']} />}
+            icon={<Icon size={'sm'} name="TickCircle" color={theme.colors.Success['500']} />}
           />
         ),
         error: (props) => (
           <Toaster
             {...props}
-            icon={<Icon size={16} name="CloseCircle" color={theme.colors.Error['500']} />}
+            icon={<Icon size={'sm'} name="CloseCircle" color={theme.colors.Error['500']} />}
           />
         ),
-        info: (props) => <Toaster {...props} icon={<Icon size={16} name="InfoCircle" />} />,
+        info: (props) => <Toaster {...props} icon={<Icon size={'sm'} name="InfoCircle" />} />,
       }}
     />
   );
