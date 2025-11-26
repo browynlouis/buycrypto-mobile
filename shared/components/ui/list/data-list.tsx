@@ -13,7 +13,7 @@ export function DataList<T>({
   hideHeader = false,
   filterFn,
   separator,
-  component,
+  renderItem,
   headerTitle,
 }: {
   data?: T[];
@@ -22,13 +22,13 @@ export function DataList<T>({
   hideSearch?: boolean;
   hideHeader?: boolean;
   filterFn?: (value: string, data: T[]) => any[];
-  component: (item: T) => React.JSX.Element;
+  renderItem: (item: T) => React.JSX.Element;
   separator?: FlatListProps<T>['ItemSeparatorComponent'];
   headerTitle?: string;
 }) {
   const [filter, setFilter] = useState('');
 
-  let filteredData: T[] = hideSearch ? data : (filterFn?.(filter, data) ?? []);
+  let filteredData: T[] = hideSearch ? data : (filterFn?.(filter, data) ?? data);
 
   const items = [
     ...(hideHeader
@@ -66,7 +66,7 @@ export function DataList<T>({
               onSelect?.(item);
             }}
           >
-            {component(item)}
+            {renderItem(item)}
           </Pressable>
         ),
       };
@@ -75,8 +75,8 @@ export function DataList<T>({
 
   return (
     <FlatList
-      data={items}
       extraData
+      data={items}
       keyExtractor={(item) => item.id}
       stickyHeaderIndices={[0]}
       renderItem={({ item }) => item.component}

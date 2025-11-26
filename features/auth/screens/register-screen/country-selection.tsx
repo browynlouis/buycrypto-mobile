@@ -1,20 +1,23 @@
 import { ErrorBoundary, Suspense } from '@suspensive/react';
 import { SuspenseQuery } from '@suspensive/react-query';
-import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import React from 'react';
+import { Controller, useFormContext } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { $fetchApi } from '@/libs/api';
 import { toast } from '@/libs/utils';
 import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
+import { InputGroup, InputHelperText } from '@/shared/components/ui/input/input.styled';
 import { SelectInput } from '@/shared/components/ui/select-input';
 import { Skeleton } from '@/shared/components/ui/skeleton';
+import { Text } from '@/shared/components/ui/text';
 
 import { AuthScreenTitle } from '../../components';
+import { RegistrationFormContext } from './form-provider/registration-form-provider';
 
 export function CountrySelectionScreen() {
-  const [modal, setModal] = useState(false);
-
   return (
     <View style={{ gap: 32 }}>
       <AuthScreenTitle
@@ -36,22 +39,55 @@ export function CountrySelectionScreen() {
             queryKey={['metadata/config/countries']}
             queryFn={() => $fetchApi.GET('/metadata/config/countries')}
           >
-            {({ data }) => {
-              const { data: countries } = data;
+            {({ data: { data } }) => {
+              const router = useRouter();
+              const { setValue, control } = useFormContext<RegistrationFormContext>();
+
+              const countries = data?.data!;
 
               return (
-                <>
-                  <View style={{ gap: 24 }}>
-                    <SelectInput
-                      options={[]}
-                      placeholder="Select your country…"
-                      startAdornment={<Icon name="Flag" />}
-                      endAdornment={<Icon name="ArrowDown2" />}
-                    />
-                  </View>
+                <Controller
+                  name="country"
+                  control={control}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <InputGroup>
+                        <SelectInput<(typeof countries)[0]>
+                          options={countries}
+                          placeholder="Select your country…"
+                          startAdornment={<Icon name="Flag" />}
+                          endAdornment={<Icon name="ArrowDown2" />}
+                          onSelect={(item) =>
+                            setValue('country', item.code, {
+                              shouldDirty: true,
+                              shouldTouch: true,
+                              shouldValidate: true,
+                            })
+                          }
+                          value={countries.find((c) => c.code === field.value) ?? null}
+                          renderValue={(item) => `${item?.name} - (${item?.callingCode})`}
+                          renderItem={(item) => (
+                            <View style={{ paddingVertical: 24 }}>
+                              <Text>{item.name}</Text>
+                            </View>
+                          )}
+                        />
 
-                  <Button size="md">Proceed</Button>
-                </>
+                        {error?.message && (
+                          <InputHelperText variant="error">{error.message}</InputHelperText>
+                        )}
+                      </InputGroup>
+
+                      <Button
+                        size="md"
+                        disabled={!field.value}
+                        onPress={() => router.push('/(auth)/registration/credentials-form')}
+                      >
+                        Proceed
+                      </Button>
+                    </>
+                  )}
+                />
               );
             }}
           </SuspenseQuery>

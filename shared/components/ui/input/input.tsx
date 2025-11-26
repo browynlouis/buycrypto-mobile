@@ -130,38 +130,30 @@ function ControlledInput<T extends FieldValues>({
     <Controller
       name={name}
       control={control}
-      render={({
-        field: { onChange, value, onBlur, ...field },
-        fieldState: { error, invalid },
-      }) => {
-        return (
-          <InputGroup>
-            {label && <InputLabel weight={500}>{label}</InputLabel>}
-            <Input
-              value={value}
-              onBlur={onBlur}
-              editable={field.disabled}
-              placeholder={placeholder}
-              defaultValue={value?.toString()}
-              wrapperStyle={invalid ? { borderColor: inputVariants(theme, 'danger') } : undefined}
-              onChangeText={(text: string) => {
-                if (numericField.includes((inputProps.type ?? '') as string)) {
-                  onChange(text.replace(/[^0-9]/g, ''));
-
-                  return;
-                }
+      render={({ field: { onChange, value, onBlur }, fieldState: { error, invalid } }) => (
+        <InputGroup>
+          {label && <InputLabel weight={500}>{label}</InputLabel>}
+          <Input
+            value={value ?? ''} // controlled value
+            onBlur={onBlur}
+            placeholder={placeholder}
+            wrapperStyle={invalid ? { borderColor: inputVariants(theme, 'danger') } : undefined}
+            onChangeText={(text: string) => {
+              if (numericField.includes((inputProps.type ?? '') as string)) {
+                onChange(text.replace(/[^0-9]/g, ''));
+              } else {
                 onChange(text);
-              }}
-              {...inputProps}
-            />
-            {(invalid || helperText) && (
-              <InputHelperText style={[invalid ? { color: inputVariants(theme, 'danger') } : null]}>
-                {error?.message ?? helperText}
-              </InputHelperText>
-            )}
-          </InputGroup>
-        );
-      }}
+              }
+            }}
+            {...inputProps}
+          />
+          {(invalid || helperText) && (
+            <InputHelperText variant={invalid ? 'error' : 'default'}>
+              {error?.message ?? helperText}
+            </InputHelperText>
+          )}
+        </InputGroup>
+      )}
     />
   );
 }

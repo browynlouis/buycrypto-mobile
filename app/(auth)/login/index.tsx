@@ -12,7 +12,7 @@ export default function Login() {
       <Header
         showBackButton
         rightElement={
-          <Link href={'/(auth)/register'}>
+          <Link href={'/(auth)/registration'}>
             <Text align="center" color="link">
               Register
             </Text>

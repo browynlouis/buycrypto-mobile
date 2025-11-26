@@ -13,9 +13,23 @@ const InputGroup = styled.View.attrs(() => ({}))`
   width: '100%';
 `;
 
-const InputHelperText = styled(Text)`
+const InputHelperText = styled(Text)<{ variant?: 'default' | 'error' | 'success' | 'warning' }>`
   opacity: 0.8;
   font-size: ${(props) => props.theme.fontSizes['text-sm']}px;
+  color: ${(props) => {
+    const { theme, variant } = props;
+
+    switch (variant) {
+      case 'error':
+        return theme.colors.Error[400];
+      case 'success':
+        return theme.colors.Success[400];
+      case 'warning':
+        return theme.colors.Warning[400];
+      default:
+        break;
+    }
+  }};
 `;
 
 const InputWrapper = styled.View<{ borderColor?: string; bg?: string }>`

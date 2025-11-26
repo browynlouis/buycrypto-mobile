@@ -1,12 +1,12 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import { RegisterScreen } from '@/features/auth/screens';
+import { CountrySelectionScreen } from '@/features/auth/screens/register-screen/country-selection';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 import { Text } from '@/shared/components/ui/text';
 
-export default function RegisterScreenTwo() {
+export default function RegistrationCountrySelectionPage() {
   return (
     <>
       <Header
@@ -20,7 +20,7 @@ export default function RegisterScreenTwo() {
         }
       />
       <Page>
-        <RegisterScreen />
+        <CountrySelectionScreen />
       </Page>
     </>
   );

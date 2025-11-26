@@ -1,6 +1,5 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { useFormContext, useFormState } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { $api } from '@/libs/api';
@@ -13,26 +12,16 @@ import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
 import { register } from '../../api';
 import { AuthScreenTitle } from '../../components';
-import { registerSchema } from '../../schema';
 import { FormError } from '../../types';
 import { EmailVerification } from './email-verification';
+import { RegistrationFormContext } from './form-provider/registration-form-provider';
 
-export function RegisterScreen() {
+export function CredentialsFormScreen() {
   const [emailVerificationModal, setEmailVerificationModal] = useState<boolean>(false);
 
-  const {
-    control,
-    setError,
-    getValues,
-    formState: { isValid },
-  } = useForm({
-    mode: 'all',
-    resolver: zodResolver(registerSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
+  const { control, setError, getValues } = useFormContext<RegistrationFormContext>();
+
+  const { isValid, errors, isDirty } = useFormState({ control });
 
   const { mutate, isPending, reset } = $api.useMutation(...register, {
     onSuccess() {
