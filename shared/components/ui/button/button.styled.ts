@@ -20,7 +20,7 @@ export const StyledButton = styled.Pressable.attrs<{ size?: ButtonSize; variant?
       case 'success':
         return props.theme.colors.Success[500];
       case 'plain':
-        return props.theme.colors.Neutral[800];
+        return props.theme.colors.Neutral[700];
       case 'text':
         return 'transparent';
       case 'default':

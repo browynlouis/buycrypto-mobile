@@ -19,7 +19,7 @@ import { RegistrationFormContext } from './form-provider/registration-form-provi
 export function CredentialsFormScreen() {
   const [emailVerificationModal, setEmailVerificationModal] = useState<boolean>(false);
 
-  const { control, setError, getValues } = useFormContext<RegistrationFormContext>();
+  const { control, setError, getValues, handleSubmit } = useFormContext<RegistrationFormContext>();
 
   const { isValid, errors, isDirty } = useFormState({ control });
 
@@ -40,14 +40,6 @@ export function CredentialsFormScreen() {
       }
     },
   });
-
-  const handleRegister = () => {
-    if (isValid && !isPending) {
-      mutate({
-        body: getValues(),
-      });
-    }
-  };
 
   return (
     <>
@@ -73,7 +65,15 @@ export function CredentialsFormScreen() {
           />
         </View>
 
-        <Button size="md" onPress={handleRegister} disabled={!isValid || isPending}>
+        <Button
+          size="md"
+          disabled={!isValid || isPending}
+          onPress={handleSubmit((values) =>
+            mutate({
+              body: values,
+            }),
+          )}
+        >
           Create account
         </Button>
       </View>

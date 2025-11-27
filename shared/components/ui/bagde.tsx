@@ -37,7 +37,7 @@ export function Badge({
       {icon ? (
         <IconWrapper>{icon}</IconWrapper>
       ) : (
-        <Icon name="dot-single" family="Entypo" color={dotColor} />
+        <Icon name="dot-single" family="Entypo" color={dotColor} size={20} />
       )}
 
       <BadgeText size="text-xs">{children}</BadgeText>
@@ -48,7 +48,7 @@ export function Badge({
 /* ------------------ Styled Components ------------------ */
 
 const BadgeContainer = styled.View`
-  border-radius: 50px;
+  border-radius: 99px;
   flex-direction: row;
   align-items: center;
   align-self: flex-start;
@@ -58,9 +58,9 @@ const BadgeContainer = styled.View`
 const IconWrapper = styled.View`
   justify-content: center;
   align-items: center;
-  margin-right: 4px;
+  padding: 8px;
 `;
 
 const BadgeText = styled(Text)`
-  padding-right: 8px;
+  padding-right: 12px;
 `;

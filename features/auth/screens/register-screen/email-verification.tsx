@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction } from 'react';
 
 import { $api, useApiStore } from '@/libs/api';
@@ -11,6 +10,7 @@ import { X_AUTH_ID_REQUEST_HEADER } from '@/shared/constants/common';
 import { getAuth, resendEmailVerification, verifyEmailVerification } from '../../api';
 import { VerificationForm } from '../../components';
 import { useAuthStore } from '../../store';
+import { AuthResource } from '../../types';
 
 export function EmailVerification({
   emailVerificationModal,
@@ -19,10 +19,8 @@ export function EmailVerification({
   emailVerificationModal: boolean;
   setEmailVerificationModal: Dispatch<SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
-
   const { context } = useApiStore();
-  const { setTokens } = useAuthStore();
+  const { setTokens, setAuth } = useAuthStore();
 
   /** Email verification request */
   const emailVerification = $api.useMutation(...verifyEmailVerification, {
@@ -33,11 +31,12 @@ export function EmailVerification({
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
       // Fetch auth user before navigating to ensure state is set
-      await queryClient.fetchQuery({
+      const auth = await queryClient.fetchQuery<AuthResource>({
         queryKey: getAuth,
       });
 
-      router.replace('/(auth)');
+      // Set Auth
+      setAuth(auth);
     },
     onError(error) {
       toast().error(error.message);

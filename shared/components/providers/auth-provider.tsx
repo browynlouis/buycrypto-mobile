@@ -7,16 +7,13 @@ import { $api } from '@/libs/api';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { setAuth } = useAuthStore();
-  const { data, isLoading, error } = $api.useQuery(...getAuth);
+  const { data, isLoading } = $api.useQuery(...getAuth);
 
   useEffect(() => {
     if (data) {
-      const { data: user } = data;
+      const { data: auth } = data;
 
-      setAuth({
-        id: user.id,
-        email: user.email,
-      });
+      setAuth(auth);
     }
   }, [data]);
 

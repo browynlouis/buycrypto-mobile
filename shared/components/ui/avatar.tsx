@@ -28,7 +28,7 @@ const Container = styled.View<{ size: number; radius: number }>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: ${({ radius }) => radius}px;
-  background-color: ${(props) => props.theme.colors.Shades.White};
+  background-color: ${(props) => props.theme.colors.Neutral[700]};
   justify-content: center;
   align-items: center;
   overflow: hidden;

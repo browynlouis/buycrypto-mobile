@@ -22,5 +22,9 @@ export const StoreMiddleWare: Middleware = {
     const { request, response, params } = options;
 
     useApiStore.getState().setContext({ request, params, response });
+
+    if (!options.response.ok && options.response.status !== 401) {
+      return await Promise.reject(await options.response.json());
+    }
   },
 };

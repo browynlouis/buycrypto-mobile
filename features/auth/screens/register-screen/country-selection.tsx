@@ -36,7 +36,7 @@ export function CountrySelectionScreen() {
           }
         >
           <SuspenseQuery
-            queryKey={['metadata/config/countries']}
+            queryKey={['get', 'metadata/config/countries']}
             queryFn={() => $fetchApi.GET('/metadata/config/countries')}
           >
             {({ data: { data } }) => {
@@ -49,7 +49,7 @@ export function CountrySelectionScreen() {
                 <Controller
                   name="country"
                   control={control}
-                  render={({ field, fieldState: { error } }) => (
+                  render={({ field, fieldState: { error, invalid } }) => (
                     <>
                       <InputGroup>
                         <SelectInput<(typeof countries)[0]>
@@ -80,8 +80,10 @@ export function CountrySelectionScreen() {
 
                       <Button
                         size="md"
-                        disabled={!field.value}
-                        onPress={() => router.push('/(auth)/registration/credentials-form')}
+                        disabled={invalid}
+                        onPress={() =>
+                          !invalid && router.push('/(auth)/registration/credentials-form')
+                        }
                       >
                         Proceed
                       </Button>

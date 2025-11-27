@@ -13,9 +13,7 @@ export default function Auth() {
         <Text>Go to Login</Text>
       </Link>
 
-      <Button onPress={() => clearTokens()}>
-        <Text>Logout</Text>
-      </Button>
+      <Button onPress={() => clearTokens()}>Logout</Button>
     </Page>
   );
 }

@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link, useRouter } from 'expo-router';
+import { Link } from 'expo-router';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
@@ -17,22 +17,21 @@ import {
   UnprocessableEntityException,
 } from '@/shared/constants/exceptions';
 
-import { getAuth } from '../../api';
+import { getAuth, login } from '../../api';
 import { AuthScreenTitle } from '../../components';
 import { loginSchema } from '../../schema';
 import { useAuthStore } from '../../store';
-import { FormError } from '../../types';
+import { AuthResource, FormError } from '../../types';
 import { TwoFactorAuthentication } from './two-fa-auth';
 
 export function LoginScreen() {
-  const router = useRouter();
-  const { setTokens } = useAuthStore();
+  const { setTokens, setAuth } = useAuthStore();
   const [twoFaAuthModal, setTwoFaAuthModal] = useState<boolean>(false);
 
   const {
     control,
     setError,
-    getValues,
+    handleSubmit,
     formState: { isValid },
   } = useForm({
     mode: 'all',
@@ -43,18 +42,18 @@ export function LoginScreen() {
     },
   });
 
-  const { mutate, isPending, error, reset } = $api.useMutation('post', '/auth/login', {
+  const { mutate, isPending, error, reset } = $api.useMutation(...login, {
     async onSuccess({ data }) {
       reset();
 
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
-      await queryClient.fetchQuery({
+      const auth = await queryClient.fetchQuery<AuthResource>({
         queryKey: getAuth,
       });
 
-      // We route the user to the app if login was successful
-      router.replace('/(auth)');
+      // Set Auth
+      setAuth(auth);
     },
     onError(error) {
       toast().error(error.message);
@@ -69,14 +68,6 @@ export function LoginScreen() {
       }
     },
   });
-
-  const handleLogin = () => {
-    if (isValid && !isPending) {
-      mutate({
-        body: getValues(),
-      });
-    }
-  };
 
   return (
     <>
@@ -108,7 +99,15 @@ export function LoginScreen() {
           </Link>
         </View>
 
-        <Button size="md" onPress={handleLogin} disabled={isPending || !isValid}>
+        <Button
+          size="md"
+          onPress={handleSubmit((values) => {
+            mutate({
+              body: values,
+            });
+          })}
+          disabled={isPending || !isValid}
+        >
           Proceed to login
         </Button>
       </View>

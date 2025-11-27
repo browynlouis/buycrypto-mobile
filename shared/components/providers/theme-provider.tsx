@@ -1,12 +1,14 @@
 import { useFonts } from 'expo-font';
 import React from 'react';
+import { useColorScheme } from 'react-native';
 import { ThemeProvider as StyledComponentThemeProvider } from 'styled-components/native';
 
 import { useAppStore } from '@/libs/store';
 import { getTheme } from '@/styles';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const { resolvedTheme } = useAppStore();
+  const colorScheme = useColorScheme();
+  const { resolvedTheme, themeAppearance } = useAppStore();
 
   useFonts({
     'circular-std-black': require('@/assets/fonts/circular-std-black.ttf'),
@@ -15,7 +17,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   });
 
   return (
-    <StyledComponentThemeProvider theme={getTheme(resolvedTheme)}>
+    <StyledComponentThemeProvider
+      theme={getTheme(themeAppearance === 'system' ? colorScheme : resolvedTheme)}
+    >
       {children}
     </StyledComponentThemeProvider>
   );

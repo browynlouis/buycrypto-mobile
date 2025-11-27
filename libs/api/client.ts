@@ -15,15 +15,6 @@ $fetchApi.use(AuthMiddleWare);
 
 $fetchApi.use(StoreMiddleWare); // this ought to be the last middleware in the middleware stack
 
-/** Throws error which fecth wouldn't throw -- neccessary for our react query-client */
-$fetchApi.use({
-  async onResponse(options) {
-    if (!options.response.ok) {
-      return await Promise.reject(await options.response.json());
-    }
-  },
-});
-
 const $api = createClient<paths>($fetchApi);
 
 export { $api, $fetchApi };

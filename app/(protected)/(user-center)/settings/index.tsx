@@ -10,7 +10,7 @@ import { Icon } from '@/shared/components/ui/icon';
 
 export default function Settings() {
   const { clearTokens } = useAuthStore();
-  const { toggleThemeAppearance, resolvedTheme } = useAppStore();
+  const { setThemeAppearance, resolvedTheme, toggleThemeAppearance } = useAppStore();
 
   return (
     <>
@@ -18,7 +18,13 @@ export default function Settings() {
         title="User Center"
         showBackButton
         rightElement={
-          <Button variant="text" onPress={toggleThemeAppearance}>
+          <Button
+            variant="text"
+            onPress={() => {
+              toggleThemeAppearance();
+              setThemeAppearance(resolvedTheme === 'dark' ? 'light' : 'dark');
+            }}
+          >
             <Icon name={resolvedTheme === 'light' ? 'Moon' : 'Sun1'} size="lg" />
           </Button>
         }
@@ -27,8 +33,8 @@ export default function Settings() {
       <Page>
         <SettingsScreen />
 
-        <Button variant="plain" style={{ marginTop: 'auto' }} onPress={clearTokens}>
-          Logout <Icon name="Logout" />
+        <Button variant="plain" size="md" style={{ marginTop: 'auto' }} onPress={clearTokens}>
+          Logout
         </Button>
       </Page>
     </>

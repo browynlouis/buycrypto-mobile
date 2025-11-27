@@ -19,5 +19,6 @@ export const Text = styled.Text.attrs<{
   color: ${(props) => props.color};
   font-family: 'circular-std-medium';
   font-weight: ${(props) => props.weight};
+  line-height: 18px;
   font-size: ${(props) => props.theme.fontSizes[props.size ?? 'text-md']}px;
 `;

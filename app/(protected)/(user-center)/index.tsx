@@ -1,25 +1,23 @@
+import { Link } from 'expo-router';
 import React from 'react';
 import { View } from 'react-native';
 
-import { useAuthStore } from '@/features/auth/store';
-import { UserCenterScreen } from '@/features/user/screens';
+import { UserCenterScreen } from '@/features/user/screens/user-center';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 
 export default function UserCenter() {
-  const { clearTokens } = useAuthStore();
-
   return (
     <>
       <Header
         title="User Center"
         showBackButton
         rightElement={
-          <Button variant="text">
+          <Link href="/(protected)/(user-center)/settings">
             <Icon name="Setting" size="lg" />
-          </Button>
+          </Link>
         }
       />
 
@@ -29,7 +27,7 @@ export default function UserCenter() {
         <View style={{ marginTop: 'auto', gap: 12 }}>
           <View style={{ flexDirection: 'row', gap: 12 }}>
             <Button
-              size="md"
+              size="sm"
               variant="plain"
               style={{ flex: 1 }}
               endAdornment={<Icon name="MessageQuestion" />}
@@ -37,7 +35,7 @@ export default function UserCenter() {
               FAQs
             </Button>
             <Button
-              size="md"
+              size="sm"
               variant="plain"
               style={{ flex: 1 }}
               endAdornment={<Icon name="Global" />}
@@ -45,7 +43,7 @@ export default function UserCenter() {
               About Us
             </Button>
           </View>
-          <Button size="md" variant="plain" endAdornment={<Icon name="Headphone" />}>
+          <Button size="sm" variant="plain" endAdornment={<Icon name="Headphone" />}>
             Help
           </Button>
         </View>

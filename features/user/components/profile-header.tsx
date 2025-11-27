@@ -6,26 +6,19 @@ import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { Text } from '@/shared/components/ui/text';
 
-export function ProfileHeader() {
+import { User } from '../types';
+
+export function ProfileHeader({ user }: { user: User }) {
   return (
     <Container>
       <Content>
         <Avatar size={52} />
 
         <UserInfo>
-          <Text size="text-xl">browynlouis</Text>
+          <Text size="text-xl">{user.username ?? '--'}</Text>
 
-          <Text size="text-xs" style={{ opacity: 0.7 }}>
-            browynlouis2@gmail.com
-          </Text>
-
-          <CopyButton
-            size="sm"
-            variant="text"
-            onPress={async () => {}}
-            endAdornment={<Icon name="Copy" size={16} />}
-          >
-            {`ID: orem&^*_ipsu`}
+          <CopyButton size="sm" variant="text" endAdornment={<Icon name="Copy" size={16} />}>
+            <Text size="text-sm">{`ID: ${user.uniqueId}`}</Text>
           </CopyButton>
         </UserInfo>
       </Content>

@@ -18,7 +18,7 @@ interface ButtonProps extends PressableProps {
   children: React.ReactNode | ((state: PressableStateCallbackType) => React.ReactNode);
 }
 
-function Button({ children, style, startAdornment, endAdornment, ...props }: ButtonProps) {
+function Button({ children, style, startAdornment, endAdornment, variant, ...props }: ButtonProps) {
   const theme = useTheme();
 
   let textSize: keyof AppTheme['fontSizes'];
@@ -52,19 +52,30 @@ function Button({ children, style, startAdornment, endAdornment, ...props }: But
 
         return mergedStyle;
       }}
+      variant={variant}
       {...props}
     >
       {(state) => {
         return typeof children === 'function' ? (
           <>
             {startAdornment}
-            <Text size={textSize}>{children(state)}</Text>
+            <Text
+              size={textSize}
+              color={variant === 'default' || !variant ? theme.colors.Shades.White : undefined}
+            >
+              {children(state)}
+            </Text>
             {endAdornment}
           </>
         ) : (
           <>
             {startAdornment}
-            <Text size={textSize}>{children}</Text>
+            <Text
+              size={textSize}
+              color={variant === 'default' || !variant ? theme.colors.Shades.White : undefined}
+            >
+              {children}
+            </Text>
             {endAdornment}
           </>
         );

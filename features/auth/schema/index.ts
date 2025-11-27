@@ -1,28 +1,10 @@
 import { z } from 'zod';
 
-import { $fetchApi } from '@/libs/api';
-
-const registerSchema = z
-  .object({
-    email: z.email(),
-    country: z.string(),
-    password: z.string().min(8),
-  })
-  .superRefine(async (formData, ctx) => {
-    const { data } = await $fetchApi.GET('/metadata/config/countries');
-
-    const countries = data?.data ?? [];
-
-    const isSupported = countries.some((country) => country.code === formData.country);
-
-    if (!isSupported) {
-      ctx.addIssue({
-        path: ['country'],
-        code: 'custom',
-        message: 'The selected country is not supported',
-      });
-    }
-  });
+const registerSchema = z.object({
+  email: z.email(),
+  country: z.string(),
+  password: z.string().min(8),
+});
 
 const loginSchema = z.object({
   email: z.email(),

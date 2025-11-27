@@ -5,20 +5,17 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/shared/constants/common';
 
-type Auth = {
-  id: string;
-  email: string;
-};
+import { AuthResource } from '../types';
 
 interface AuthState {
   tokens: {
     [ACCESS_TOKEN]: string | null;
     [REFRESH_TOKEN]: string | null;
   };
-  auth: Auth | null;
+  auth: AuthResource | null;
   isAuth: boolean;
   clearTokens: () => void;
-  setAuth: (auth: Auth | null) => void;
+  setAuth: (auth: AuthResource | null) => void;
   refreshAccessToken: () => Promise<string | null>;
   setTokens: (access: string | null, refresh: string | null) => void;
 }

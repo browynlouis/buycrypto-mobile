@@ -164,6 +164,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserController_getMe"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/me/username": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["UserController_updateUsername"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/metadata/config/countries": {
         parameters: {
             query?: never;
@@ -210,12 +242,12 @@ export interface components {
         };
         /** @enum {string} */
         VerificationType: "EMAIL" | "SMS" | "TOTP";
-        AuthResponseDto: {
-            twofaAuths: components["schemas"]["VerificationType"][];
+        AuthResource: {
             id: string;
             email: string;
             /** Format: date-time */
             emailVerifiedAt: string;
+            twofaAuths: components["schemas"]["VerificationType"][];
             /** Format: date-time */
             createdAt: string;
         };
@@ -257,6 +289,19 @@ export interface components {
         };
         ForgotPasswordResetDto: {
             password: string;
+        };
+        UserResource: {
+            id: string;
+            uniqueId: string;
+            username: string | null;
+            usernameUpdatedAt: string | null;
+            /** @enum {string} */
+            kycLevel: "Identity Verified" | "Not Verified";
+            /** Format: date-time */
+            createdAt: string;
+        };
+        UpdateUsernameDto: {
+            username: string;
         };
         CountryDto: {
             code: string;
@@ -518,6 +563,30 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        UsernameChangeTooSoonException: {
+            /**
+             * @description Name of the error
+             * @default UsernameChangeTooSoonException
+             */
+            name: string;
+            /**
+             * @description Human-readable error message
+             * @default You can change your username only once every 30 days.
+             */
+            message: string;
+            /**
+             * @description HTTP status code
+             * @default 400
+             */
+            statusCode: number;
+            /** @description Additional details about the error */
+            details?: {
+                formErrors?: components["schemas"]["FormError"][];
+                twoFaAuths?: components["schemas"]["VerificationType"][];
+            } & {
+                [key: string]: unknown;
+            };
+        };
         VerificationAlreadyUsedException: {
             /**
              * @description Name of the error
@@ -567,7 +636,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AppResponseSchema"] & {
-                        data?: components["schemas"]["AuthResponseDto"];
+                        data?: components["schemas"]["AuthResource"];
                     };
                 };
             };
@@ -1012,6 +1081,86 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedAccessException"] | components["schemas"]["InvalidOrExpiredTokenException"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerErrorException"];
+                };
+            };
+        };
+    };
+    UserController_getMe: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successfully fetched */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["UserResource"];
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidOrExpiredTokenException"] | components["schemas"]["UnauthorizedAccessException"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerErrorException"];
+                };
+            };
+        };
+    };
+    UserController_updateUsername: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateUsernameDto"];
+            };
+        };
+        responses: {
+            /** @description Successfully fetched */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InvalidOrExpiredTokenException"] | components["schemas"]["UnauthorizedAccessException"];
                 };
             };
             /** @description Internal Server Error */

@@ -3,7 +3,7 @@ import { Appearance } from 'react-native';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-type ThemeAppearance = 'light' | 'dark' | 'system';
+export type ThemeAppearance = 'light' | 'dark' | 'system';
 
 interface AppStore {
   themeAppearance: ThemeAppearance;

@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import { LoginScreen } from '@/features/auth/screens/';
+import { LoginScreen } from '@/features/auth/screens/login-screen';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 import { Text } from '@/shared/components/ui/text';

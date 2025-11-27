@@ -1,4 +1,3 @@
-import { useRouter } from 'expo-router';
 import { Dispatch, SetStateAction } from 'react';
 
 import { $api, useApiStore } from '@/libs/api';
@@ -11,7 +10,7 @@ import { X_AUTH_ID_REQUEST_HEADER } from '@/shared/constants/common';
 import { getAuth, verifyLogin } from '../../api';
 import { VerificationForm } from '../../components';
 import { useAuthStore } from '../../store';
-import { VerificationType } from '../../types';
+import { AuthResource, VerificationType } from '../../types';
 
 export function TwoFactorAuthentication({
   types,
@@ -22,10 +21,8 @@ export function TwoFactorAuthentication({
   twoFaAuthModal: boolean;
   setTwoFaAuthModal: Dispatch<SetStateAction<boolean>>;
 }) {
-  const router = useRouter();
-
   const { context } = useApiStore();
-  const { setTokens } = useAuthStore();
+  const { setTokens, setAuth } = useAuthStore();
 
   const { mutate, isPending, reset } = $api.useMutation(...verifyLogin, {
     async onSuccess({ data }) {
@@ -34,11 +31,12 @@ export function TwoFactorAuthentication({
       setTwoFaAuthModal(false);
       setTokens(data.accessToken, data.refreshToken); // set auth tokens
 
-      await queryClient.fetchQuery({
+      const auth = await queryClient.fetchQuery<AuthResource>({
         queryKey: getAuth,
       });
 
-      router.replace('/(auth)'); // relaod the current route so the tokens are used to load the auth user
+      // Set Auth
+      setAuth(auth);
     },
     onError(error) {
       toast().error(error.message);

@@ -41,7 +41,7 @@ export function Header({
             onPress={onBack ? onBack : router.back}
             hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
           >
-            <Icon name="ArrowLeft" size="lg" />
+            <Icon name="ArrowLeft" size={32} />
           </BackButton>
         )}
         {leftElement}
@@ -50,7 +50,7 @@ export function Header({
       {/* Title */}
       <TitleSection titlePosition={titlePosition}>
         {title && (
-          <StyledTitle size="text-md" weight={700} style={titleStyle}>
+          <StyledTitle size="text-md" weight={500} style={titleStyle}>
             {title}
           </StyledTitle>
         )}
@@ -65,7 +65,7 @@ export function Header({
 const Wrapper = styled.View<{ backgroundColor?: string }>`
   width: 100%;
   height: 60px;
-  padding: 0px 12px;
+  padding: 0px 16px;
   flex-direction: row;
   align-items: center;
   background-color: ${(props) => props.backgroundColor ?? props.theme.colors.Neutral[900]};
@@ -84,6 +84,7 @@ const TitleSection = styled.View<{ titlePosition: 'left' | 'center' }>`
 
 const RightSection = styled.View`
   flex: 1;
+  padding-right: 2px;
   align-items: flex-end;
 `;
 
