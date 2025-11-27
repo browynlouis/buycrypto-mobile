@@ -63,7 +63,7 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
         ],
       },
     ],
-    [],
+    [user],
   );
 
   const toKey = (title: string) => snakeCase(title.toLowerCase());
