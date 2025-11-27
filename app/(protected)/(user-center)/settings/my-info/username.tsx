@@ -59,20 +59,6 @@ const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
 
       <Page>
         <Col gap={24}>
-          <Col gap={8}>
-            <Icon name="InfoCircle" size={12} color={theme.colors.Warning[500]} />
-            <Col gap={6}>
-              <Text size="text-sm" color={theme.colors.Warning[500]}>
-                Username can only be updated once every 30 days
-              </Text>
-
-              <Text size="text-xs">
-                Use 6–20 characters. Letters, numbers, underscores, and hyphens are allowed — but no
-                starting, ending, or repeating special characters
-              </Text>
-            </Col>
-          </Col>
-
           <Controller
             name="username"
             control={control}
