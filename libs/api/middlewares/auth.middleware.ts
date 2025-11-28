@@ -21,6 +21,8 @@ export const AuthMiddleWare: Middleware = {
   },
 
   onError(options: MiddlewareCallbackParams & { error: unknown }): Response {
+    console.log(options.error);
+
     return new Response(
       JSON.stringify({
         error: 'INTERNAL_ERROR',

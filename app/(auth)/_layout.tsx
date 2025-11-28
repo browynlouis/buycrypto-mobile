@@ -7,6 +7,7 @@ export default function Layout() {
 
   return (
     <Stack
+      initialRouteName="login"
       screenOptions={{
         headerShown: false,
         contentStyle: {

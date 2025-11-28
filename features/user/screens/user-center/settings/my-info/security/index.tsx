@@ -19,9 +19,16 @@ const SecurityScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
       <MenuListItem
         title="Email"
         data={{
-          showArrow: false,
           leftEl: <Icon name="alternate-email" family="MaterialIcons" />,
           rightEl: <Text>{auth.email}</Text>,
+        }}
+      />
+
+      <MenuListItem
+        title="Mobile"
+        data={{
+          leftEl: <Icon name="Mobile" />,
+          rightEl: <Text>{}</Text>,
         }}
       />
 

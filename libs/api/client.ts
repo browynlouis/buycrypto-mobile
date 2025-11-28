@@ -1,7 +1,7 @@
 import createFetchClient from 'openapi-fetch';
 import createClient from 'openapi-react-query';
 
-import { AuthMiddleWare, StoreMiddleWare } from './middlewares';
+import { AuthMiddleWare } from './middlewares';
 import type { paths } from './schema';
 
 const $fetchApi = createFetchClient<paths>({
@@ -12,8 +12,6 @@ const $fetchApi = createFetchClient<paths>({
 });
 
 $fetchApi.use(AuthMiddleWare);
-
-$fetchApi.use(StoreMiddleWare); // this ought to be the last middleware in the middleware stack
 
 const $api = createClient<paths>($fetchApi);
 

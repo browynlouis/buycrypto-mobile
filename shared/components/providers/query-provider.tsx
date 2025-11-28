@@ -8,9 +8,6 @@ export const queryClient = new QueryClient({
       retry: 0,
     },
     mutations: {
-      onSuccess(data, variables, onMutateResult, context) {
-        toast().success((data as any)?.message ?? 'Request successful');
-      },
       onError(error) {
         toast().error(error.message);
       },

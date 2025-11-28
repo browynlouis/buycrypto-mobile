@@ -4,9 +4,12 @@ import { SplashScreen, Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { View } from 'react-native';
+import 'react-native-get-random-values';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 import { useAuthStore } from '@/features/auth/store';
+import { toastConfig } from '@/libs/config';
 import { useTheme } from '@/libs/hooks';
 import { useAppStore } from '@/libs/store';
 import { Page } from '@/shared/components/layouts/page';
@@ -14,8 +17,9 @@ import {
   AuthProvider,
   QueryProvider,
   ThemeProvider,
-  ToastProvider,
+  VerificationProvider,
 } from '@/shared/components/providers';
+import { getTheme } from '@/styles';
 
 // Keep SplashScreen open and close laters
 SplashScreen.preventAutoHideAsync();
@@ -25,14 +29,20 @@ export default function RootLayout() {
     <ThemeProvider>
       <QueryProvider>
         <QueryErrorResetBoundary>
-          {({ reset }) => (
-            <ErrorBoundary fallback={<Page></Page>} onError={() => null}>
-              <AuthProvider>
-                <Routes />
-              </AuthProvider>
-              <ToastProvider />
-            </ErrorBoundary>
-          )}
+          {({ reset }) => {
+            const { resolvedTheme } = useAppStore();
+
+            return (
+              <ErrorBoundary fallback={<Page></Page>} onError={() => null}>
+                <AuthProvider>
+                  <VerificationProvider>
+                    <Routes />
+                    <Toast config={toastConfig(getTheme(resolvedTheme))} />
+                  </VerificationProvider>
+                </AuthProvider>
+              </ErrorBoundary>
+            );
+          }}
         </QueryErrorResetBoundary>
       </QueryProvider>
     </ThemeProvider>

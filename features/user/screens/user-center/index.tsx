@@ -24,7 +24,7 @@ const UserCenterScreen = Suspense.with({ fallback: <Loader isLoading /> }, () =>
         <Row justify="space-between" align="center">
           <ProfileHeader user={user} />
 
-          <Icon name="expand-alt" family="AntDesign" style={{ marginLeft: 'auto' }} />
+          <Icon name="ArrowRight2" style={{ marginLeft: 'auto' }} />
         </Row>
       </Pressable>
 

@@ -1,5 +1,8 @@
 export const login = ['post', '/auth/login'] as const;
-export const verifyLogin = ['post', '/auth/login/verify'] as const;
+export const loginVerify = ['post', '/auth/login/verify'] as const;
+
+export const request2fa = ['post', '/auth/two-fa/request'] as const;
+export const verify2fa = ['post', '/auth/two-fa/verify'] as const;
 
 export const register = ['post', '/auth/register'] as const;
 export const verifyEmailVerification = ['post', '/auth/email-verification/verify'] as const;

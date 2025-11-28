@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Suspense } from '@suspensive/react';
+import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import z from 'zod';
 
@@ -18,14 +19,17 @@ const RegistrationFormProvider = Suspense.with(
 
     const cc = countries.map((c) => c.code);
 
-    const form = useForm<RegistrationFormContext>({
-      mode: 'all',
-      resolver: zodResolver(
+    const registerSchemaExtended = useMemo(
+      () =>
         registerSchema.extend({
           country: z.string().refine((val) => cc.includes(val)),
         }),
-      ),
-      reValidateMode: 'onChange',
+      [countries],
+    );
+
+    const form = useForm<RegistrationFormContext>({
+      mode: 'all',
+      resolver: zodResolver(registerSchemaExtended),
       defaultValues: {
         email: '',
         country: '',

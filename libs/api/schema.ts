@@ -164,6 +164,66 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["AuthController_updatePassword"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/two-fa/request": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Send 2FA Request
+         *
+         *     Triggers creation of a 2FA code (e.g., SMS/Email)
+         *     Returns 204
+         */
+        post: operations["AuthTwoFaController_sendTwoFaRequest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/two-fa/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Verify 2FA Code
+         *
+         *     Checks the code for the authId.
+         *     If verification succeeds, issue login tokens.
+         */
+        post: operations["AuthTwoFaController_verifyTwoFaRequest"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/me": {
         parameters: {
             query?: never;
@@ -236,12 +296,13 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
         };
         /** @enum {string} */
-        VerificationType: "EMAIL" | "SMS" | "TOTP";
+        VerificationType: "EMAIL" | "TOTP";
         AuthResource: {
             id: string;
             email: string;
@@ -252,20 +313,28 @@ export interface components {
             createdAt: string;
         };
         LoginResponseDto: {
-            accessToken: string;
-            refreshToken: string;
+            twoFaAuths: ("TOTP" | "EMAIL")[];
         };
         LoginDto: {
             email: string;
             password: string;
         };
+        AuthenticatedResponseDto: {
+            accessToken: string;
+            refreshToken: string;
+        };
         InputDto: {
             /** @enum {string} */
-            key: "SMS" | "TOTP" | "EMAIL";
+            key: "TOTP" | "EMAIL";
             value: string;
         };
         TwoFactorAuthDto: {
             input: components["schemas"]["InputDto"][];
+        };
+        LoginVerifyDto: {
+            email: string;
+            password: string;
+            twoFaVerification: components["schemas"]["TwoFactorAuthDto"];
         };
         RegisterDto: {
             email: string;
@@ -290,6 +359,11 @@ export interface components {
         ForgotPasswordResetDto: {
             password: string;
         };
+        UpdatePasswordDto: {
+            password: string;
+        };
+        /** @enum {string} */
+        VerificationPurpose: "LOGIN" | "PASSWORD_RESET" | "EMAIL_VERIFICATION";
         UserResource: {
             id: string;
             uniqueId: string;
@@ -338,6 +412,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -362,6 +437,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -386,6 +462,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -410,6 +487,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -434,6 +512,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -458,6 +537,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -482,6 +562,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -511,6 +592,7 @@ export interface components {
             details: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -535,6 +617,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -559,6 +642,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -583,6 +667,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -607,6 +692,7 @@ export interface components {
             details?: {
                 formErrors?: components["schemas"]["FormError"][];
                 twoFaAuths?: components["schemas"]["VerificationType"][];
+                authId?: string;
             } & {
                 [key: string]: unknown;
             };
@@ -719,7 +805,7 @@ export interface operations {
         };
         requestBody: {
             content: {
-                "application/json": components["schemas"]["TwoFactorAuthDto"];
+                "application/json": components["schemas"]["LoginVerifyDto"];
             };
         };
         responses: {
@@ -730,7 +816,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AppResponseSchema"] & {
-                        data?: components["schemas"]["LoginResponseDto"];
+                        data?: components["schemas"]["AuthenticatedResponseDto"];
                     };
                 };
             };
@@ -774,13 +860,15 @@ export interface operations {
             };
         };
         responses: {
-            /** @description Successfully registered */
+            /** @description Successfully authenticated */
             200: {
                 headers: {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                    "application/json": components["schemas"]["AppResponseSchema"] & {
+                        data?: components["schemas"]["AuthenticatedResponseDto"];
+                    };
                 };
             };
             400: {
@@ -1015,7 +1103,7 @@ export interface operations {
                 headers: {
                     /** @description A signed token with limited time. It is expected to be sent along with the request that triggered the verification */
                     "x-verified-request": string;
-                    /** @description The id of the user making the request */
+                    /** @description The id of the user making the request -- This is only available when requesting 2fa for a user that isn't authenticated */
                     "x-auth-id": string;
                     [name: string]: unknown;
                 };
@@ -1081,6 +1169,117 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedAccessException"] | components["schemas"]["InvalidOrExpiredTokenException"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerErrorException"];
+                };
+            };
+        };
+    };
+    AuthController_updatePassword: {
+        parameters: {
+            query?: never;
+            header?: {
+                /** @description A signed token previously sent in the response after a twofa verification */
+                "x-verified-request"?: string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdatePasswordDto"];
+            };
+        };
+        responses: {
+            /** @description Successful password update */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedAccessException"] | components["schemas"]["InvalidOrExpiredTokenException"];
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerErrorException"];
+                };
+            };
+        };
+    };
+    AuthTwoFaController_sendTwoFaRequest: {
+        parameters: {
+            query: {
+                type: components["schemas"]["VerificationType"];
+                purpose: components["schemas"]["VerificationPurpose"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Request successful */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
+                };
+            };
+            /** @description Internal Server Error */
+            500: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["InternalServerErrorException"];
+                };
+            };
+        };
+    };
+    AuthTwoFaController_verifyTwoFaRequest: {
+        parameters: {
+            query: {
+                purpose: components["schemas"]["VerificationPurpose"];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["TwoFactorAuthDto"];
+            };
+        };
+        responses: {
+            /** @description Request successful */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AppResponseSchema"] & unknown;
                 };
             };
             /** @description Internal Server Error */
