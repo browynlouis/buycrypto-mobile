@@ -1,2 +1,2 @@
-export * from './forgot-password';
-export * from './reset-password';
+export * from './forgot-password.screen';
+export * from './reset-password.screen';

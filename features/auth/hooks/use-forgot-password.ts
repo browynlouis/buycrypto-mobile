@@ -38,6 +38,7 @@ export function useForgotPassword(): UseForgotPasswordReturn {
         types: ['EMAIL'],
         onSend: {
           EMAIL: () =>
+            /** Recalls the forgot password mutation to resend email */
             forgotPasswordMutation.mutate({
               body: form.getValues(),
             }),
@@ -71,19 +72,24 @@ export function useForgotPassword(): UseForgotPasswordReturn {
     onSuccess: () => {
       endVerification();
 
+      /** Get the email from the form */
       const email = form.getValues('email');
 
-      form.reset();
+      form.reset(); // reset the form
+
+      /** Attach email to the query params and send to the reset password screen */
       router.push(`/(auth)/password/reset?email=${email}`);
     },
     onError(error) {
+      /** Stop loader for verification */
+      setIsSubmitting(false);
+
       toast().error(error.message);
     },
-    onSettled: () => setIsSubmitting(false),
   });
 
   /** -------------------------------
-   *  Login Handler
+   *  Forgot Password Handler
    * ------------------------------- */
   const submit = useCallback(
     (values: any) => forgotPasswordMutation.mutate({ body: values }),

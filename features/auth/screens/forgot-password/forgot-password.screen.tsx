@@ -11,10 +11,6 @@ import { useForgotPassword } from '../../hooks';
 
 /**
  * This component is reponsible for the 'Forgot Password' flow for a user
- * The flow consist of three (3) steps
- *  - The Request: The user triggers a request to reset their password by providing their email
- *
- *  - The Verification: A verification is sent to the user to provide to verify the forgot password request (if successful, returns a header ```x-verified-header```)
  *
  */
 export function ForgotPasswordScreen() {
@@ -44,9 +40,6 @@ export function ForgotPasswordScreen() {
           startAdornment={<Icon name="User" />}
         />
 
-        {/** Step 1 ends -  Submit handler
-         *   Initiate's request
-         */}
         <Button size="md" disabled={!isValid || isSubmitting} onPress={handleSubmit(submit)}>
           Submit
         </Button>

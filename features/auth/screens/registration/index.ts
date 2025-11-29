@@ -1,3 +1,3 @@
-export * from './country-selection';
+export * from './country-selection.screen';
 export * from './form-provider/registration-form-provider';
-export * from './registration';
+export * from './registration.screen';

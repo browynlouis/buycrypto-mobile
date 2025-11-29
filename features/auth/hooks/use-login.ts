@@ -39,6 +39,7 @@ export function useLogin(): UseLoginReturn {
         types: data.twoFaAuths,
         onSend: {
           EMAIL: () =>
+            /** Recall login mutation to resend 2fa request */
             loginMutation.mutate({
               body: form.getValues(),
             }),
@@ -77,19 +78,21 @@ export function useLogin(): UseLoginReturn {
       setAuthTokens(data.accessToken, data.refreshToken);
 
       try {
-        // Make authenticated request with new tokens
+        // Make authenticated request with new tokens (gotten from the middleware)
         const auth = await queryClient.fetchQuery<Auth>({ queryKey: getAuth });
 
-        // set global auth state
+        // set global auth state if successuful
         setAuth(auth);
       } catch (err: any) {
-        toast().error(err?.message);
+        toast().error('An error occurred! Please try again later');
       }
     },
     onError(error) {
+      /** Close verification loader */
+      setIsSubmitting(false);
+
       toast().error(error.message);
     },
-    onSettled: () => setIsSubmitting(false),
   });
 
   /** -------------------------------

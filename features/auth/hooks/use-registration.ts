@@ -29,24 +29,30 @@ export function useRegistration(): UseRegisterReturn {
   const form = useFormContext<RegistrationFormContext>();
   const formState = useFormState({ control: form.control });
 
+  /** -------------------------------
+   *  Registration MUTATION
+   * ------------------------------- */
   const { startVerification, endVerification } = useVerification();
 
   const registerMutation = $api.useMutation(...register, {
     onSuccess: (data) => {
-      // Set auth tokens
+      // Set auth tokens -- authenticate after successful registration
       setAuthTokens(data.data.accessToken, data.data.refreshToken);
 
+      // Reset mutation
       registerMutation.reset();
 
-      // Start 2FA verification after successful registration
+      // Start email verification after successful registration
       startVerification({
         types: ['EMAIL'],
         onSend: {
           EMAIL: () => {
+            /** Requests for email verification */
             sendEmailVerificationMutation.mutate({});
           },
         },
         onSubmit: (values) => {
+          // Verifies the provided verification
           verifyEmailVerificationMutation.mutate({
             body: {
               token: values['EMAIL']!,
@@ -79,18 +85,21 @@ export function useRegistration(): UseRegisterReturn {
 
       endVerification();
 
+      // Reset all mutation
       registerMutation.reset();
       sendEmailVerificationMutation.reset();
       verifyEmailVerificationMutation.reset();
 
       try {
+        /** Fetch auth user with the new tokens */
         const auth = await queryClient.fetchQuery<Auth>({
           queryKey: getAuth,
         });
 
+        /** Set global auth state */
         setAuth(auth);
       } catch (error: any) {
-        toast().error(error.message);
+        toast().error('An error occurred! Please try again later');
       }
     },
     onError: (error) => {
@@ -98,6 +107,9 @@ export function useRegistration(): UseRegisterReturn {
     },
   });
 
+  /** -------------------------------
+   *  Submit Handler
+   * ------------------------------- */
   const submit = useCallback(
     (values: RegistrationFormContext) => registerMutation.mutate({ body: values }),
     [registerMutation.mutate],

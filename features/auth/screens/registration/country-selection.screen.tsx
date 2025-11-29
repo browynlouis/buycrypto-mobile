@@ -9,7 +9,7 @@ import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
 import { Col } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
-import { InputGroup, InputHelperText } from '@/shared/components/ui/input/input.styled';
+import { InputGroup, InputHelperText } from '@/shared/components/ui/input';
 import { SelectInput } from '@/shared/components/ui/select-input';
 import { Text } from '@/shared/components/ui/text';
 
