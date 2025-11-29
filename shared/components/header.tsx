@@ -3,8 +3,7 @@ import React from 'react';
 import { TextStyle } from 'react-native';
 import styled from 'styled-components/native';
 
-import { useTheme } from '@/libs/hooks';
-
+import { useTheme } from './providers/theme-provider/hooks';
 import { Button } from './ui/button/button';
 import { Icon } from './ui/icon';
 import { Text } from './ui/text';
@@ -28,8 +27,8 @@ export function Header({
   backgroundColor?: string;
   titleStyle?: TextStyle;
 }) {
-  const router = useRouter();
   const theme = useTheme();
+  const router = useRouter();
 
   return (
     <Wrapper backgroundColor={backgroundColor}>

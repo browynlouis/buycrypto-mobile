@@ -2,8 +2,7 @@ import React, { ReactNode } from 'react';
 import { ToastConfigParams } from 'react-native-toast-message';
 import styled from 'styled-components/native';
 
-import { useTheme } from '@/libs/hooks';
-
+import { useTheme } from '../providers/theme-provider/hooks';
 import { Text } from './text';
 
 export function Toaster(props: ToastConfigParams<any> & { icon: ReactNode }) {

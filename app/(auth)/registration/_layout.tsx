@@ -1,7 +1,7 @@
 import { Stack } from 'expo-router';
 
-import { RegistrationFormProvider } from '@/features/auth/screens/register-screen/form-provider/registration-form-provider';
-import { useTheme } from '@/libs/hooks';
+import { RegistrationFormProvider } from '@/features/auth/screens/registration';
+import { useTheme } from '@/shared/components/providers/theme-provider/hooks';
 
 export default function Layout() {
   const theme = useTheme();

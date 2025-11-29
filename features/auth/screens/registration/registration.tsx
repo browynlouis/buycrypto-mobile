@@ -1,16 +1,16 @@
 import React from 'react';
-import { View } from 'react-native';
 
 import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
+import { Col } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
 
 import { AuthScreenTitle } from '../../components';
-import { useRegistration } from './use-registration';
+import { useRegistration } from '../../hooks';
 
-export function CredentialsFormScreen() {
-  const { form, register, isSubmitting } = useRegistration();
+export function RegistrationScreen() {
+  const { form, submit, isSubmitting } = useRegistration();
 
   const {
     control,
@@ -22,10 +22,10 @@ export function CredentialsFormScreen() {
     <>
       <Loader isLoading={isSubmitting} />
 
-      <View style={{ gap: 32 }}>
+      <Col gap={32}>
         <AuthScreenTitle title="Register an account!" subText="Welcome to BuyCrypto" />
 
-        <View style={{ gap: 24 }}>
+        <Col gap={24}>
           <ControlledInput
             name="email"
             control={control}
@@ -40,12 +40,12 @@ export function CredentialsFormScreen() {
             placeholder="e.g Unau!@17"
             startAdornment={<Icon name="Lock" />}
           />
-        </View>
+        </Col>
 
-        <Button size="md" disabled={!isValid || isSubmitting} onPress={handleSubmit(register)}>
+        <Button size="md" disabled={!isValid || isSubmitting} onPress={handleSubmit(submit)}>
           Create account
         </Button>
-      </View>
+      </Col>
     </>
   );
 }

@@ -5,7 +5,7 @@ import { getAuth } from '@/features/auth/api';
 import { useAuthStore } from '@/features/auth/store';
 import { $api } from '@/libs/api';
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthenticatedProvider({ children }: { children: React.ReactNode }) {
   const { setAuth } = useAuthStore();
   const { data, isLoading } = $api.useQuery(...getAuth);
 

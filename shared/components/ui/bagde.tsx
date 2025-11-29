@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-import { useTheme } from '@/libs/hooks';
 import { Text } from '@/shared/components/ui/text';
 
+import { useTheme } from '../providers/theme-provider/hooks';
 import { Icon } from './icon';
 
 export function Badge({

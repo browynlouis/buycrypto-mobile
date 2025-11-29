@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
 
-import { useTheme } from '@/libs/hooks';
+import { useTheme } from '../providers/theme-provider/hooks';
 
 type SwitchProps = {
   value: boolean;

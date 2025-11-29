@@ -3,7 +3,7 @@ import { Keyboard, Platform, ViewStyle } from 'react-native';
 import GestureRecognizer, { GestureRecognizerProps } from 'react-native-swipe-gestures';
 import styled from 'styled-components/native';
 
-import { useTheme } from '@/libs/hooks';
+import { useTheme } from '../providers/theme-provider/hooks';
 
 interface PageProps {
   children?: React.ReactNode;
@@ -35,6 +35,31 @@ const StyledScrollView = styled.ScrollView`
 const DismissKeyboardPressable = styled.Pressable`
   flex: 1;
 `;
+
+/**
+ * Page
+ *
+ * A flexible layout component for React Native that handles:
+ * - Keyboard avoiding behavior (iOS/Android)
+ * - Optional scrollable content
+ * - Themed background styling
+ * - Optional swipe gestures
+ * - Keyboard dismissal on tap outside inputs
+ *
+ * Props:
+ * - `children` – The content to render inside the page.
+ * - `scrollable` – If true, enables scrolling for content (default: true).
+ * - `style` – Additional styling for the background container.
+ * - `gesture` – Optional swipe gesture props (from react-native-swipe-gestures).
+ * - `noScrollView` – If true, disables ScrollView and renders a simple flex container.
+ *
+ * Usage:
+ * ```tsx
+ * <Page scrollable gesture={{ onSwipeLeft: () => {} }}>
+ *   <YourContent />
+ * </Page>
+ * ```
+ */
 
 export function Page({ children, scrollable = true, style, gesture, noScrollView }: PageProps) {
   const theme = useTheme();

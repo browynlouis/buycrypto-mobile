@@ -1,6 +1,6 @@
 import { ActivityIndicator } from 'react-native';
 
-import { useTheme } from '@/libs/hooks';
+import { useTheme } from '../providers/theme-provider/hooks';
 
 export function Spinner() {
   const theme = useTheme();

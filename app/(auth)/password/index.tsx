@@ -9,6 +9,7 @@ import { Text } from '@/shared/components/ui/text';
 export default function ForgotPassword() {
   return (
     <>
+      {/* Page Header */}
       <Header
         showBackButton
         rightElement={
@@ -19,7 +20,9 @@ export default function ForgotPassword() {
           </Link>
         }
       />
+      {/* Page Body */}
       <Page>
+        {/* Main Content */}
         <ForgotPasswordScreen />
       </Page>
     </>

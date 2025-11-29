@@ -3,16 +3,52 @@ import { Appearance } from 'react-native';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+/**
+ * ThemeAppearance
+ *
+ * Represents the possible theme modes in the app.
+ * - 'light' : Light theme
+ * - 'dark'  : Dark theme
+ * - 'system': Follow device system preference
+ */
 export type ThemeAppearance = 'light' | 'dark' | 'system';
 
+/**
+ * AppStore
+ *
+ * Defines the shape of the Zustand store for app-wide state.
+ */
 interface AppStore {
+  /** Current theme preference (user-selected) */
   themeAppearance: ThemeAppearance;
+
+  /** Actual resolved theme taking system preference into account */
   resolvedTheme: 'light' | 'dark';
 
+  /** Set theme preference */
   setThemeAppearance: (mode: ThemeAppearance) => void;
+
+  /** Toggle between light and dark themes */
   toggleThemeAppearance: () => void;
 }
 
+/**
+ * useAppStore
+ *
+ * Zustand store managing app theme.
+ *
+ * Features:
+ * - Persists user preference in AsyncStorage (`app-store` key)
+ * - Computes resolved theme based on system preference if 'system' mode is selected
+ * - Provides setter and toggle methods for theme changes
+ *
+ * Example usage:
+ * ```ts
+ * const { resolvedTheme, toggleThemeAppearance } = useAppStore();
+ * console.log(resolvedTheme); // 'light' or 'dark'
+ * toggleThemeAppearance();    // switch between light/dark
+ * ```
+ */
 export const useAppStore = create<AppStore>()(
   persist(
     (set, get) => ({
@@ -37,8 +73,8 @@ export const useAppStore = create<AppStore>()(
       },
     }),
     {
-      name: 'app-store',
-      storage: createJSONStorage(() => asyncStore),
+      name: 'app-store', // key in AsyncStorage
+      storage: createJSONStorage(() => asyncStore), // use async storage
     },
   ),
 );

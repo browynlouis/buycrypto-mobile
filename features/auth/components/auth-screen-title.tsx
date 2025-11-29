@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { Text } from '@/shared/components/ui/text';
 
-export function AuthScreenTitle({ title, subText }: { title: ReactNode; subText: ReactNode }) {
+export function AuthScreenTitle({ title, subText }: { title: ReactNode; subText?: ReactNode }) {
   return (
     <View
       style={{
@@ -14,7 +14,7 @@ export function AuthScreenTitle({ title, subText }: { title: ReactNode; subText:
       <Text size="display-md" weight={500}>
         {title}
       </Text>
-      <Text size="text-md">{subText}</Text>
+      {subText && <Text size="text-md">{subText}</Text>}
     </View>
   );
 }

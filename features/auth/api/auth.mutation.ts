@@ -10,5 +10,4 @@ export const resendEmailVerification = ['post', '/auth/email-verification/resend
 
 export const forgotPassword = ['post', '/auth/forgot-password'] as const;
 export const forgotPasswordVerify = ['post', '/auth/forgot-password/verify'] as const;
-
 export const resetPassword = ['post', '/auth/forgot-password/reset'] as const;

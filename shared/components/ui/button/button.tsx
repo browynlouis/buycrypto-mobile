@@ -1,9 +1,9 @@
 import React from 'react';
 import { PressableProps, PressableStateCallbackType } from 'react-native';
 
-import { useTheme } from '@/libs/hooks';
 import { AppTheme } from '@/styles';
 
+import { useTheme } from '../../providers/theme-provider/hooks';
 import { Text } from '../text';
 import { StyledButton } from './button.styled';
 

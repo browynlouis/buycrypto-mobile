@@ -5,19 +5,19 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/shared/constants/common';
 
-import { AuthResource } from '../types';
+import { Auth } from '../types';
 
 interface AuthState {
   tokens: {
     [ACCESS_TOKEN]: string | null;
     [REFRESH_TOKEN]: string | null;
   };
-  auth: AuthResource | null;
+  auth: Auth | null;
   isAuth: boolean;
   clearTokens: () => void;
-  setAuth: (auth: AuthResource | null) => void;
+  setAuth: (auth: Auth | null) => void;
   refreshAccessToken: () => Promise<string | null>;
-  setTokens: (access: string | null, refresh: string | null) => void;
+  setAuthTokens: (access: string | null, refresh: string | null) => void;
 }
 
 const initialState = {
@@ -38,7 +38,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       ...initialState,
 
-      setTokens: (access, refresh) =>
+      setAuthTokens: (access, refresh) =>
         set((state) => ({
           ...state,
           tokens: { [ACCESS_TOKEN]: access, [REFRESH_TOKEN]: refresh },
@@ -62,7 +62,7 @@ export const useAuthStore = create<AuthState>()(
        *
        */
       refreshAccessToken: async () => {
-        const { tokens, setTokens, clearTokens } = get();
+        const { tokens, setAuthTokens, clearTokens } = get();
 
         // If o refresh token, return null
         if (!tokens[REFRESH_TOKEN]) return null;
@@ -81,7 +81,7 @@ export const useAuthStore = create<AuthState>()(
           const data = await res.json();
 
           //  Set tokens with newly returned acessToken and old refreshToken
-          setTokens(data.accessToken, tokens[REFRESH_TOKEN]);
+          setAuthTokens(data.accessToken, tokens[REFRESH_TOKEN]);
 
           return data.accessToken;
         } catch (err) {

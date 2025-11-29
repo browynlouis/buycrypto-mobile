@@ -10,21 +10,38 @@ import Toast from 'react-native-toast-message';
 
 import { useAuthStore } from '@/features/auth/store';
 import { toastConfig } from '@/libs/config';
-import { useTheme } from '@/libs/hooks';
 import { useAppStore } from '@/libs/store';
 import { Page } from '@/shared/components/layouts/page';
-import {
-  AuthProvider,
-  QueryProvider,
-  ThemeProvider,
-  VerificationProvider,
-} from '@/shared/components/providers';
+import { AuthenticatedProvider } from '@/shared/components/providers/auth-provider/authenticated-provider';
+import { VerificationProvider } from '@/shared/components/providers/auth-provider/verification-provider';
+import { QueryProvider } from '@/shared/components/providers/query-provider';
+import { useTheme } from '@/shared/components/providers/theme-provider/hooks';
+import { ThemeProvider } from '@/shared/components/providers/theme-provider/theme-provider';
 import { getTheme } from '@/styles';
 
-// Keep SplashScreen open and close laters
-SplashScreen.preventAutoHideAsync();
-
+/**
+ * RootLayout
+ *
+ * The top-level layout for the Expo Router app.
+ * Handles:
+ *  - Theming via ThemeProvider
+ *  - Query management via QueryProvider
+ *  - Global error boundaries
+ *  - Authentication and 2FA context providers
+ *  - Toast notifications
+ *  - SplashScreen handling
+ *
+ * This layout ensures all child screens have access to:
+ *  - Theme context
+ *  - React Query context
+ *  - Authenticated user context
+ *  - Verification flow context
+ *  - Toast notifications
+ */
 export default function RootLayout() {
+  // Prevent the splash screen from hiding automatically
+  SplashScreen.preventAutoHideAsync();
+
   return (
     <ThemeProvider>
       <QueryProvider>
@@ -33,13 +50,13 @@ export default function RootLayout() {
             const { resolvedTheme } = useAppStore();
 
             return (
-              <ErrorBoundary fallback={<Page></Page>} onError={() => null}>
-                <AuthProvider>
+              <ErrorBoundary fallback={<Page />} onError={() => null}>
+                <AuthenticatedProvider>
                   <VerificationProvider>
                     <Routes />
                     <Toast config={toastConfig(getTheme(resolvedTheme))} />
                   </VerificationProvider>
-                </AuthProvider>
+                </AuthenticatedProvider>
               </ErrorBoundary>
             );
           }}
@@ -49,6 +66,20 @@ export default function RootLayout() {
   );
 }
 
+/**
+ * Routes
+ *
+ * Handles the main navigation structure of the app.
+ *
+ * Responsibilities:
+ *  - Applies safe area insets
+ *  - Sets background color and StatusBar based on theme
+ *  - Configures the main Stack navigator with protected routes
+ *
+ * Routes:
+ *  - (auth): Shown when the user is not authenticated
+ *  - (protected): Shown when the user is authenticated
+ */
 function Routes() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();

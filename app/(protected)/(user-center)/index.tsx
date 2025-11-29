@@ -11,6 +11,7 @@ import { Icon } from '@/shared/components/ui/icon';
 export default function UserCenter() {
   return (
     <>
+      {/* Page Header */}
       <Header
         title="User Center"
         showBackButton
@@ -21,9 +22,12 @@ export default function UserCenter() {
         }
       />
 
+      {/* Page Body */}
       <Page>
+        {/* Main Content */}
         <UserCenterScreen />
 
+        {/* Quick & Helper Links */}
         <View style={{ marginTop: 'auto', gap: 12 }}>
           <View style={{ flexDirection: 'row', gap: 12 }}>
             <Button

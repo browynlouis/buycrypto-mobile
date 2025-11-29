@@ -2,9 +2,8 @@ import { Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
 import Toast from 'react-native-toast-message';
 import styled from 'styled-components/native';
 
-import { useTheme } from '@/libs/hooks';
-
 import { toastConfig } from '../../libs/config';
+import { useTheme } from './providers/theme-provider/hooks';
 import { Button } from './ui/button';
 import { Icon } from './ui/icon';
 import { Text } from './ui/text';

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, ViewStyle } from 'react-native';
 
-import { useTheme } from '@/libs/hooks';
+import { useTheme } from '../providers/theme-provider/hooks';
 
 interface SkeletonProps {
   width?: ViewStyle['width'];

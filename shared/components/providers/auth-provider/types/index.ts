@@ -10,7 +10,7 @@ export type VerificationFormProps = {
 
 interface VerificationContext {
   isSubmitting: boolean;
-  closeVerification: () => void;
+  endVerification: () => void;
   setIsSubmitting: (value: boolean) => void;
   startVerification: (flow: VerificationFormProps) => void;
 }

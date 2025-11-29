@@ -1,18 +1,18 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { View } from 'react-native';
 
 import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
+import { Col } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
 import { Text } from '@/shared/components/ui/text';
 
 import { AuthScreenTitle } from '../../components';
-import { useLogin } from './use-login';
+import { useLogin } from '../../hooks/use-login';
 
 export function LoginScreen() {
-  const { form, isSubmitting, login } = useLogin();
+  const { form, isSubmitting, submit } = useLogin();
 
   const {
     control,
@@ -24,10 +24,10 @@ export function LoginScreen() {
     <>
       <Loader isLoading={isSubmitting} />
 
-      <View style={{ gap: 32 }}>
+      <Col gap={32}>
         <AuthScreenTitle title="Hi, Welcome!" subText="Please login to your account" />
 
-        <View style={{ gap: 24 }}>
+        <Col gap={24}>
           <ControlledInput
             name="email"
             control={control}
@@ -46,12 +46,12 @@ export function LoginScreen() {
               Forgot password?
             </Text>
           </Link>
-        </View>
+        </Col>
 
-        <Button size="md" onPress={handleSubmit(login)} disabled={!isValid || isSubmitting}>
+        <Button size="md" onPress={handleSubmit(submit)} disabled={!isValid || isSubmitting}>
           Proceed to login
         </Button>
-      </View>
+      </Col>
     </>
   );
 }

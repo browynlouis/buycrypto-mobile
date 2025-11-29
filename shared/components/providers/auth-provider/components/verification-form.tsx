@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import z from 'zod';
@@ -10,7 +10,7 @@ import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
 import { Text } from '@/shared/components/ui/text';
 
-import { VerificationFormProps } from './types';
+import { VerificationFormProps } from '../types';
 
 const verificationMap: Record<VerificationType, { label: string; startIcon: React.ReactNode }> = {
   EMAIL: {
@@ -23,24 +23,24 @@ const verificationMap: Record<VerificationType, { label: string; startIcon: Reac
   },
 };
 
-function buildVerificationSchema(types: VerificationType[]) {
-  const shape: Record<string, z.ZodTypeAny> = {};
-
-  types.forEach((type) => {
-    shape[type] = z.string().min(1);
-  });
-
-  return z.object(shape);
-}
-
 export function VerificationForm({ types, onSubmit, onSend }: VerificationFormProps) {
+  const schema = useMemo(() => {
+    const shape: Record<string, z.ZodTypeAny> = {};
+
+    types.forEach((type) => {
+      shape[type] = z.string().min(1);
+    });
+
+    return z.object(shape);
+  }, [types]);
+
   const {
     control,
     handleSubmit,
     formState: { isValid },
   } = useForm<{ [key in VerificationType]?: string }>({
     mode: 'all',
-    resolver: zodResolver(buildVerificationSchema(types)),
+    resolver: zodResolver(schema),
   });
 
   return (

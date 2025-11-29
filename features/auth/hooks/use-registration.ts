@@ -1,34 +1,40 @@
 import { useCallback } from 'react';
 import { UseFormReturn, useFormContext, useFormState } from 'react-hook-form';
 
+import {
+  getAuth,
+  register,
+  resendEmailVerification,
+  verifyEmailVerification,
+} from '@/features/auth/api';
+import { useAuthStore } from '@/features/auth/store';
+import { Auth, FormError } from '@/features/auth/types';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
-import { queryClient, useVerification } from '@/shared/components/providers';
+import { useVerification } from '@/shared/components/providers/auth-provider/hooks';
+import { queryClient } from '@/shared/components/providers/query-provider';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
-import { getAuth, register, resendEmailVerification, verifyEmailVerification } from '../../api';
-import { useAuthStore } from '../../store';
-import { AuthResource, FormError } from '../../types';
-import { RegistrationFormContext } from './form-provider/registration-form-provider';
+import { RegistrationFormContext } from '../screens/registration/form-provider/registration-form-provider';
 
 export type UseRegisterReturn = {
   isSubmitting: boolean;
-  register: (values: any) => void;
+  submit: (values: any) => void;
   form: UseFormReturn<RegistrationFormContext>;
 };
 
 export function useRegistration(): UseRegisterReturn {
-  const { setTokens, setAuth } = useAuthStore();
+  const { setAuthTokens, setAuth } = useAuthStore();
 
   const form = useFormContext<RegistrationFormContext>();
   const formState = useFormState({ control: form.control });
 
-  const { startVerification, closeVerification } = useVerification();
+  const { startVerification, endVerification } = useVerification();
 
   const registerMutation = $api.useMutation(...register, {
     onSuccess: (data) => {
       // Set auth tokens
-      setTokens(data.data.accessToken, data.data.refreshToken);
+      setAuthTokens(data.data.accessToken, data.data.refreshToken);
 
       registerMutation.reset();
 
@@ -71,14 +77,14 @@ export function useRegistration(): UseRegisterReturn {
     onSuccess: async () => {
       form.reset();
 
-      closeVerification();
+      endVerification();
 
       registerMutation.reset();
       sendEmailVerificationMutation.reset();
       verifyEmailVerificationMutation.reset();
 
       try {
-        const auth = await queryClient.fetchQuery<AuthResource>({
+        const auth = await queryClient.fetchQuery<Auth>({
           queryKey: getAuth,
         });
 
@@ -102,7 +108,7 @@ export function useRegistration(): UseRegisterReturn {
       registerMutation.isPending ||
       sendEmailVerificationMutation.isPending ||
       verifyEmailVerificationMutation.isPending,
-    register: submit,
+    submit: submit,
     form: {
       ...form,
       formState,

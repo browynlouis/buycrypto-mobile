@@ -5,23 +5,24 @@ import z from 'zod';
 
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
-import { queryClient, useVerification } from '@/shared/components/providers';
+import { useVerification } from '@/shared/components/providers/auth-provider/hooks';
+import { queryClient } from '@/shared/components/providers/query-provider';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
-import { getAuth, login, loginVerify } from '../../api';
-import { loginSchema } from '../../schema';
-import { useAuthStore } from '../../store';
-import { AuthResource, FormError, VerificationType } from '../../types';
+import { getAuth, login, loginVerify } from '../api';
+import { loginSchema } from '../schema';
+import { useAuthStore } from '../store';
+import { Auth, FormError, VerificationType } from '../types';
 
 export type UseLoginReturn = {
   isSubmitting: boolean;
-  login: (values: any) => void;
+  submit: (values: any) => void;
   form: UseFormReturn<z.infer<typeof loginSchema>>;
 };
 
 export function useLogin(): UseLoginReturn {
-  const { setAuth, setTokens } = useAuthStore();
-  const { startVerification, closeVerification, setIsSubmitting } = useVerification();
+  const { setAuth, setAuthTokens } = useAuthStore();
+  const { startVerification, endVerification, setIsSubmitting } = useVerification();
 
   const form = useForm({
     mode: 'all',
@@ -70,14 +71,14 @@ export function useLogin(): UseLoginReturn {
    * ------------------------------- */
   const verifyLogin2faMutation = $api.useMutation(...loginVerify, {
     onSuccess: async ({ data }) => {
-      closeVerification();
+      endVerification();
 
       /** Set auth tokens */
-      setTokens(data.accessToken, data.refreshToken);
+      setAuthTokens(data.accessToken, data.refreshToken);
 
       try {
         // Make authenticated request with new tokens
-        const auth = await queryClient.fetchQuery<AuthResource>({ queryKey: getAuth });
+        const auth = await queryClient.fetchQuery<Auth>({ queryKey: getAuth });
 
         // set global auth state
         setAuth(auth);
@@ -101,7 +102,7 @@ export function useLogin(): UseLoginReturn {
 
   return {
     form,
-    login: submit,
+    submit: submit,
     isSubmitting: loginMutation.isPending || verifyLogin2faMutation.isPending,
   };
 }

@@ -1,19 +1,9 @@
-import React, { ReactNode, useContext, useState } from 'react';
+import React, { ReactNode, useState } from 'react';
 
 import { Loader } from '../../loader';
 import { AppModal } from '../../modal';
+import { VerificationForm } from './components/verification-form';
 import { VerificationContext, VerificationFormProps } from './types';
-import { VerificationForm } from './verification-form';
-
-export const useVerification = () => {
-  const context = useContext(VerificationContext);
-
-  if (!context) {
-    throw new Error('useVerificationFlow must be used within a VerificationProvider');
-  }
-
-  return { ...context };
-};
 
 export function VerificationProvider({ children }: { children: ReactNode }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -23,7 +13,7 @@ export function VerificationProvider({ children }: { children: ReactNode }) {
     setCurrentFlow(flow);
   };
 
-  const closeVerification = () => {
+  const endVerification = () => {
     setIsSubmitting(false);
 
     setCurrentFlow(undefined);
@@ -31,14 +21,14 @@ export function VerificationProvider({ children }: { children: ReactNode }) {
 
   return (
     <VerificationContext.Provider
-      value={{ startVerification, closeVerification, setIsSubmitting, isSubmitting }}
+      value={{ startVerification, endVerification, setIsSubmitting, isSubmitting }}
     >
       {children}
 
       <Loader isLoading={isSubmitting} />
 
       {currentFlow && (
-        <AppModal visible={!!currentFlow} handleClose={closeVerification}>
+        <AppModal visible={!!currentFlow} handleClose={endVerification}>
           <VerificationForm
             types={currentFlow.types}
             onSubmit={(values) => {

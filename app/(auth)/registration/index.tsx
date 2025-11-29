@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import { CountrySelectionScreen } from '@/features/auth/screens/register-screen/country-selection';
+import { CountrySelectionScreen } from '@/features/auth/screens/registration';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 import { Text } from '@/shared/components/ui/text';
@@ -9,6 +9,7 @@ import { Text } from '@/shared/components/ui/text';
 export default function RegistrationCountrySelectionPage() {
   return (
     <>
+      {/* Page Header */}
       <Header
         showBackButton
         rightElement={
@@ -19,7 +20,10 @@ export default function RegistrationCountrySelectionPage() {
           </Link>
         }
       />
+
+      {/* Page Body */}
       <Page>
+        {/* Main Content */}
         <CountrySelectionScreen />
       </Page>
     </>

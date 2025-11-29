@@ -7,13 +7,14 @@ import { View } from 'react-native';
 import { $api } from '@/libs/api';
 import { Loader } from '@/shared/components/loader';
 import { Button } from '@/shared/components/ui/button';
+import { Col } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
 import { InputGroup, InputHelperText } from '@/shared/components/ui/input/input.styled';
 import { SelectInput } from '@/shared/components/ui/select-input';
 import { Text } from '@/shared/components/ui/text';
 
 import { AuthScreenTitle } from '../../components';
-import { useRegistration } from './use-registration';
+import { useRegistration } from '../../hooks';
 
 const CountrySelectionScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ const CountrySelectionScreen = Suspense.with({ fallback: <Loader isLoading /> },
   } = $api.useSuspenseQuery('get', '/metadata/config/countries');
 
   return (
-    <View style={{ gap: 32 }}>
+    <Col gap={32}>
       <AuthScreenTitle
         title="What's your country?"
         subText="Please select your country to continue"
@@ -72,7 +73,7 @@ const CountrySelectionScreen = Suspense.with({ fallback: <Loader isLoading /> },
           </>
         )}
       />
-    </View>
+    </Col>
   );
 });
 

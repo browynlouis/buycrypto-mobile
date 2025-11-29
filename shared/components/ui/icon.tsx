@@ -20,7 +20,7 @@ import * as Iconsax from 'iconsax-react-nativejs';
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
-import { useTheme } from '@/libs/hooks/use-theme';
+import { useTheme } from '../providers/theme-provider/hooks';
 
 // Map icon families
 const ICON_FAMILIES = {

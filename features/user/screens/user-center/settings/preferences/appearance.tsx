@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
-import { useTheme } from '@/libs/hooks';
 import { ThemeAppearance, useAppStore } from '@/libs/store';
+import { useTheme } from '@/shared/components/providers/theme-provider/hooks';
 import { Button } from '@/shared/components/ui/button';
 import { Col, Row } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';

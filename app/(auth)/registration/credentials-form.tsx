@@ -1,7 +1,7 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import { CredentialsFormScreen } from '@/features/auth/screens/register-screen/credentials-form';
+import { RegistrationScreen } from '@/features/auth/screens/registration';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';
 import { Text } from '@/shared/components/ui/text';
@@ -9,6 +9,7 @@ import { Text } from '@/shared/components/ui/text';
 export default function RegistrationCredentialsPage() {
   return (
     <>
+      {/* Page Header */}
       <Header
         showBackButton
         rightElement={
@@ -19,8 +20,11 @@ export default function RegistrationCredentialsPage() {
           </Link>
         }
       />
+
+      {/* Page Body */}
       <Page>
-        <CredentialsFormScreen />
+        {/* Main Content */}
+        <RegistrationScreen />
       </Page>
     </>
   );
