@@ -1,7 +1,7 @@
 import { Middleware, MiddlewareCallbackParams } from 'openapi-fetch';
 
-import { useAuthStore } from '@/features/auth/store';
-import { ACCESS_TOKEN } from '@/shared/constants/common';
+import { ACCESS_TOKEN } from '@/constants/common';
+import { useAuthStore } from '@/libs/store';
 
 /**
  * AuthMiddleWare

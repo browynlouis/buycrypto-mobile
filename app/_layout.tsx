@@ -8,15 +8,14 @@ import 'react-native-get-random-values';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
 
-import { useAuthStore } from '@/features/auth/store';
+import { Page } from '@/components/shared/layouts/page';
+import { AuthenticatedProvider } from '@/components/shared/providers/auth-provider/authenticated-provider';
+import { VerificationProvider } from '@/components/shared/providers/auth-provider/verification-provider';
+import { QueryProvider } from '@/components/shared/providers/query-provider';
+import { useAppTheme } from '@/components/shared/providers/theme-provider/hooks';
+import { ThemeProvider } from '@/components/shared/providers/theme-provider/theme-provider';
 import { toastConfig } from '@/libs/config';
-import { useAppStore } from '@/libs/store';
-import { Page } from '@/shared/components/layouts/page';
-import { AuthenticatedProvider } from '@/shared/components/providers/auth-provider/authenticated-provider';
-import { VerificationProvider } from '@/shared/components/providers/auth-provider/verification-provider';
-import { QueryProvider } from '@/shared/components/providers/query-provider';
-import { useAppTheme } from '@/shared/components/providers/theme-provider/hooks';
-import { ThemeProvider } from '@/shared/components/providers/theme-provider/theme-provider';
+import { useAppStore, useAuthStore } from '@/libs/store';
 import { getTheme } from '@/styles';
 
 /**

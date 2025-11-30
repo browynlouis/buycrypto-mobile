@@ -1,10 +1,10 @@
 import { Link } from 'expo-router';
 import React from 'react';
 
-import { Page } from '@/shared/components/layouts/page';
-import { Button } from '@/shared/components/ui/button/button';
-import { Input } from '@/shared/components/ui/input/input';
-import { Text } from '@/shared/components/ui/text';
+import { Page } from '@/components/shared/layouts/page';
+import { Button } from '@/components/shared/ui/button/button';
+import { Input } from '@/components/shared/ui/input/input';
+import { Text } from '@/components/shared/ui/text';
 
 export default function Index() {
   return (

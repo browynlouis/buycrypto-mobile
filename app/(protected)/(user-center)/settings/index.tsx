@@ -1,12 +1,11 @@
 import React from 'react';
 
-import { useAuthStore } from '@/features/auth/store';
-import { SettingsScreen } from '@/features/user/screens/user-center/settings/settings.screen';
-import { useAppStore } from '@/libs/store';
-import { Header } from '@/shared/components/header';
-import { Page } from '@/shared/components/layouts/page';
-import { Button } from '@/shared/components/ui/button';
-import { Icon } from '@/shared/components/ui/icon';
+import { SettingsScreen } from '@/components/features/user/screens';
+import { Header } from '@/components/shared/header';
+import { Page } from '@/components/shared/layouts/page';
+import { Button } from '@/components/shared/ui/button';
+import { Icon } from '@/components/shared/ui/icon';
+import { useAppStore, useAuthStore } from '@/libs/store';
 
 export default function Settings() {
   const { clearTokens } = useAuthStore();

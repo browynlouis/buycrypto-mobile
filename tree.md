@@ -3,6 +3,25 @@
 buy-crypto-mobile
 ├─ .prettierignore
 ├─ .prettierrc
+├─ api
+│  ├─ auth
+│  │  ├─ actions
+│  │  │  ├─ index.ts
+│  │  │  ├─ use-forgot-password.ts
+│  │  │  ├─ use-login.ts
+│  │  │  ├─ use-registration.ts
+│  │  │  ├─ use-reset-password.ts
+│  │  │  └─ use-verification.ts
+│  │  └─ routes
+│  │     ├─ auth.mutation.ts
+│  │     ├─ auth.query.ts
+│  │     └─ index.ts
+│  └─ user
+│     ├─ actions
+│     └─ routes
+│        ├─ index.ts
+│        ├─ user.mutation.ts
+│        └─ user.query.ts
 ├─ app
 │  ├─ (auth)
 │  │  ├─ index.tsx
@@ -13,7 +32,8 @@ buy-crypto-mobile
 │  │  │  ├─ index.tsx
 │  │  │  ├─ reset.tsx
 │  │  │  └─ _layout.tsx
-│  │  ├─ register
+│  │  ├─ registration
+│  │  │  ├─ credentials-form.tsx
 │  │  │  ├─ index.tsx
 │  │  │  └─ _layout.tsx
 │  │  └─ _layout.tsx
@@ -21,11 +41,14 @@ buy-crypto-mobile
 │  │  ├─ (user-center)
 │  │  │  ├─ index.tsx
 │  │  │  └─ settings
-│  │  │     ├─ general
-│  │  │     │  ├─ kyc
-│  │  │     │  └─ security
 │  │  │     ├─ index.tsx
+│  │  │     ├─ my-info
+│  │  │     │  ├─ kyc
+│  │  │     │  ├─ security
+│  │  │     │  │  └─ index.tsx
+│  │  │     │  └─ username.tsx
 │  │  │     └─ preferences
+│  │  │        └─ appearance.tsx
 │  │  └─ _layout.tsx
 │  ├─ +not-found.tsx
 │  ├─ index.tsx
@@ -45,92 +68,132 @@ buy-crypto-mobile
 │     ├─ react-logo@3x.png
 │     └─ splash-icon.png
 ├─ bun.lock
+├─ components
+│  ├─ features
+│  │  ├─ auth
+│  │  │  ├─ schema
+│  │  │  │  └─ index.ts
+│  │  │  ├─ screens
+│  │  │  │  ├─ forgot-password
+│  │  │  │  │  ├─ forgot-password.screen.tsx
+│  │  │  │  │  ├─ index.tsx
+│  │  │  │  │  └─ reset-password.screen.tsx
+│  │  │  │  ├─ login
+│  │  │  │  │  ├─ index.tsx
+│  │  │  │  │  └─ login.screen.tsx
+│  │  │  │  └─ registration
+│  │  │  │     ├─ country-selection.screen.tsx
+│  │  │  │     ├─ form-provider
+│  │  │  │     │  └─ registration-form-provider.tsx
+│  │  │  │     ├─ index.ts
+│  │  │  │     └─ registration.screen.tsx
+│  │  │  ├─ types.ts
+│  │  │  └─ _partials
+│  │  │     ├─ auth-screen-title.tsx
+│  │  │     └─ index.ts
+│  │  └─ user
+│  │     ├─ schema
+│  │     │  └─ index.ts
+│  │     ├─ screens
+│  │     │  └─ user-center
+│  │     │     ├─ index.tsx
+│  │     │     ├─ settings
+│  │     │     │  ├─ my-info
+│  │     │     │  │  ├─ kyc
+│  │     │     │  │  └─ security
+│  │     │     │  │     ├─ authenticator-app
+│  │     │     │  │     │  ├─ toggle-authenticator-app.tsx
+│  │     │     │  │     │  └─ _partials
+│  │     │     │  │     │     └─ setup-modal.tsx
+│  │     │     │  │     ├─ index.tsx
+│  │     │     │  │     └─ password.screen.tsx
+│  │     │     │  ├─ preferences
+│  │     │     │  │  └─ appearance.screen.tsx
+│  │     │     │  └─ settings.screen.tsx
+│  │     │     └─ user-center.tsx
+│  │     ├─ types.ts
+│  │     └─ _partials
+│  │        └─ profile-header.tsx
+│  └─ shared
+│     ├─ copy-buton.tsx
+│     ├─ header.tsx
+│     ├─ layouts
+│     │  └─ page.tsx
+│     ├─ loader.tsx
+│     ├─ modal.tsx
+│     ├─ providers
+│     │  ├─ auth-provider
+│     │  │  ├─ authenticated-provider.tsx
+│     │  │  ├─ components
+│     │  │  │  └─ verification-form.tsx
+│     │  │  ├─ hooks
+│     │  │  │  └─ index.ts
+│     │  │  ├─ types
+│     │  │  │  └─ index.ts
+│     │  │  └─ verification-provider.tsx
+│     │  ├─ query-provider.tsx
+│     │  └─ theme-provider
+│     │     ├─ hooks
+│     │     │  └─ index.ts
+│     │     └─ theme-provider.tsx
+│     └─ ui
+│        ├─ avatar.tsx
+│        ├─ bagde.tsx
+│        ├─ button
+│        │  ├─ button.styled.ts
+│        │  ├─ button.tsx
+│        │  └─ index.ts
+│        ├─ flex.tsx
+│        ├─ icon.tsx
+│        ├─ input
+│        │  ├─ index.ts
+│        │  ├─ input.styled.ts
+│        │  └─ input.tsx
+│        ├─ list
+│        │  └─ data-list.tsx
+│        ├─ menu-list-item.tsx
+│        ├─ qr-code.tsx
+│        ├─ select-input.tsx
+│        ├─ skeleton.tsx
+│        ├─ spinner.tsx
+│        ├─ switch.tsx
+│        ├─ tabbed-view.tsx
+│        ├─ text.tsx
+│        └─ toaster.tsx
+├─ constants
+│  ├─ common.ts
+│  └─ exceptions.ts
 ├─ eslint.config.js
-├─ features
-│  ├─ auth
-│  │  ├─ api
-│  │  │  ├─ auth.mutation.ts
-│  │  │  ├─ auth.query.ts
-│  │  │  └─ index.ts
-│  │  ├─ components
-│  │  │  ├─ auth-screen-title.tsx
-│  │  │  └─ verification-form.tsx
-│  │  ├─ hooks
-│  │  │  ├─ index.ts
-│  │  │  └─ use-safe-auth.ts
-│  │  ├─ schema
-│  │  │  └─ auth.schema.ts
-│  │  ├─ screens
-│  │  │  ├─ forgot-password
-│  │  │  │  ├─ index.tsx
-│  │  │  │  └─ verify-request.tsx
-│  │  │  ├─ index.ts
-│  │  │  ├─ login-screen
-│  │  │  │  ├─ index.tsx
-│  │  │  │  └─ two-fa-auth.tsx
-│  │  │  ├─ register-screen
-│  │  │  │  ├─ email-verification.tsx
-│  │  │  │  └─ index.tsx
-│  │  │  └─ reset-password
-│  │  │     └─ index.tsx
-│  │  ├─ store
-│  │  │  ├─ index.ts
-│  │  │  └─ use-auth.store.ts
-│  │  └─ types.ts
-│  └─ user
 ├─ libs
 │  ├─ api
-│  │  ├─ api.ts
+│  │  ├─ client.ts
 │  │  ├─ index.ts
 │  │  ├─ middlewares
 │  │  │  ├─ auth.middleware.ts
-│  │  │  └─ store.middleware.ts
-│  │  ├─ schema.ts
-│  │  └─ store
-│  │     └─ use-api.store.ts
-│  ├─ hooks
+│  │  │  └─ index.ts
+│  │  └─ schema.ts
+│  ├─ config
+│  │  ├─ app-config.ts
 │  │  ├─ index.ts
-│  │  └─ use-theme.ts
+│  │  └─ toast-config.tsx
+│  ├─ store
+│  │  ├─ index.ts
+│  │  ├─ use-app.store.ts
+│  │  └─ use-auth.store.ts
 │  └─ utils
+│     ├─ index.ts
 │     ├─ map-server-errors.ts
+│     ├─ print-json.ts
 │     └─ toast.ts
 ├─ package.json
 ├─ README.md
-├─ shared
-│  ├─ components
-│  │  ├─ header.tsx
-│  │  ├─ layouts
-│  │  │  └─ page.tsx
-│  │  ├─ loader.tsx
-│  │  ├─ modal.tsx
-│  │  ├─ providers
-│  │  │  ├─ auth-provider.tsx
-│  │  │  ├─ index.ts
-│  │  │  ├─ query-provider.tsx
-│  │  │  ├─ theme-provider.tsx
-│  │  │  └─ toast-provider.tsx
-│  │  └─ ui
-│  │     ├─ button
-│  │     │  ├─ button.styled.ts
-│  │     │  ├─ button.tsx
-│  │     │  └─ index.ts
-│  │     ├─ icon.tsx
-│  │     ├─ input
-│  │     │  ├─ index.ts
-│  │     │  ├─ input.styled.ts
-│  │     │  └─ input.tsx
-│  │     ├─ spinner.tsx
-│  │     ├─ text.tsx
-│  │     └─ toaster.tsx
-│  └─ constants
-│     ├─ common.ts
-│     └─ exceptions.ts
 ├─ styles
 │  ├─ colors.ts
 │  ├─ index.ts
 │  └─ theme
 │     ├─ index.ts
 │     └─ theme.ts
+├─ tree.md
 ├─ tsconfig.json
 └─ types
    └─ index.d.ts

@@ -1,5 +1,5 @@
-import { useAuthStore } from '@/features/auth/store';
-import { Page } from '@/shared/components/layouts/page';
+import { Page } from '@/components/shared/layouts/page';
+import { useAuthStore } from '@/libs/store';
 
 export default function Auth() {
   const { clearTokens } = useAuthStore();

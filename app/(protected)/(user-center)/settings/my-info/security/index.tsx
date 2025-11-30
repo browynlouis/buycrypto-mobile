@@ -1,6 +1,6 @@
-import { SecurityScreen } from '@/features/user/screens/user-center';
-import { Header } from '@/shared/components/header';
-import { Page } from '@/shared/components/layouts/page';
+import { SecurityScreen } from '@/components/features/user/screens';
+import { Header } from '@/components/shared/header';
+import { Page } from '@/components/shared/layouts/page';
 
 export default function Security() {
   return (

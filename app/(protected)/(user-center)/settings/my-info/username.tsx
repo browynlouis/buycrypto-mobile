@@ -4,18 +4,18 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 
-import { getMe, updateUsername } from '@/api/user';
-import { usernameSchema } from '@/features/user/schema';
+import { getMe, updateUsername } from '@/api/user/routes';
+import { usernameSchema } from '@/components/features/user/schema';
+import { Header } from '@/components/shared/header';
+import { Page } from '@/components/shared/layouts/page';
+import { Loader } from '@/components/shared/loader';
+import { queryClient } from '@/components/shared/providers/query-provider';
+import { Button } from '@/components/shared/ui/button';
+import { Col } from '@/components/shared/ui/flex';
+import { Icon } from '@/components/shared/ui/icon';
+import { Input, InputGroup, InputHelperText } from '@/components/shared/ui/input';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
-import { Header } from '@/shared/components/header';
-import { Page } from '@/shared/components/layouts/page';
-import { Loader } from '@/shared/components/loader';
-import { queryClient } from '@/shared/components/providers/query-provider';
-import { Button } from '@/shared/components/ui/button';
-import { Col } from '@/shared/components/ui/flex';
-import { Icon } from '@/shared/components/ui/icon';
-import { Input, InputGroup, InputHelperText } from '@/shared/components/ui/input';
 
 type FormValues = z.infer<typeof usernameSchema>;
 
