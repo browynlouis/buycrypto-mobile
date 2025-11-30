@@ -20,6 +20,7 @@ export default function ForgotPassword() {
           </Link>
         }
       />
+
       {/* Page Body */}
       <Page>
         {/* Main Content */}
