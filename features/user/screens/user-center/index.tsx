@@ -1,8 +1,7 @@
 export * from './user-center';
 
-export * from './settings/preferences/appearance';
-export * from './settings/settings';
+export * from './settings/preferences/appearance.screen';
+export * from './settings/settings.screen';
 
-export * from './settings/my-info/security/password';
-export * from './settings/my-info/security/security';
-export * from './settings/my-info/security/two-fa';
+export * from './settings/my-info/security';
+export * from './settings/my-info/security/password.screen';

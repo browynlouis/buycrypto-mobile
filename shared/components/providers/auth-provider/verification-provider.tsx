@@ -7,7 +7,7 @@ import { VerificationContext, VerificationFormProps } from './types';
 
 export function VerificationProvider({ children }: { children: ReactNode }) {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [currentFlow, setCurrentFlow] = useState<VerificationFormProps | undefined>(undefined);
+  const [currentFlow, setCurrentFlow] = useState<VerificationFormProps | undefined>();
 
   const startVerification = (flow: VerificationFormProps) => {
     setCurrentFlow(flow);
@@ -31,11 +31,12 @@ export function VerificationProvider({ children }: { children: ReactNode }) {
         <AppModal visible={!!currentFlow} handleClose={endVerification}>
           <VerificationForm
             types={currentFlow.types}
+            onSend={currentFlow.onSend}
+            purpose={currentFlow.purpose}
             onSubmit={(values) => {
               setIsSubmitting(true);
-              currentFlow.onSubmit(values);
+              currentFlow.onSubmit && currentFlow.onSubmit(values);
             }}
-            onSend={currentFlow.onSend}
           />
         </AppModal>
       )}

@@ -1,10 +1,10 @@
 import React, { LegacyRef, ReactNode, useState } from 'react';
 import { Control, Controller, FieldValues, Path } from 'react-hook-form';
 import { KeyboardType, TextInputProps, TouchableOpacity, ViewStyle } from 'react-native';
-import { useTheme } from 'styled-components/native';
 
 import { AppTheme } from '@/styles';
 
+import { useAppTheme } from '../../providers/theme-provider/hooks';
 import { Icon } from '../icon';
 import {
   Adornment,
@@ -63,7 +63,7 @@ function Input({
   const [focus, setFocus] = useState(false);
   const [secure, setSecure] = useState(hiddenField);
 
-  const theme = useTheme();
+  const theme = useAppTheme();
 
   const borderColor = focus ? theme.colors.Primary[500] : inputVariants(theme, variant);
 
@@ -124,7 +124,7 @@ function ControlledInput<T extends FieldValues>({
   placeholder,
   ...inputProps
 }: ControlledInputProps<T>) {
-  const theme = useTheme();
+  const theme = useAppTheme();
 
   return (
     <Controller

@@ -3,14 +3,14 @@ import { PressableProps, PressableStateCallbackType } from 'react-native';
 
 import { AppTheme } from '@/styles';
 
-import { useTheme } from '../../providers/theme-provider/hooks';
+import { useAppTheme } from '../../providers/theme-provider/hooks';
 import { Text } from '../text';
 import { StyledButton } from './button.styled';
 
 export type ButtonSize = 'sm' | 'md' | 'lg';
 export type ButtonVariant = 'default' | 'danger' | 'success' | 'plain' | 'text';
 
-interface ButtonProps extends PressableProps {
+export interface ButtonProps extends PressableProps {
   size?: ButtonSize;
   variant?: ButtonVariant;
   endAdornment?: React.ReactNode;
@@ -19,7 +19,7 @@ interface ButtonProps extends PressableProps {
 }
 
 function Button({ children, style, startAdornment, endAdornment, variant, ...props }: ButtonProps) {
-  const theme = useTheme();
+  const theme = useAppTheme();
 
   let textSize: keyof AppTheme['fontSizes'];
 

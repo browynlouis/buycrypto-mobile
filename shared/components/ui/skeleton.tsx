@@ -1,7 +1,7 @@
 import React from 'react';
 import { Animated, ViewStyle } from 'react-native';
 
-import { useTheme } from '../providers/theme-provider/hooks';
+import { useAppTheme } from '../providers/theme-provider/hooks';
 
 interface SkeletonProps {
   width?: ViewStyle['width'];
@@ -10,7 +10,7 @@ interface SkeletonProps {
 }
 
 export function Skeleton({ width, height, borderRadius }: SkeletonProps) {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const animatedValue = new Animated.Value(0);
 
   Animated.loop(

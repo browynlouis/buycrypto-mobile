@@ -5,6 +5,7 @@ import { View } from 'react-native';
 import z from 'zod';
 
 import { VerificationType } from '@/features/auth/types';
+import { components } from '@/libs/api';
 import { Button, StyledButton } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { ControlledInput } from '@/shared/components/ui/input';
@@ -72,7 +73,17 @@ export function VerificationForm({ types, onSubmit, onSend }: VerificationFormPr
         );
       })}
 
-      <Button disabled={!isValid} onPress={handleSubmit(onSubmit)}>
+      <Button
+        disabled={!isValid}
+        onPress={handleSubmit((formValues) => {
+          const values = Object.entries(formValues).map(([key, value]) => ({
+            key,
+            value,
+          })) as components['schemas']['InputDto'][];
+
+          onSubmit?.(values);
+        })}
+      >
         Submit
       </Button>
     </View>

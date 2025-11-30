@@ -15,7 +15,7 @@ import { Page } from '@/shared/components/layouts/page';
 import { AuthenticatedProvider } from '@/shared/components/providers/auth-provider/authenticated-provider';
 import { VerificationProvider } from '@/shared/components/providers/auth-provider/verification-provider';
 import { QueryProvider } from '@/shared/components/providers/query-provider';
-import { useTheme } from '@/shared/components/providers/theme-provider/hooks';
+import { useAppTheme } from '@/shared/components/providers/theme-provider/hooks';
 import { ThemeProvider } from '@/shared/components/providers/theme-provider/theme-provider';
 import { getTheme } from '@/styles';
 
@@ -81,7 +81,7 @@ export default function RootLayout() {
  *  - (protected): Shown when the user is authenticated
  */
 function Routes() {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const insets = useSafeAreaInsets();
 
   const { auth } = useAuthStore();

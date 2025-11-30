@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Pressable, StyleSheet } from 'react-native';
 
-import { useTheme } from '../providers/theme-provider/hooks';
+import { useAppTheme } from '../providers/theme-provider/hooks';
 
 type SwitchProps = {
   value: boolean;
@@ -22,7 +22,7 @@ export const Switch = ({
   thumbColor = '#fff',
   size = 24,
 }: SwitchProps) => {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const animatedValue = useRef(new Animated.Value(value ? 1 : 0)).current;
 
   useEffect(() => {

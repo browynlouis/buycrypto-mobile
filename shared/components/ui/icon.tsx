@@ -20,7 +20,7 @@ import * as Iconsax from 'iconsax-react-nativejs';
 import React from 'react';
 import { ViewStyle } from 'react-native';
 
-import { useTheme } from '../providers/theme-provider/hooks';
+import { useAppTheme } from '../providers/theme-provider/hooks';
 
 // Map icon families
 const ICON_FAMILIES = {
@@ -77,7 +77,7 @@ export const Icon: React.FC<IconProps> = ({
   style,
   variant = 'Broken',
 }) => {
-  const theme = useTheme();
+  const theme = useAppTheme();
 
   let iconSize: number;
   const IconSet = ICON_FAMILIES[family];

@@ -8,7 +8,7 @@ import { Badge } from '@/shared/components/ui/bagde';
 import { Row } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
 
-import { getMe } from '../../api';
+import { getMe } from '../../../../api/user';
 import { ProfileHeader } from '../../components/profile-header';
 
 const UserCenterScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {

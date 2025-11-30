@@ -3,7 +3,7 @@ import React from 'react';
 import { TextStyle } from 'react-native';
 import styled from 'styled-components/native';
 
-import { useTheme } from './providers/theme-provider/hooks';
+import { useAppTheme } from './providers/theme-provider/hooks';
 import { Button } from './ui/button/button';
 import { Icon } from './ui/icon';
 import { Text } from './ui/text';
@@ -27,7 +27,7 @@ export function Header({
   backgroundColor?: string;
   titleStyle?: TextStyle;
 }) {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const router = useRouter();
 
   return (

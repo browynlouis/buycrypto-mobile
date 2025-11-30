@@ -2,6 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useForm } from 'react-hook-form';
 
+import { resetPassword } from '@/api/auth';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
 import { Loader } from '@/shared/components/loader';
@@ -10,7 +11,6 @@ import { Col } from '@/shared/components/ui/flex';
 import { ControlledInput } from '@/shared/components/ui/input';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
-import { resetPassword } from '../../api';
 import { AuthScreenTitle } from '../../components';
 import { resetPasswwordSchema } from '../../schema';
 import { FormError } from '../../types';

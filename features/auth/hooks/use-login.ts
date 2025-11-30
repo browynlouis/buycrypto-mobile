@@ -3,16 +3,16 @@ import { useCallback } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import z from 'zod';
 
+import { getAuth, login, loginVerify } from '@/api/auth';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
-import { useVerification } from '@/shared/components/providers/auth-provider/hooks';
+import { useVerificationContext } from '@/shared/components/providers/auth-provider/hooks';
 import { queryClient } from '@/shared/components/providers/query-provider';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
-import { getAuth, login, loginVerify } from '../api';
 import { loginSchema } from '../schema';
 import { useAuthStore } from '../store';
-import { Auth, FormError, VerificationType } from '../types';
+import { Auth, FormError } from '../types';
 
 export type UseLoginReturn = {
   isSubmitting: boolean;
@@ -22,7 +22,7 @@ export type UseLoginReturn = {
 
 export function useLogin(): UseLoginReturn {
   const { setAuth, setAuthTokens } = useAuthStore();
-  const { startVerification, endVerification, setIsSubmitting } = useVerification();
+  const { startVerification, endVerification, setIsSubmitting } = useVerificationContext();
 
   const form = useForm({
     mode: 'all',
@@ -37,6 +37,7 @@ export function useLogin(): UseLoginReturn {
     onSuccess: async ({ data }) => {
       startVerification({
         types: data.twoFaAuths,
+        purpose: 'LOGIN',
         onSend: {
           EMAIL: () =>
             /** Recall login mutation to resend 2fa request */
@@ -49,10 +50,7 @@ export function useLogin(): UseLoginReturn {
             body: {
               ...form.getValues(),
               twoFaVerification: {
-                input: Object.entries(values).map(([key, value]) => ({
-                  key: key as VerificationType,
-                  value,
-                })),
+                input: values,
               },
             },
           }),

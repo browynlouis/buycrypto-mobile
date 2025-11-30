@@ -3,7 +3,7 @@ import { Keyboard, Platform, ViewStyle } from 'react-native';
 import GestureRecognizer, { GestureRecognizerProps } from 'react-native-swipe-gestures';
 import styled from 'styled-components/native';
 
-import { useTheme } from '../providers/theme-provider/hooks';
+import { useAppTheme } from '../providers/theme-provider/hooks';
 
 interface PageProps {
   children?: React.ReactNode;
@@ -62,7 +62,7 @@ const DismissKeyboardPressable = styled.Pressable`
  */
 
 export function Page({ children, scrollable = true, style, gesture, noScrollView }: PageProps) {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const backgroundColor = theme.colors.Neutral[900];
 
   const content = noScrollView ? (

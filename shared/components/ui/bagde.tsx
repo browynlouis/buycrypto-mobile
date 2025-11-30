@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 import { Text } from '@/shared/components/ui/text';
 
-import { useTheme } from '../providers/theme-provider/hooks';
+import { useAppTheme } from '../providers/theme-provider/hooks';
 import { Icon } from './icon';
 
 export function Badge({
@@ -15,7 +15,7 @@ export function Badge({
   status?: 'error' | 'success' | 'warning' | 'default' | boolean;
   children: React.ReactNode;
 }) {
-  const theme = useTheme();
+  const theme = useAppTheme();
 
   const colorMap = {
     error: theme.colors.Error[500],

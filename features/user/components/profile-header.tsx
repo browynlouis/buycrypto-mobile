@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
+import { CopyButton as BaseCopyButton } from '@/shared/components/copy-buton';
 import { Avatar } from '@/shared/components/ui/avatar';
-import { Button } from '@/shared/components/ui/button';
 import { Icon } from '@/shared/components/ui/icon';
 import { Text } from '@/shared/components/ui/text';
 
@@ -17,7 +17,12 @@ export function ProfileHeader({ user }: { user: User }) {
         <UserInfo>
           <Text size="text-xl">{user.username ?? '--'}</Text>
 
-          <CopyButton size="sm" variant="text" endAdornment={<Icon name="Copy" size={16} />}>
+          <CopyButton
+            size="sm"
+            variant="text"
+            value={user.uniqueId}
+            endAdornment={<Icon name="Copy" size={16} />}
+          >
             <Text size="text-sm">{`ID: ${user.uniqueId}`}</Text>
           </CopyButton>
         </UserInfo>
@@ -45,7 +50,7 @@ const UserInfo = styled.View`
   align-items: flex-start;
 `;
 
-const CopyButton = styled(Button)`
+const CopyButton = styled(BaseCopyButton)`
   opacity: 0.5;
   padding-left: 0;
   padding-right: 0;

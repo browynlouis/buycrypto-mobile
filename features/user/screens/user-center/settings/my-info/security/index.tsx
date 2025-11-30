@@ -1,13 +1,15 @@
 import { Suspense } from '@suspensive/react';
 import React from 'react';
 
-import { getAuth } from '@/features/auth/api';
+import { getAuth } from '@/api/auth';
 import { $api } from '@/libs/api';
 import { Loader } from '@/shared/components/loader';
 import { Col } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
 import { MenuListItem } from '@/shared/components/ui/menu-list-item';
 import { Text } from '@/shared/components/ui/text';
+
+import { ToggleAuthenticatorApp } from './authenticator-app/toggle-authenticator-app';
 
 const SecurityScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const {
@@ -19,16 +21,9 @@ const SecurityScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
       <MenuListItem
         title="Email"
         data={{
-          leftEl: <Icon name="alternate-email" family="MaterialIcons" />,
+          showArrow: false,
           rightEl: <Text>{auth.email}</Text>,
-        }}
-      />
-
-      <MenuListItem
-        title="Mobile"
-        data={{
-          leftEl: <Icon name="Mobile" />,
-          rightEl: <Text>{}</Text>,
+          leftEl: <Icon name="alternate-email" family="MaterialIcons" />,
         }}
       />
 
@@ -40,9 +35,11 @@ const SecurityScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
       />
 
       <MenuListItem
-        title="2-Factor Authentication"
+        title="Authenticator App"
         data={{
+          showArrow: false,
           leftEl: <Icon name="Shield" />,
+          rightEl: <ToggleAuthenticatorApp />,
         }}
       />
     </Col>

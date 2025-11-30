@@ -1,18 +1,27 @@
 import { createContext } from 'react';
 
-import { VerificationType } from '@/features/auth/types';
+import { VerificationPurpose, VerificationType } from '@/features/auth/types';
 
 export type VerificationFormProps = {
   types: VerificationType[];
+  purpose: VerificationPurpose;
   onSend?: { [key in VerificationType]?: () => void };
-  onSubmit: (value: { [key in VerificationType]?: string }) => void;
+  onSubmit?: (values: { key: VerificationType; value: string }[]) => void;
 };
 
-interface VerificationContext {
+export interface VerificationContext {
   isSubmitting: boolean;
   endVerification: () => void;
   setIsSubmitting: (value: boolean) => void;
   startVerification: (flow: VerificationFormProps) => void;
+}
+
+export interface VerificationCallbacks {
+  onRequestSuccess?: () => void;
+  onRequestError?: () => void;
+
+  onVerifySuccess?: () => void;
+  onVerifyError?: () => void;
 }
 
 export const VerificationContext = createContext<VerificationContext | undefined>(undefined);

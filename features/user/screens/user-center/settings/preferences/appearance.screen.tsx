@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
 import { ThemeAppearance, useAppStore } from '@/libs/store';
-import { useTheme } from '@/shared/components/providers/theme-provider/hooks';
+import { useAppTheme } from '@/shared/components/providers/theme-provider/hooks';
 import { Button } from '@/shared/components/ui/button';
 import { Col, Row } from '@/shared/components/ui/flex';
 import { Icon } from '@/shared/components/ui/icon';
@@ -9,14 +9,13 @@ import { Switch } from '@/shared/components/ui/switch';
 import { Text } from '@/shared/components/ui/text';
 
 export function AppearanceScreen() {
-  const theme = useTheme();
+  const theme = useAppTheme();
   const { setThemeAppearance, themeAppearance, resolvedTheme } = useAppStore();
 
-  const isSystem = themeAppearance === 'system';
-
-  const setLight = useCallback(() => setThemeAppearance('light'), []);
   const setDark = useCallback(() => setThemeAppearance('dark'), []);
+  const setLight = useCallback(() => setThemeAppearance('light'), []);
 
+  const isSystem = themeAppearance === 'system';
   const toggleSystem = useCallback(
     (checked: boolean) => {
       setThemeAppearance(checked ? 'system' : resolvedTheme);
@@ -24,7 +23,7 @@ export function AppearanceScreen() {
     [resolvedTheme],
   );
 
-  const themedBorder = (type: ThemeAppearance) => {
+  const selectedThemeBorder = (type: ThemeAppearance) => {
     return themeAppearance === type ? theme.colors.Primary[500] : 'transparent';
   };
 
@@ -39,7 +38,7 @@ export function AppearanceScreen() {
           style={{
             flex: 1,
             borderWidth: 1.5,
-            borderColor: themedBorder('light'),
+            borderColor: selectedThemeBorder('light'),
           }}
         >
           Light
@@ -53,7 +52,7 @@ export function AppearanceScreen() {
           style={{
             flex: 1,
             borderWidth: 1.5,
-            borderColor: themedBorder('dark'),
+            borderColor: selectedThemeBorder('dark'),
           }}
         >
           Dark

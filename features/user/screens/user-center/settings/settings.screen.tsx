@@ -4,7 +4,7 @@ import { snakeCase } from 'lodash';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { getMe } from '@/features/user/api';
+import { getMe } from '@/api/user';
 import { ProfileHeader } from '@/features/user/components/profile-header';
 import { $api } from '@/libs/api';
 import { Loader } from '@/shared/components/loader';

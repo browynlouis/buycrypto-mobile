@@ -1,17 +1,12 @@
 import { useCallback } from 'react';
 import { UseFormReturn, useFormContext, useFormState } from 'react-hook-form';
 
-import {
-  getAuth,
-  register,
-  resendEmailVerification,
-  verifyEmailVerification,
-} from '@/features/auth/api';
+import { getAuth, register, resendEmailVerification, verifyEmailVerification } from '@/api/auth';
 import { useAuthStore } from '@/features/auth/store';
 import { Auth, FormError } from '@/features/auth/types';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
-import { useVerification } from '@/shared/components/providers/auth-provider/hooks';
+import { useVerificationContext } from '@/shared/components/providers/auth-provider/hooks';
 import { queryClient } from '@/shared/components/providers/query-provider';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
@@ -32,7 +27,7 @@ export function useRegistration(): UseRegisterReturn {
   /** -------------------------------
    *  Registration MUTATION
    * ------------------------------- */
-  const { startVerification, endVerification } = useVerification();
+  const { startVerification, endVerification } = useVerificationContext();
 
   const registerMutation = $api.useMutation(...register, {
     onSuccess: (data) => {
@@ -45,6 +40,7 @@ export function useRegistration(): UseRegisterReturn {
       // Start email verification after successful registration
       startVerification({
         types: ['EMAIL'],
+        purpose: 'EMAIL_VERIFICATION',
         onSend: {
           EMAIL: () => {
             /** Requests for email verification */
@@ -52,10 +48,12 @@ export function useRegistration(): UseRegisterReturn {
           },
         },
         onSubmit: (values) => {
+          const token = values.find((val) => val.key === 'EMAIL')!.value;
+
           // Verifies the provided verification
           verifyEmailVerificationMutation.mutate({
             body: {
-              token: values['EMAIL']!,
+              token,
             },
           });
         },

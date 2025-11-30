@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { useAuthStore } from '@/features/auth/store';
-import { SettingsScreen } from '@/features/user/screens/user-center/settings/settings';
+import { SettingsScreen } from '@/features/user/screens/user-center/settings/settings.screen';
 import { useAppStore } from '@/libs/store';
 import { Header } from '@/shared/components/header';
 import { Page } from '@/shared/components/layouts/page';

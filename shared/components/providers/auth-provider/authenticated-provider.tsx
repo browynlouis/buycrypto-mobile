@@ -1,7 +1,7 @@
 import { SplashScreen } from 'expo-router';
 import { useEffect } from 'react';
 
-import { getAuth } from '@/features/auth/api';
+import { getAuth } from '@/api/auth';
 import { useAuthStore } from '@/features/auth/store';
 import { $api } from '@/libs/api';
 

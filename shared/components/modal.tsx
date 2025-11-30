@@ -3,7 +3,7 @@ import Toast from 'react-native-toast-message';
 import styled from 'styled-components/native';
 
 import { toastConfig } from '../../libs/config';
-import { useTheme } from './providers/theme-provider/hooks';
+import { useAppTheme } from './providers/theme-provider/hooks';
 import { Button } from './ui/button';
 import { Icon } from './ui/icon';
 import { Text } from './ui/text';
@@ -48,7 +48,7 @@ export function AppModal({
   fullHeight,
   ...props
 }: AppModalProps) {
-  const theme = useTheme();
+  const theme = useAppTheme();
 
   return (
     <Modal

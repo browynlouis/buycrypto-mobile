@@ -4,12 +4,12 @@ import { useCallback } from 'react';
 import { UseFormReturn, useForm } from 'react-hook-form';
 import z from 'zod';
 
+import { forgotPassword, forgotPasswordVerify } from '@/api/auth';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
-import { useVerification } from '@/shared/components/providers/auth-provider/hooks';
+import { useVerificationContext } from '@/shared/components/providers/auth-provider/hooks';
 import { UnprocessableEntityException } from '@/shared/constants/exceptions';
 
-import { forgotPassword, forgotPasswordVerify } from '../api';
 import { forgotPasswordSchema } from '../schema';
 import { FormError } from '../types';
 
@@ -21,7 +21,7 @@ export type UseForgotPasswordReturn = {
 
 export function useForgotPassword(): UseForgotPasswordReturn {
   const router = useRouter();
-  const { startVerification, endVerification, setIsSubmitting } = useVerification();
+  const { startVerification, endVerification, setIsSubmitting } = useVerificationContext();
 
   const form = useForm({
     mode: 'all',
@@ -33,9 +33,10 @@ export function useForgotPassword(): UseForgotPasswordReturn {
    *  FORGOT PASSWORD MUTATION
    * ------------------------------- */
   const forgotPasswordMutation = $api.useMutation(...forgotPassword, {
-    onSuccess: async (data, variables) => {
+    onSuccess: (data, variables) => {
       startVerification({
         types: ['EMAIL'],
+        purpose: 'PASSWORD_RESET',
         onSend: {
           EMAIL: () =>
             /** Recalls the forgot password mutation to resend email */
@@ -43,7 +44,9 @@ export function useForgotPassword(): UseForgotPasswordReturn {
               body: form.getValues(),
             }),
         },
-        onSubmit: (values) =>
+        onSubmit: (values) => {
+          const token = values.find((val) => val.key === 'EMAIL')!.value;
+
           verifyForgotPasswordMutation.mutate({
             params: {
               query: {
@@ -51,9 +54,10 @@ export function useForgotPassword(): UseForgotPasswordReturn {
               },
             },
             body: {
-              token: values['EMAIL']!,
+              token,
             },
-          }),
+          });
+        },
       });
     },
     onError: (error) => {

@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Suspense } from '@suspensive/react';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import z from 'zod';
 
-import { getMe, updateUsername } from '@/features/user/api';
+import { getMe, updateUsername } from '@/api/user';
 import { usernameSchema } from '@/features/user/schema';
-import { User } from '@/features/user/types';
 import { $api } from '@/libs/api';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
 import { Header } from '@/shared/components/header';
@@ -43,6 +42,10 @@ const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
     },
   });
 
+  useEffect(() => {
+    user.username && form.reset({ username: user.username });
+  }, [user]);
+
   // Mutation to update username
   const { mutate, isPending, reset } = $api.useMutation(...updateUsername, {
     onSuccess(data, variables) {
@@ -51,9 +54,8 @@ const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
       form.reset(variables.body);
 
       // Set username of the user query
-      queryClient.setQueryData<User>(getMe, {
-        ...user,
-        username: variables.body.username,
+      queryClient.invalidateQueries({
+        queryKey: getMe,
       });
     },
     onError(error) {
