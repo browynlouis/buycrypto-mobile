@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Loader } from '../../loader';
-import { AppModal } from '../../modal';
+import { Loader } from '../../ui/loader';
+import { AppModal } from '../../ui/modal';
 import { VerificationForm } from './components/verification-form';
 import { VerificationContext, VerificationFormProps } from './types';
 

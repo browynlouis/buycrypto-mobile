@@ -1,14 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
 
-import { CopyButton as BaseCopyButton } from '@/components/shared/copy-button';
+import { UserResource } from '@/api/types';
 import { Avatar } from '@/components/shared/ui/avatar';
+import { CopyButton as BaseCopyButton } from '@/components/shared/ui/copy-button';
 import { Icon } from '@/components/shared/ui/icon';
 import { Text } from '@/components/shared/ui/text';
 
-import { User } from '../types';
-
-export function ProfileHeader({ user }: { user: User }) {
+export function ProfileHeader({ user }: { user: UserResource }) {
   return (
     <Container>
       <Content>

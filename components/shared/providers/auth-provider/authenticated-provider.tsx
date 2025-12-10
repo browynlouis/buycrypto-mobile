@@ -1,13 +1,12 @@
 import { SplashScreen } from 'expo-router';
 import { useEffect } from 'react';
 
-import { getAuth } from '@/api/auth/routes';
-import { $api } from '@/libs/api';
-import { useAuthStore } from '@/libs/store';
+import { $queryClient } from '@/api/clients/query-client';
+import { useAuthStore } from '@/store';
 
 export function AuthenticatedProvider({ children }: { children: React.ReactNode }) {
   const { setAuth } = useAuthStore();
-  const { data, isLoading } = $api.useQuery(...getAuth);
+  const { data, isLoading } = $queryClient.useQuery('get', '/auth');
 
   useEffect(() => {
     if (data) {

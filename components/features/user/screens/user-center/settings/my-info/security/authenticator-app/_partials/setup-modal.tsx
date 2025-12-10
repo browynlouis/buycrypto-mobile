@@ -1,9 +1,9 @@
-import { CopyButton } from '@/components/shared/copy-button';
-import { AppModal, AppModalProps } from '@/components/shared/modal';
 import { Button } from '@/components/shared/ui/button';
+import { CopyButton } from '@/components/shared/ui/copy-button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { InputHelperText } from '@/components/shared/ui/input';
+import { AppModal, AppModalProps } from '@/components/shared/ui/modal';
 import { QrCodeDisplay } from '@/components/shared/ui/qr-code';
 import { Text } from '@/components/shared/ui/text';
 import { toast } from '@/libs/utils';

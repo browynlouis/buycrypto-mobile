@@ -2,11 +2,11 @@ import { Link } from 'expo-router';
 import React from 'react';
 
 import { ForgotPasswordScreen } from '@/components/features/auth/screens';
-import { Header } from '@/components/shared/header';
 import { Page } from '@/components/shared/layouts/page';
+import { Header } from '@/components/shared/ui/header';
 import { Text } from '@/components/shared/ui/text';
 
-export default function ForgotPassword() {
+export default function ForgotPasswordPage() {
   return (
     <>
       {/* Page Header */}

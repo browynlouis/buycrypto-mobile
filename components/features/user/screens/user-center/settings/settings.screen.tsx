@@ -1,23 +1,23 @@
 import { Suspense } from '@suspensive/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { snakeCase } from 'lodash';
 import { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 
-import { getMe } from '@/api/user/routes';
+import { getMeQueryOptions } from '@/api/queries/user';
 import { ProfileHeader } from '@/components/features/user/_partials/profile-header';
-import { Loader } from '@/components/shared/loader';
 import { Badge } from '@/components/shared/ui/badge';
 import { Icon } from '@/components/shared/ui/icon';
+import { Loader } from '@/components/shared/ui/loader';
 import { MenuList, MenuListItem } from '@/components/shared/ui/menu-list-item';
 import { TabbedView } from '@/components/shared/ui/tabbed-view';
 import { Text } from '@/components/shared/ui/text';
-import { $api } from '@/libs/api';
 
 const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const {
     data: { data: user },
-  } = $api.useSuspenseQuery(...getMe);
+  } = useSuspenseQuery(getMeQueryOptions());
 
   const menuList: MenuList[] = useMemo(
     () => [
@@ -35,9 +35,9 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
           {
             title: 'Identity Verification',
             data: {
-              action() {},
               leftEl: <Icon name="Personalcard" />,
-              rightEl: <Badge status={user.kycLevel !== 'Not Verified'}>{user.kycLevel}</Badge>,
+              rightEl: <Badge status={user.kycLevel !== 'NONE'}>{user.kycLevel}</Badge>,
+              action: () => router.push('/(protected)/(user-center)/settings/my-info/kyc'),
             },
           },
           {

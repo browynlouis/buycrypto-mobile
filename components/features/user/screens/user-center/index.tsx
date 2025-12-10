@@ -5,3 +5,5 @@ export * from './settings/settings.screen';
 
 export * from './settings/my-info/security/password.screen';
 export * from './settings/my-info/security/security.screen';
+
+export * from './settings/my-info/kyc/kyc.screen';

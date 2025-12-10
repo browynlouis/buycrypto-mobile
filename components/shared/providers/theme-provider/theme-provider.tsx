@@ -3,7 +3,7 @@ import React from 'react';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider as StyledComponentThemeProvider } from 'styled-components/native';
 
-import { useAppStore } from '@/libs/store';
+import { useAppStore } from '@/store';
 import { getTheme } from '@/styles';
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {

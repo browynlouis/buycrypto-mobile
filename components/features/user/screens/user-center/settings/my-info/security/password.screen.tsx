@@ -1,10 +1,10 @@
-import { useAuth } from '@/api/auth/use-auth';
-import { usePasswordUpdateAction } from '@/api/user/actions';
-import { Loader } from '@/components/shared/loader';
+import { usePasswordUpdateAction } from '@/api/queries/user';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
+import { Loader } from '@/components/shared/ui/loader';
+import { useAuth } from '@/hooks';
 
 const PasswordScreen = () => {
   const auth = useAuth();

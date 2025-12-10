@@ -2,11 +2,11 @@ import { Link } from 'expo-router';
 import React from 'react';
 
 import { LoginScreen } from '@/components/features/auth/screens';
-import { Header } from '@/components/shared/header';
 import { Page } from '@/components/shared/layouts/page';
+import { Header } from '@/components/shared/ui/header';
 import { Text } from '@/components/shared/ui/text';
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <>
       {/* Page Header */}

@@ -1,13 +1,13 @@
 import React from 'react';
 
 import { SettingsScreen } from '@/components/features/user/screens';
-import { Header } from '@/components/shared/header';
 import { Page } from '@/components/shared/layouts/page';
 import { Button } from '@/components/shared/ui/button';
+import { Header } from '@/components/shared/ui/header';
 import { Icon } from '@/components/shared/ui/icon';
-import { useAppStore, useAuthStore } from '@/libs/store';
+import { useAppStore, useAuthStore } from '@/store';
 
-export default function Settings() {
+export default function SettingsPage() {
   const { clearTokens } = useAuthStore();
   const { setThemeAppearance, resolvedTheme, toggleThemeAppearance } = useAppStore();
 

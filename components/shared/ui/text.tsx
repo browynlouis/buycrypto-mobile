@@ -13,11 +13,17 @@ export const Text = styled.Text.attrs<{
     props.color === 'link'
       ? props.theme.colors.Primary[400]
       : (props.color ?? props.theme.colors.Neutral[100]),
-  weight: props.weight ?? 400,
 }))`
-  text-align: ${(props) => props.align};
+  text-align: ${(props) => props.align || 'left'};
   color: ${(props) => props.color};
-  font-family: 'circular-std-medium';
-  font-weight: ${(props) => props.weight};
+  font-family: ${(props) => fontFamilyMap[props.weight ?? 400] || 'circular-std-medium'};
   font-size: ${(props) => props.theme.fontSizes[props.size ?? 'text-md']}px;
 `;
+
+const fontFamilyMap: Record<number, string> = {
+  400: 'circular-std-medium', // normal
+  500: 'circular-std-medium', // optional, or same as 400
+  600: 'circular-std-bold', // semi-bold
+  700: 'circular-std-bold', // bold
+  900: 'circular-std-black', // black / heavy
+};

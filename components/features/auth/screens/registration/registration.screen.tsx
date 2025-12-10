@@ -1,16 +1,16 @@
 import React from 'react';
 
-import { useRegistrationAction } from '@/api/auth/actions';
-import { Loader } from '@/components/shared/loader';
+import { useRegistration } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
+import { Loader } from '@/components/shared/ui/loader';
 
 import { AuthScreenTitle } from '../../_partials';
 
 export function RegistrationScreen() {
-  const { form, submit, isSubmitting } = useRegistrationAction();
+  const { form, submit, isSubmitting } = useRegistration();
 
   const {
     control,

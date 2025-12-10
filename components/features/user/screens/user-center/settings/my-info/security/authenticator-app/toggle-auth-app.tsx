@@ -1,6 +1,6 @@
-import { useAuth } from '@/api/auth/use-auth';
-import { useToggleAuthAppAction } from '@/api/user/actions';
+import { useToggleAuthApp } from '@/api/queries/user';
 import { Switch } from '@/components/shared/ui/switch';
+import { useAuthStore } from '@/store';
 
 import { SetupModal } from './_partials/setup-modal';
 
@@ -22,7 +22,7 @@ import { SetupModal } from './_partials/setup-modal';
  *   • TOTP setup modal control
  */
 const ToggleAuthenticatorApp = () => {
-  const auth = useAuth();
+  const { auth } = useAuthStore();
 
   const {
     status,
@@ -32,9 +32,9 @@ const ToggleAuthenticatorApp = () => {
     closeSetup,
     proceedSetup,
     handleToggle,
-  } = useToggleAuthAppAction({
-    twofaAuths: auth.twofaAuths,
-    isEnabled: auth.twofaAuths.includes('TOTP'),
+  } = useToggleAuthApp({
+    twofaAuths: auth!.twofaAuths,
+    isEnabled: auth!.twofaAuths.includes('TOTP'),
   });
 
   return (

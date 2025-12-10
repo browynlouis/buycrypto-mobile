@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { useForgotPasswordAction } from '@/api/auth/actions';
-import { Loader } from '@/components/shared/loader';
+import { useForgotPassword } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
+import { Loader } from '@/components/shared/ui/loader';
 
 import { AuthScreenTitle } from '../../_partials';
 
@@ -14,7 +14,7 @@ import { AuthScreenTitle } from '../../_partials';
  *
  */
 export function ForgotPasswordScreen() {
-  const { form, submit, isSubmitting } = useForgotPasswordAction();
+  const { form, submit, isSubmitting } = useForgotPassword();
 
   const {
     control,

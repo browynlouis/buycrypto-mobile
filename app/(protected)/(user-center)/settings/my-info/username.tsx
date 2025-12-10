@@ -1,40 +1,38 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Suspense } from '@suspensive/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import z from 'zod';
 
-import { getMe, updateUsername } from '@/api/user/routes';
-import { usernameSchema } from '@/components/features/user/schema';
-import { Header } from '@/components/shared/header';
+import { $queryClient } from '@/api/clients/query-client';
+import { getMeQueryOptions, userKeys } from '@/api/queries/user';
+import { usernameSchema } from '@/api/schemas/user.schema';
 import { Page } from '@/components/shared/layouts/page';
-import { Loader } from '@/components/shared/loader';
 import { queryClient } from '@/components/shared/providers/query-provider';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
+import { Header } from '@/components/shared/ui/header';
 import { Icon } from '@/components/shared/ui/icon';
 import { Input, InputGroup, InputHelperText } from '@/components/shared/ui/input';
-import { $api } from '@/libs/api';
+import { Loader } from '@/components/shared/ui/loader';
 import { mapServerErrorsToClient, toast } from '@/libs/utils';
 
-type FormValues = z.infer<typeof usernameSchema>;
-
 /**
- * Username Component
+ * UsernamePage Component
  *
  * Allows the user to view and update their username.
  *
  * Suspense:
  *  - Wrapped with `Suspense.with` to show a fallback loader during data fetching.
  */
-const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
+const UsernamePage = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   // Fetch current user data
   const {
     data: { data: user },
-  } = $api.useSuspenseQuery(...getMe, {}, { refetchOnMount: true });
+  } = useSuspenseQuery(getMeQueryOptions({ refetchOnMount: true }));
 
   // Setup form with default values and validation
-  const { control, getValues, handleSubmit, ...form } = useForm<FormValues>({
+  const { control, getValues, handleSubmit, ...form } = useForm({
     mode: 'all',
     resolver: zodResolver(usernameSchema),
     defaultValues: {
@@ -47,7 +45,7 @@ const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   }, [user]);
 
   // Mutation to update username
-  const { mutate, isPending, reset } = $api.useMutation(...updateUsername, {
+  const { mutate, isPending, reset } = $queryClient.useMutation('post', '/users/me/username', {
     onSuccess(data, variables) {
       // Reset mutation state and form values
       reset();
@@ -55,7 +53,7 @@ const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
 
       // Set username of the user query
       queryClient.invalidateQueries({
-        queryKey: getMe,
+        queryKey: userKeys.me,
       });
     },
     onError(error) {
@@ -114,4 +112,6 @@ const Username = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   );
 });
 
-export default Username;
+UsernamePage.displayName = 'UsernamePage';
+
+export default UsernamePage;

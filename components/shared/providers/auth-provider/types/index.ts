@@ -1,6 +1,6 @@
 import { createContext } from 'react';
 
-import { VerificationPurpose, VerificationType } from '@/components/features/auth/types';
+import { VerificationPurpose, VerificationType } from '@/api/types';
 
 export type VerificationFormProps = {
   types: VerificationType[];

@@ -4,24 +4,39 @@ buy-crypto-mobile
 ├─ .prettierignore
 ├─ .prettierrc
 ├─ api
-│  ├─ auth
-│  │  ├─ actions
+│  ├─ clients
+│  │  ├─ fetch-client.ts
+│  │  ├─ middlewares
+│  │  │  └─ auth.middleware.ts
+│  │  └─ query-client.ts
+│  ├─ generated
+│  │  └─ schema.ts
+│  ├─ queries
+│  │  ├─ auth
+│  │  │  ├─ hooks
+│  │  │  │  └─ actions
+│  │  │  │     ├─ index.ts
+│  │  │  │     ├─ use-forgot-password.ts
+│  │  │  │     ├─ use-login.ts
+│  │  │  │     ├─ use-registration.ts
+│  │  │  │     ├─ use-reset-password.ts
+│  │  │  │     └─ use-verification.ts
 │  │  │  ├─ index.ts
-│  │  │  ├─ use-forgot-password.ts
-│  │  │  ├─ use-login.ts
-│  │  │  ├─ use-registration.ts
-│  │  │  ├─ use-reset-password.ts
-│  │  │  └─ use-verification.ts
-│  │  └─ routes
-│  │     ├─ auth.mutation.ts
-│  │     ├─ auth.query.ts
-│  │     └─ index.ts
-│  └─ user
-│     ├─ actions
-│     └─ routes
-│        ├─ index.ts
-│        ├─ user.mutation.ts
-│        └─ user.query.ts
+│  │  │  ├─ keys.ts
+│  │  │  └─ options.ts
+│  │  └─ user
+│  │     ├─ hooks
+│  │     │  └─ actions
+│  │     │     ├─ index.ts
+│  │     │     ├─ use-password-update.ts
+│  │     │     └─ use-toggle-auth-app.ts
+│  │     ├─ index.ts
+│  │     ├─ keys.ts
+│  │     └─ options.ts
+│  ├─ schemas
+│  │  ├─ auth.schema.ts
+│  │  └─ user.schema.ts
+│  └─ types.ts
 ├─ app
 │  ├─ (auth)
 │  │  ├─ index.tsx
@@ -33,7 +48,7 @@ buy-crypto-mobile
 │  │  │  ├─ reset.tsx
 │  │  │  └─ _layout.tsx
 │  │  ├─ registration
-│  │  │  ├─ credentials-form.tsx
+│  │  │  ├─ credentials.tsx
 │  │  │  ├─ index.tsx
 │  │  │  └─ _layout.tsx
 │  │  └─ _layout.tsx
@@ -44,8 +59,10 @@ buy-crypto-mobile
 │  │  │     ├─ index.tsx
 │  │  │     ├─ my-info
 │  │  │     │  ├─ kyc
-│  │  │     │  ├─ security
 │  │  │     │  │  └─ index.tsx
+│  │  │     │  ├─ security
+│  │  │     │  │  ├─ index.tsx
+│  │  │     │  │  └─ password.tsx
 │  │  │     │  └─ username.tsx
 │  │  │     └─ preferences
 │  │  │        └─ appearance.tsx
@@ -71,56 +88,49 @@ buy-crypto-mobile
 ├─ components
 │  ├─ features
 │  │  ├─ auth
-│  │  │  ├─ schema
-│  │  │  │  └─ index.ts
 │  │  │  ├─ screens
 │  │  │  │  ├─ forgot-password
 │  │  │  │  │  ├─ forgot-password.screen.tsx
-│  │  │  │  │  ├─ index.tsx
 │  │  │  │  │  └─ reset-password.screen.tsx
+│  │  │  │  ├─ index.ts
 │  │  │  │  ├─ login
-│  │  │  │  │  ├─ index.tsx
 │  │  │  │  │  └─ login.screen.tsx
 │  │  │  │  └─ registration
 │  │  │  │     ├─ country-selection.screen.tsx
 │  │  │  │     ├─ form-provider
 │  │  │  │     │  └─ registration-form-provider.tsx
-│  │  │  │     ├─ index.ts
 │  │  │  │     └─ registration.screen.tsx
-│  │  │  ├─ types.ts
 │  │  │  └─ _partials
 │  │  │     ├─ auth-screen-title.tsx
 │  │  │     └─ index.ts
 │  │  └─ user
-│  │     ├─ schema
-│  │     │  └─ index.ts
 │  │     ├─ screens
+│  │     │  ├─ index.ts
 │  │     │  └─ user-center
 │  │     │     ├─ index.tsx
 │  │     │     ├─ settings
 │  │     │     │  ├─ my-info
 │  │     │     │  │  ├─ kyc
+│  │     │     │  │  │  ├─ kyc.screen.tsx
+│  │     │     │  │  │  └─ _partials
+│  │     │     │  │  │     ├─ kyc-limits.tsx
+│  │     │     │  │  │     └─ personal-info.tsx
 │  │     │     │  │  └─ security
 │  │     │     │  │     ├─ authenticator-app
-│  │     │     │  │     │  ├─ toggle-authenticator-app.tsx
+│  │     │     │  │     │  ├─ toggle-auth-app.tsx
 │  │     │     │  │     │  └─ _partials
 │  │     │     │  │     │     └─ setup-modal.tsx
-│  │     │     │  │     ├─ index.tsx
-│  │     │     │  │     └─ password.screen.tsx
+│  │     │     │  │     ├─ password.screen.tsx
+│  │     │     │  │     └─ security.screen.tsx
 │  │     │     │  ├─ preferences
 │  │     │     │  │  └─ appearance.screen.tsx
 │  │     │     │  └─ settings.screen.tsx
-│  │     │     └─ user-center.tsx
-│  │     ├─ types.ts
+│  │     │     └─ user-center.screen.tsx
 │  │     └─ _partials
 │  │        └─ profile-header.tsx
 │  └─ shared
-│     ├─ copy-buton.tsx
-│     ├─ header.tsx
 │     ├─ layouts
 │     │  └─ page.tsx
-│     ├─ loader.tsx
-│     ├─ modal.tsx
 │     ├─ providers
 │     │  ├─ auth-provider
 │     │  │  ├─ authenticated-provider.tsx
@@ -138,12 +148,17 @@ buy-crypto-mobile
 │     │     └─ theme-provider.tsx
 │     └─ ui
 │        ├─ avatar.tsx
-│        ├─ bagde.tsx
+│        ├─ badge.tsx
 │        ├─ button
 │        │  ├─ button.styled.ts
 │        │  ├─ button.tsx
 │        │  └─ index.ts
+│        ├─ card
+│        │  ├─ card.styled.ts
+│        │  └─ index.ts
+│        ├─ copy-button.tsx
 │        ├─ flex.tsx
+│        ├─ header.tsx
 │        ├─ icon.tsx
 │        ├─ input
 │        │  ├─ index.ts
@@ -151,7 +166,9 @@ buy-crypto-mobile
 │        │  └─ input.tsx
 │        ├─ list
 │        │  └─ data-list.tsx
+│        ├─ loader.tsx
 │        ├─ menu-list-item.tsx
+│        ├─ modal.tsx
 │        ├─ qr-code.tsx
 │        ├─ select-input.tsx
 │        ├─ skeleton.tsx
@@ -164,22 +181,14 @@ buy-crypto-mobile
 │  ├─ common.ts
 │  └─ exceptions.ts
 ├─ eslint.config.js
+├─ hooks
+│  ├─ index.ts
+│  └─ use-auth.ts
 ├─ libs
-│  ├─ api
-│  │  ├─ client.ts
-│  │  ├─ index.ts
-│  │  ├─ middlewares
-│  │  │  ├─ auth.middleware.ts
-│  │  │  └─ index.ts
-│  │  └─ schema.ts
 │  ├─ config
 │  │  ├─ app-config.ts
 │  │  ├─ index.ts
 │  │  └─ toast-config.tsx
-│  ├─ store
-│  │  ├─ index.ts
-│  │  ├─ use-app.store.ts
-│  │  └─ use-auth.store.ts
 │  └─ utils
 │     ├─ index.ts
 │     ├─ map-server-errors.ts
@@ -187,6 +196,10 @@ buy-crypto-mobile
 │     └─ toast.ts
 ├─ package.json
 ├─ README.md
+├─ store
+│  ├─ index.ts
+│  ├─ use-app.store.ts
+│  └─ use-auth.store.ts
 ├─ styles
 │  ├─ colors.ts
 │  ├─ index.ts

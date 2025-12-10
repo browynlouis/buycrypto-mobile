@@ -1,11 +1,11 @@
 import { useLocalSearchParams } from 'expo-router';
 
-import { useResetPasswordAction } from '@/api/auth/actions/use-reset-password';
-import { Loader } from '@/components/shared/loader';
+import { useResetPassword } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
+import { Loader } from '@/components/shared/ui/loader';
 
 import { AuthScreenTitle } from '../../_partials';
 
@@ -14,7 +14,7 @@ export function ResetPasswordScreen() {
 
   if (!email) throw new Error('Email address not available in query');
 
-  const { submit, isSubmitting, form } = useResetPasswordAction();
+  const { submit, isSubmitting, form } = useResetPassword();
 
   const {
     control,

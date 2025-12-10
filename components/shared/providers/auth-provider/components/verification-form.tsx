@@ -4,26 +4,25 @@ import { useForm } from 'react-hook-form';
 import { View } from 'react-native';
 import z from 'zod';
 
-import { VerificationType } from '@/components/features/auth/types';
+import { TwoFactorAuthVerificationDto, VerificationType } from '@/api/types';
 import { Button, StyledButton } from '@/components/shared/ui/button';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
 import { Text } from '@/components/shared/ui/text';
-import { components } from '@/libs/api';
 
 import { VerificationFormProps } from '../types';
 
 const verificationMap: Record<
   VerificationType,
-  { label: string; showResend: boolean; startIcon: React.ReactNode }
+  { label: string; showSend: boolean; startIcon: React.ReactNode }
 > = {
   EMAIL: {
-    showResend: true,
+    showSend: true,
     label: 'Please provide the code sent to your email',
     startIcon: <Icon name="alternate-email" family="MaterialIcons" />,
   },
   TOTP: {
-    showResend: false,
+    showSend: false,
     label: 'Please provide the code from your Authenticator app',
     startIcon: <Icon name="qrcode" family="AntDesign" />,
   },
@@ -64,14 +63,14 @@ export function VerificationForm({ types, onSubmit, onSend }: VerificationFormPr
             label={config.label}
             startAdornment={config.startIcon}
             endAdornment={
-              config.showResend &&
+              config.showSend &&
               onSend?.[type] && (
                 <StyledButton
                   variant="text"
                   style={{ height: 'auto' }}
                   onPress={() => onSend[type]?.()}
                 >
-                  <Text>Resend</Text>
+                  <Text>Send</Text>
                 </StyledButton>
               )
             }
@@ -85,7 +84,7 @@ export function VerificationForm({ types, onSubmit, onSend }: VerificationFormPr
           const values = Object.entries(formValues).map(([key, value]) => ({
             key,
             value,
-          })) as components['schemas']['InputDto'][];
+          })) as TwoFactorAuthVerificationDto;
 
           onSubmit?.(values);
         })}

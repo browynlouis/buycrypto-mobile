@@ -15,7 +15,7 @@ import { QueryProvider } from '@/components/shared/providers/query-provider';
 import { useAppTheme } from '@/components/shared/providers/theme-provider/hooks';
 import { ThemeProvider } from '@/components/shared/providers/theme-provider/theme-provider';
 import { toastConfig } from '@/libs/config';
-import { useAppStore, useAuthStore } from '@/libs/store';
+import { useAppStore, useAuthStore } from '@/store';
 import { getTheme } from '@/styles';
 
 /**

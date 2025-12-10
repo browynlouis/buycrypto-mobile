@@ -1,14 +1,14 @@
 import { Suspense } from '@suspensive/react';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import { Pressable, View } from 'react-native';
 
-import { Loader } from '@/components/shared/loader';
+import { getMeQueryOptions } from '@/api/queries/user';
 import { Badge } from '@/components/shared/ui/badge';
 import { Row } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
-import { $api } from '@/libs/api';
+import { Loader } from '@/components/shared/ui/loader';
 
-import { getMe } from '../../../../../api/user/routes';
 import { ProfileHeader } from '../../_partials/profile-header';
 
 const UserCenterScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
@@ -16,7 +16,7 @@ const UserCenterScreen = Suspense.with({ fallback: <Loader isLoading /> }, () =>
 
   const {
     data: { data: user },
-  } = $api.useSuspenseQuery(...getMe);
+  } = useSuspenseQuery(getMeQueryOptions());
 
   return (
     <View style={{ gap: 24 }}>
@@ -29,7 +29,7 @@ const UserCenterScreen = Suspense.with({ fallback: <Loader isLoading /> }, () =>
       </Pressable>
 
       <View>
-        <Badge status={user.kycLevel !== 'Not Verified'}>KYC - {user.kycLevel}</Badge>
+        <Badge status={user.kycLevel !== 'NONE'}>KYC - {user.kycLevel.toString()}</Badge>
       </View>
     </View>
   );

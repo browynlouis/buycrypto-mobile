@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, FlatListProps, Pressable } from 'react-native';
 
-import { Header } from '../../header';
+import { Header } from '../header';
 import { Icon } from '../icon';
 import { Input } from '../input';
 

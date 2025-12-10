@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 
-import { AppModal } from '../modal';
 import { Icon } from './icon';
 import { Input, InputProps } from './input';
 import { DataList } from './list/data-list';
+import { AppModal } from './modal';
 
 interface SelectInputProps<T> extends Omit<InputProps, 'defaultValue' | 'value'> {
   options: T[];

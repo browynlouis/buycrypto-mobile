@@ -4,27 +4,27 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { View } from 'react-native';
 
-import { useRegistrationAction } from '@/api/auth/actions';
-import { Loader } from '@/components/shared/loader';
+import { $queryClient } from '@/api/clients/query-client';
+import { useRegistration } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { InputGroup, InputHelperText } from '@/components/shared/ui/input';
+import { Loader } from '@/components/shared/ui/loader';
 import { SelectInput } from '@/components/shared/ui/select-input';
 import { Text } from '@/components/shared/ui/text';
-import { $api } from '@/libs/api';
 
 import { AuthScreenTitle } from '../../_partials';
 
 const CountrySelectionScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const {
     data: { data: countries },
-  } = $api.useSuspenseQuery('get', '/metadata/config/countries');
+  } = $queryClient.useSuspenseQuery('get', '/app/metadata/supported-countries');
 
   const router = useRouter();
   const {
     form: { control, setValue },
-  } = useRegistrationAction();
+  } = useRegistration();
 
   return (
     <Col gap={32}>

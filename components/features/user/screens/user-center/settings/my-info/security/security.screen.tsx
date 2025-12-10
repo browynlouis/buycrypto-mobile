@@ -1,11 +1,11 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 
-import { useAuth } from '@/api/auth/use-auth';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { MenuListItem } from '@/components/shared/ui/menu-list-item';
 import { Text } from '@/components/shared/ui/text';
+import { useAuth } from '@/hooks';
 
 import { ToggleAuthenticatorApp } from './authenticator-app/toggle-auth-app';
 

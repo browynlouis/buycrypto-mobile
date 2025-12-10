@@ -6,7 +6,7 @@ import { Col, Row } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { Switch } from '@/components/shared/ui/switch';
 import { Text } from '@/components/shared/ui/text';
-import { ThemeAppearance, useAppStore } from '@/libs/store';
+import { ThemeAppearance, useAppStore } from '@/store';
 
 export function AppearanceScreen() {
   const theme = useAppTheme();

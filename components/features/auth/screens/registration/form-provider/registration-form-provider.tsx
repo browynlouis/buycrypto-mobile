@@ -4,9 +4,9 @@ import { useMemo } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
 import z from 'zod';
 
-import { registerSchema } from '@/components/features/auth/schema';
-import { Loader } from '@/components/shared/loader';
-import { $api } from '@/libs/api';
+import { $queryClient } from '@/api/clients/query-client';
+import { registerSchema } from '@/api/schemas/auth.schema';
+import { Loader } from '@/components/shared/ui/loader';
 
 export type RegistrationFormContext = z.infer<typeof registerSchema>;
 
@@ -15,7 +15,7 @@ const RegistrationFormProvider = Suspense.with(
   ({ children }: { children: React.ReactNode }) => {
     const {
       data: { data: countries },
-    } = $api.useSuspenseQuery('get', '/metadata/config/countries');
+    } = $queryClient.useSuspenseQuery('get', '/app/metadata/supported-countries');
 
     const cc = countries.map((c) => c.code);
 

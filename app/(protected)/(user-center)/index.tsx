@@ -3,12 +3,12 @@ import React from 'react';
 import { View } from 'react-native';
 
 import { UserCenterScreen } from '@/components/features/user/screens';
-import { Header } from '@/components/shared/header';
 import { Page } from '@/components/shared/layouts/page';
 import { Button } from '@/components/shared/ui/button';
+import { Header } from '@/components/shared/ui/header';
 import { Icon } from '@/components/shared/ui/icon';
 
-export default function UserCenter() {
+export default function UserCenterPage() {
   return (
     <>
       {/* Page Header */}

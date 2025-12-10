@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { ResetPasswordScreen } from '@/components/features/auth/screens';
-import { Header } from '@/components/shared/header';
 import { Page } from '@/components/shared/layouts/page';
+import { Header } from '@/components/shared/ui/header';
 
-export default function ResetPassword() {
+export default function ResetPasswordPage() {
   return (
     <>
       {/* Page Header */}
