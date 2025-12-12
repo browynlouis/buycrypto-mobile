@@ -2,12 +2,11 @@ import { useLocalSearchParams } from 'expo-router';
 
 import { useResetPassword } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
+import { DescriptionHeader } from '@/components/shared/ui/description-header';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
 import { Loader } from '@/components/shared/ui/loader';
-
-import { AuthScreenTitle } from '../../_partials';
 
 export function ResetPasswordScreen() {
   const { email } = useLocalSearchParams<{ email: string }>();
@@ -27,7 +26,7 @@ export function ResetPasswordScreen() {
       <Loader isLoading={isSubmitting} />
 
       <Col gap={32}>
-        <AuthScreenTitle
+        <DescriptionHeader
           title="Reset your password?"
           subText="Create a new password for your account below"
         />

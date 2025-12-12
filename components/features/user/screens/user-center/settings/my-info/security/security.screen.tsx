@@ -7,7 +7,7 @@ import { MenuListItem } from '@/components/shared/ui/menu-list-item';
 import { Text } from '@/components/shared/ui/text';
 import { useAuth } from '@/hooks';
 
-import { ToggleAuthenticatorApp } from './authenticator-app/toggle-auth-app';
+import { ToggleAuthenticatorApp } from './_partials/authenticator-app/toggle-auth-app';
 
 const SecurityScreen = () => {
   const auth = useAuth();

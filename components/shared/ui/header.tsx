@@ -64,7 +64,7 @@ export function Header({
 const Wrapper = styled.View<{ backgroundColor?: string }>`
   width: 100%;
   height: 60px;
-  padding: 0px 16px;
+  padding: 0px 6px;
   flex-direction: row;
   align-items: center;
   background-color: ${(props) => props.backgroundColor ?? props.theme.colors.Neutral[900]};

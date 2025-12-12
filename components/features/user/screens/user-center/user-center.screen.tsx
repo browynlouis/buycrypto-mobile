@@ -8,6 +8,7 @@ import { Badge } from '@/components/shared/ui/badge';
 import { Row } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { Loader } from '@/components/shared/ui/loader';
+import { resolveKycLevel } from '@/libs/utils';
 
 import { ProfileHeader } from '../../_partials/profile-header';
 
@@ -29,7 +30,7 @@ const UserCenterScreen = Suspense.with({ fallback: <Loader isLoading /> }, () =>
       </Pressable>
 
       <View>
-        <Badge status={user.kycLevel !== 'NONE'}>KYC - {user.kycLevel.toString()}</Badge>
+        <Badge status={!!user.kycLevel}>KYC - {resolveKycLevel(user.kycLevel)}</Badge>
       </View>
     </View>
   );

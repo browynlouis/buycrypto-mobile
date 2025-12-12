@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { Text } from '@/components/shared/ui/text';
 
-export function AuthScreenTitle({ title, subText }: { title: ReactNode; subText?: ReactNode }) {
+export function DescriptionHeader({ title, subText }: { title: ReactNode; subText?: ReactNode }) {
   return (
     <View
       style={{

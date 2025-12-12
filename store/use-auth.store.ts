@@ -13,7 +13,7 @@ interface AuthState {
   };
   auth: AuthResource | null;
   isAuth: boolean;
-  clearTokens: () => void;
+  clear: () => void;
   setAuth: (auth: AuthResource | null) => void;
   refreshAccessToken: () => Promise<string | null>;
   setAuthTokens: (access: string | null, refresh: string | null) => void;
@@ -43,7 +43,7 @@ export const useAuthStore = create<AuthState>()(
           tokens: { [ACCESS_TOKEN]: access, [REFRESH_TOKEN]: refresh },
         })),
 
-      clearTokens: () => {
+      clear: () => {
         _refreshPromise = null;
 
         set(initialState);
@@ -61,7 +61,7 @@ export const useAuthStore = create<AuthState>()(
        *
        */
       refreshAccessToken: async () => {
-        const { tokens, setAuthTokens, clearTokens } = get();
+        const { tokens, setAuthTokens, clear } = get();
 
         // If o refresh token, return null
         if (!tokens[REFRESH_TOKEN]) return null;
@@ -84,14 +84,12 @@ export const useAuthStore = create<AuthState>()(
 
           return data.accessToken;
         } catch (err) {
-          clearTokens();
+          clear();
 
           return null;
         } finally {
           _refreshPromise = null;
         }
-
-        return _refreshPromise;
       },
     }),
     {

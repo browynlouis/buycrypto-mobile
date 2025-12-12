@@ -85,8 +85,8 @@ export function useVerification(
        * onSubmit
        * Triggered when the user enters a verification code.
        */
-      onSubmit(values) {
-        verifyVerification.mutateAsync({
+      async onSubmit(values) {
+        verifyVerification.mutate({
           params: {
             query: { purpose },
           },

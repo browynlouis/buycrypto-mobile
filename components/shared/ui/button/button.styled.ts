@@ -10,6 +10,8 @@ export const StyledButton = styled.Pressable.attrs<{ size?: ButtonSize; variant?
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  padding-left: 12px;
+  padding-right: 12px;
   opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 
   /* Background based on variant */
@@ -30,15 +32,15 @@ export const StyledButton = styled.Pressable.attrs<{ size?: ButtonSize; variant?
   }};
 
   /* Padding based on size */
-  padding: ${(props) => {
+  height: ${(props) => {
     switch (props.size) {
       case 'md':
-        return '16px 8px';
+        return '46px';
       case 'lg':
-        return '20px 12px';
+        return '52px';
       case 'sm':
       default:
-        return '12px 4px';
+        return '40px';
     }
   }};
 `;

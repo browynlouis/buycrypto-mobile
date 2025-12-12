@@ -2,7 +2,7 @@ import { Suspense } from '@suspensive/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { snakeCase } from 'lodash';
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { ScrollView, View } from 'react-native';
 
 import { getMeQueryOptions } from '@/api/queries/user';
@@ -13,6 +13,7 @@ import { Loader } from '@/components/shared/ui/loader';
 import { MenuList, MenuListItem } from '@/components/shared/ui/menu-list-item';
 import { TabbedView } from '@/components/shared/ui/tabbed-view';
 import { Text } from '@/components/shared/ui/text';
+import { resolveKycLevel } from '@/libs/utils';
 
 const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const {
@@ -36,7 +37,7 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
             title: 'Identity Verification',
             data: {
               leftEl: <Icon name="Personalcard" />,
-              rightEl: <Badge status={user.kycLevel !== 'NONE'}>{user.kycLevel}</Badge>,
+              rightEl: <Badge status={!!user.kycLevel}>{resolveKycLevel(user.kycLevel)}</Badge>,
               action: () => router.push('/(protected)/(user-center)/settings/my-info/kyc'),
             },
           },

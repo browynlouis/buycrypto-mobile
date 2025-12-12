@@ -2,12 +2,11 @@ import React from 'react';
 
 import { useRegistration } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
+import { DescriptionHeader } from '@/components/shared/ui/description-header';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
 import { Loader } from '@/components/shared/ui/loader';
-
-import { AuthScreenTitle } from '../../_partials';
 
 export function RegistrationScreen() {
   const { form, submit, isSubmitting } = useRegistration();
@@ -23,7 +22,7 @@ export function RegistrationScreen() {
       <Loader isLoading={isSubmitting} />
 
       <Col gap={32}>
-        <AuthScreenTitle title="Register an account!" subText="Welcome to BuyCrypto" />
+        <DescriptionHeader title="Register an account!" subText="Welcome to BuyCrypto" />
 
         <Col gap={24}>
           <ControlledInput

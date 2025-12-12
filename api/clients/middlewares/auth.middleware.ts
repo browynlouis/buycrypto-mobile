@@ -67,7 +67,7 @@ export const AuthMiddleWare: Middleware = {
     } = options;
 
     const { status, ok } = response;
-    const { refreshAccessToken, clearTokens } = useAuthStore.getState();
+    const { refreshAccessToken, clear } = useAuthStore.getState();
 
     // Only handle failed responses
     if (!ok && status === 401) {
@@ -76,7 +76,7 @@ export const AuthMiddleWare: Middleware = {
 
       if (!accessToken) {
         // If refresh fails, clear tokens and return original 401
-        clearTokens();
+        clear();
         return response;
       }
 
@@ -88,10 +88,11 @@ export const AuthMiddleWare: Middleware = {
       }
 
       if (retry.status === 401) {
-        clearTokens();
+        clear();
         return retry;
       }
 
+      clear();
       return Promise.reject(retry);
     }
 

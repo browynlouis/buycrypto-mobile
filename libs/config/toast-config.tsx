@@ -9,14 +9,14 @@ export const toastConfig = (theme: AppTheme): ToastConfig => ({
   success: (props: ToastConfigParams<any>) => (
     <Toaster
       {...props}
-      icon={<Icon size="sm" name="TickCircle" color={theme.colors.Success['500']} />}
+      icon={<Icon size="sm" name="TickCircle" color={theme.colors.Success['600']} />}
     />
   ),
 
   error: (props: ToastConfigParams<any>) => (
     <Toaster
       {...props}
-      icon={<Icon size="sm" name="CloseCircle" color={theme.colors.Error['500']} />}
+      icon={<Icon size="sm" name="CloseCircle" color={theme.colors.Error['600']} />}
     />
   ),
 

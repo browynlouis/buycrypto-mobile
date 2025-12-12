@@ -8,7 +8,7 @@ import { Icon } from '@/components/shared/ui/icon';
 import { useAppStore, useAuthStore } from '@/store';
 
 export default function SettingsPage() {
-  const { clearTokens } = useAuthStore();
+  const { clear } = useAuthStore();
   const { setThemeAppearance, resolvedTheme, toggleThemeAppearance } = useAppStore();
 
   return (
@@ -37,7 +37,7 @@ export default function SettingsPage() {
         <SettingsScreen />
 
         {/* Logout Button -- Just clears token client side for now */}
-        <Button variant="plain" size="md" style={{ marginTop: 'auto' }} onPress={clearTokens}>
+        <Button variant="plain" size="md" style={{ marginTop: 'auto' }} onPress={clear}>
           Logout
         </Button>
       </Page>

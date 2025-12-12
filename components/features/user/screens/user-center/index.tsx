@@ -7,3 +7,4 @@ export * from './settings/my-info/security/password.screen';
 export * from './settings/my-info/security/security.screen';
 
 export * from './settings/my-info/kyc/kyc.screen';
+export * from './settings/my-info/kyc/personal-info/personal-info.screen';

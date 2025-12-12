@@ -343,6 +343,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/me/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserController_getMeProfile"];
+        put?: never;
+        post: operations["UserController_updateMeProfile"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/me/username": {
         parameters: {
             query?: never;
@@ -353,6 +369,22 @@ export interface paths {
         get?: never;
         put?: never;
         post: operations["UserController_updateUsername"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["KycController_getKycInfo"];
+        put?: never;
+        post: operations["KycController_createKyc"];
         delete?: never;
         options?: never;
         head?: never;
@@ -372,7 +404,7 @@ export interface components {
         };
         /** @enum {string} */
         VerificationType: "TOTP" | "EMAIL";
-        AuthResource: {
+        AuthResourceDto: {
             id: string;
             email: string;
             emailVerifiedAt: string | null;
@@ -526,9 +558,9 @@ export interface components {
         UpdatePasswordDto: {
             password: string;
         };
-        /** @enum {string} */
-        KycLevel: "NONE" | "IDENTITY_VERIFIED" | "ADDRESS_VERIFIED";
-        UserResource: {
+        /** @enum {number} */
+        KycLevel: 0 | 1 | 2;
+        UserResourceDto: {
             id: string;
             authId: string;
             uniqueId: string;
@@ -536,8 +568,33 @@ export interface components {
             username: string | null;
             createdAt: string;
         };
+        UserProfileResourceDto: {
+            id: string;
+            userId: string;
+            dob: string;
+            firstName: string;
+            lastName: string;
+            middleName: string | null;
+            createdAt: string;
+            updatedAt: string;
+        };
+        UpdateProfileDto: {
+            firstName: string;
+            lastName: string;
+            middleName?: string | null;
+            /** Format: date-time */
+            dob: string;
+            country: string;
+        };
         UpdateUsernameDto: {
             username: string;
+        };
+        /** @enum {number} */
+        KycType: 1 | 2;
+        KycResourceDto: {
+            id: string;
+            nextVerification: components["schemas"]["KycType"] | null;
+            currentVerification: components["schemas"]["KycType"] | null;
         };
         FormError: {
             field: string;
@@ -593,7 +650,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ResponseSchema"] & {
-                        data?: components["schemas"]["AuthResource"];
+                        data?: components["schemas"]["AuthResourceDto"];
                     };
                 };
             };
@@ -1140,7 +1197,7 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ResponseSchema"] & {
-                        data?: components["schemas"]["UserResource"];
+                        data?: components["schemas"]["UserResourceDto"];
                     };
                 };
             };
@@ -1150,6 +1207,82 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+        };
+    };
+    UserController_getMeProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: components["schemas"]["UserProfileResourceDto"];
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+        };
+    };
+    UserController_updateMeProfile: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateProfileDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestException"];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
                 };
             };
         };
@@ -1166,6 +1299,78 @@ export interface operations {
                 "application/json": components["schemas"]["UpdateUsernameDto"];
             };
         };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestException"];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
+        };
+    };
+    KycController_getKycInfo: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: components["schemas"]["KycResourceDto"];
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+        };
+    };
+    KycController_createKyc: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             201: {
                 headers: {

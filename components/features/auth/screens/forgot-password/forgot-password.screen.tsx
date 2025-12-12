@@ -2,12 +2,11 @@ import React from 'react';
 
 import { useForgotPassword } from '@/api/queries/auth';
 import { Button } from '@/components/shared/ui/button';
+import { DescriptionHeader } from '@/components/shared/ui/description-header';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
 import { Loader } from '@/components/shared/ui/loader';
-
-import { AuthScreenTitle } from '../../_partials';
 
 /**
  * This component is reponsible for the 'Forgot Password' flow for a user
@@ -28,7 +27,7 @@ export function ForgotPasswordScreen() {
       <Loader isLoading={isSubmitting} />
 
       <Col gap={32}>
-        <AuthScreenTitle
+        <DescriptionHeader
           title="Forgot your password?"
           subText="Provide the email associated with your account"
         />

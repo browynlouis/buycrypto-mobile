@@ -1,9 +1,10 @@
 import { useCallback, useState } from 'react';
 
 import { $queryClient } from '@/api/clients/query-client';
-import { useVerification } from '@/api/queries/auth';
+import { getAuthQueryOptions, useVerification } from '@/api/queries/auth';
 import { VerificationType } from '@/api/types';
 import { useVerificationContext } from '@/components/shared/providers/auth-provider/hooks';
+import { queryClient } from '@/components/shared/providers/query-provider';
 import { toast } from '@/libs/utils';
 
 /**
@@ -51,7 +52,14 @@ export function useToggleAuthApp({
       setShowSetup(data.status);
 
       // Disabling -> set toggle switch to false immediately
-      if (!data.status) setStatus(false);
+      if (!data.status) {
+        setStatus(false);
+        endVerification();
+      }
+
+      queryClient.invalidateQueries({
+        queryKey: getAuthQueryOptions().queryKey,
+      });
     },
     onError: (error) => toast().error(error.message),
   });
@@ -65,6 +73,10 @@ export function useToggleAuthApp({
       setShowSetup(false);
 
       endVerification();
+
+      queryClient.invalidateQueries({
+        queryKey: getAuthQueryOptions().queryKey,
+      });
     },
     onError: (error) => toast().error(error.message),
     onSettled: () => setIsSubmitting(false),

@@ -1,18 +1,21 @@
 import { Suspense } from '@suspensive/react';
 import { useSuspenseQueries } from '@tanstack/react-query';
+import { useRouter } from 'expo-router';
 import React from 'react';
 
 import { getMeQueryOptions } from '@/api/queries/user';
-import { Badge } from '@/components/shared/ui/badge';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
+import { Icon } from '@/components/shared/ui/icon';
 import { Loader } from '@/components/shared/ui/loader';
-import { Text } from '@/components/shared/ui/text';
 
+import { Intro } from './_partials/intro';
 import { KycLimits } from './_partials/kyc-limits';
 import { PersonalInfo } from './_partials/personal-info';
 
 const KycScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
+  const router = useRouter();
+
   const [
     {
       data: { data: user },
@@ -22,25 +25,32 @@ const KycScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   });
 
   return (
-    <Col gap={32}>
-      {/* Header */}
-      <Col gap={12}>
-        <Text size="text-lg" weight={700}>
-          Identity Status (KYC)
-        </Text>
-        <Badge status={user.kycLevel !== 'NONE'}>{user.kycLevel}</Badge>
+    <>
+      <Col gap={32}>
+        {/* Header */}
+        <Intro kycLevel={user.kycLevel} />
+
+        {/* Personal Info */}
+        <PersonalInfo />
+
+        {/* Verifications */}
+        <KycLimits />
       </Col>
 
-      {/* Personal Info */}
-      <PersonalInfo />
-
-      {/* Verifications */}
-      <KycLimits />
-
-      <Button variant="plain" style={{ marginTop: 'auto' }}>
-        {user.kycLevel === 'NONE' ? 'Begin Verification' : 'Upgrade'}
-      </Button>
-    </Col>
+      {user.kycLevel !== null && (
+        <Button
+          variant="plain"
+          size="md"
+          style={{ marginTop: 'auto' }}
+          endAdornment={user.kycLevel ? <Icon name="Shield" /> : <Icon name="ShieldPlus" />}
+          onPress={() =>
+            router.push('/(protected)/(user-center)/settings/my-info/kyc/personal-info')
+          }
+        >
+          {user.kycLevel ? 'Begin Verification' : 'Upgrade'}
+        </Button>
+      )}
+    </>
   );
 });
 
