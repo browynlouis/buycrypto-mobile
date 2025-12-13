@@ -21,7 +21,7 @@ export function CountrySelectionScreen() {
       />
 
       <Col gap={24}>
-        <CountrySelectInput control={control} setValue={setValue} />
+        <CountrySelectInput control={control} />
 
         <Button size="md" onPress={() => router.push('/(auth)/registration/credentials')}>
           Proceed

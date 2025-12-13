@@ -1,6 +1,6 @@
 import * as Clipboard from 'expo-clipboard';
 
-import { toast } from '@/libs/utils';
+import { toast } from '@/lib/utils';
 
 import { Button, ButtonProps } from './button';
 

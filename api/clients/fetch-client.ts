@@ -1,6 +1,6 @@
 import createFetchClient from 'openapi-fetch';
 
-import { appConfig } from '@/libs/config';
+import { appConfig } from '@/lib/config';
 
 import { paths } from '../generated/schema';
 import { AuthMiddleWare } from './middlewares/auth.middleware';

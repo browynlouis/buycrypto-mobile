@@ -5,7 +5,7 @@ import { getAuthQueryOptions, useVerification } from '@/api/queries/auth';
 import { VerificationType } from '@/api/types';
 import { useVerificationContext } from '@/components/shared/providers/auth-provider/hooks';
 import { queryClient } from '@/components/shared/providers/query-provider';
-import { toast } from '@/libs/utils';
+import { toast } from '@/lib/utils';
 
 /**
  * useToggleAuthenticatorApp

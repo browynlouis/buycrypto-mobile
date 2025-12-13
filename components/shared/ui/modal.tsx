@@ -2,7 +2,7 @@ import { Keyboard, Modal, TouchableWithoutFeedback } from 'react-native';
 import Toast from 'react-native-toast-message';
 import styled from 'styled-components/native';
 
-import { toastConfig } from '../../../libs/config';
+import { toastConfig } from '../../../lib/config';
 import { useAppTheme } from '../providers/theme-provider/hooks';
 import { Button } from './button';
 import { Icon } from './icon';
@@ -15,7 +15,7 @@ export interface AppModalProps
   fullHeight?: boolean;
 }
 
-const Backdrop = styled.View`
+export const Backdrop = styled.View`
   flex: 1;
   background-color: #0f1111cc;
   justify-content: flex-end;

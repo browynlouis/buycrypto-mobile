@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { $queryClient } from '@/api/clients/query-client';
 import { useVerification } from '@/api/queries/auth';
 import { resetPasswwordSchema as updatePasswordSchema } from '@/api/schemas/auth.schema';
-import { toast } from '@/libs/utils';
+import { toast } from '@/lib/utils';
 
 export const usePasswordUpdateAction = () => {
   const form = useForm({

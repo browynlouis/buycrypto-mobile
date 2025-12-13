@@ -8,8 +8,7 @@ import { $queryClient } from '@/api/clients/query-client';
 import { forgotPasswordSchema } from '@/api/schemas/auth.schema';
 import { ForgotPasswordDto, FormError } from '@/api/types';
 import { useVerificationContext } from '@/components/shared/providers/auth-provider/hooks';
-import { UnprocessableEntityException } from '@/constants/exceptions';
-import { mapServerErrorsToClient, toast } from '@/libs/utils';
+import { mapServerErrorsToClient, toast } from '@/lib/utils';
 
 export type UseForgotPasswordReturn = {
   isSubmitting: boolean;
@@ -61,7 +60,7 @@ export function useForgotPassword(): UseForgotPasswordReturn {
     onError: (error) => {
       toast().error(error.message);
 
-      if (error.name === UnprocessableEntityException) {
+      if (error.statusCode === 422) {
         mapServerErrorsToClient(form.setError, error.details?.formErrors as FormError[]);
       }
     },

@@ -1,8 +1,10 @@
 import { z } from 'zod';
 
+import { countrySchema } from './helpers.schema';
+
 const registerSchema = z.object({
   email: z.email(),
-  country: z.string(),
+  country: countrySchema,
   password: z.string().min(8),
 });
 

@@ -11,10 +11,11 @@ import Toast from 'react-native-toast-message';
 import { Page } from '@/components/shared/layouts/page';
 import { AuthenticatedProvider } from '@/components/shared/providers/auth-provider/authenticated-provider';
 import { VerificationProvider } from '@/components/shared/providers/auth-provider/verification-provider';
+import { ConfirmationProvider } from '@/components/shared/providers/confirmation-provider/confirmation-provider';
 import { QueryProvider } from '@/components/shared/providers/query-provider';
 import { useAppTheme } from '@/components/shared/providers/theme-provider/hooks';
 import { ThemeProvider } from '@/components/shared/providers/theme-provider/theme-provider';
-import { toastConfig } from '@/libs/config';
+import { toastConfig } from '@/lib/config';
 import { useAppStore, useAuthStore } from '@/store';
 import { getTheme } from '@/styles';
 
@@ -43,24 +44,26 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider>
-      <QueryProvider>
-        <QueryErrorResetBoundary>
-          {({ reset }) => {
-            const { resolvedTheme } = useAppStore();
+      <ConfirmationProvider>
+        <QueryProvider>
+          <QueryErrorResetBoundary>
+            {({ reset }) => {
+              const { resolvedTheme } = useAppStore();
 
-            return (
-              <ErrorBoundary fallback={<Page />} onError={() => null}>
-                <AuthenticatedProvider>
-                  <VerificationProvider>
-                    <Routes />
-                    <Toast config={toastConfig(getTheme(resolvedTheme))} />
-                  </VerificationProvider>
-                </AuthenticatedProvider>
-              </ErrorBoundary>
-            );
-          }}
-        </QueryErrorResetBoundary>
-      </QueryProvider>
+              return (
+                <ErrorBoundary fallback={<Page />} onError={() => null}>
+                  <AuthenticatedProvider>
+                    <VerificationProvider>
+                      <Routes />
+                      <Toast config={toastConfig(getTheme(resolvedTheme))} />
+                    </VerificationProvider>
+                  </AuthenticatedProvider>
+                </ErrorBoundary>
+              );
+            }}
+          </QueryErrorResetBoundary>
+        </QueryProvider>
+      </ConfirmationProvider>
     </ThemeProvider>
   );
 }

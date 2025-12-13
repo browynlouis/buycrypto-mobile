@@ -8,8 +8,7 @@ import { loginSchema } from '@/api/schemas/auth.schema';
 import { FormError, LoginDto } from '@/api/types';
 import { useVerificationContext } from '@/components/shared/providers/auth-provider/hooks';
 import { queryClient } from '@/components/shared/providers/query-provider';
-import { UnprocessableEntityException } from '@/constants/exceptions';
-import { mapServerErrorsToClient, toast } from '@/libs/utils';
+import { mapServerErrorsToClient, toast } from '@/lib/utils';
 import { useAuthStore } from '@/store';
 
 import { getAuthQueryOptions } from '../../options';
@@ -59,7 +58,7 @@ export function useLogin(): UseLoginReturn {
     onError: (error) => {
       toast().error(error.message);
 
-      if (error.name === UnprocessableEntityException) {
+      if (error.statusCode === 422) {
         mapServerErrorsToClient(form.setError, error.details?.formErrors as FormError[]);
       }
     },

@@ -1,6 +1,5 @@
 import React, { ReactNode, useState } from 'react';
 
-import { Loader } from '../../ui/loader';
 import { AppModal } from '../../ui/modal';
 import { VerificationForm } from './components/verification-form';
 import { VerificationContext, VerificationFormProps } from './types';
@@ -24,8 +23,6 @@ export function VerificationProvider({ children }: { children: ReactNode }) {
       value={{ startVerification, endVerification, setIsSubmitting, isSubmitting }}
     >
       {children}
-
-      <Loader isLoading={isSubmitting} />
 
       {currentFlow && (
         <AppModal visible={!!currentFlow} handleClose={endVerification}>

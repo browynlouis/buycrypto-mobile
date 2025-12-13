@@ -571,7 +571,9 @@ export interface components {
         UserProfileResourceDto: {
             id: string;
             userId: string;
+            /** Format: date-time */
             dob: string;
+            country: string;
             firstName: string;
             lastName: string;
             middleName: string | null;
@@ -585,6 +587,22 @@ export interface components {
             /** Format: date-time */
             dob: string;
             country: string;
+        };
+        ConflictResponseSchema: {
+            /** @example ConflictResponseSchema */
+            name: string;
+            /** @example Conflict */
+            message: string;
+            /**
+             * @default 400
+             * @example 409
+             */
+            statusCode: number;
+            /**
+             * @default {}
+             * @example {}
+             */
+            details: Record<string, never>;
         };
         UpdateUsernameDto: {
             username: string;
@@ -1230,6 +1248,14 @@ export interface operations {
                     };
                 };
             };
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"];
+                };
+            };
             401: {
                 headers: {
                     [name: string]: unknown;
@@ -1258,7 +1284,9 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ResponseSchema"];
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: components["schemas"]["UserProfileResourceDto"];
+                    };
                 };
             };
             400: {
@@ -1322,6 +1350,14 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConflictResponseSchema"];
                 };
             };
             422: {

@@ -13,6 +13,7 @@ interface SelectInputProps<T> extends Omit<InputProps, 'defaultValue' | 'value'>
   onSelect?: (item: T) => void;
   renderItem: (item: T) => React.ReactElement;
   renderValue: (item: T | null) => string | undefined;
+  disabled?: boolean;
 }
 
 export function SelectInput<T = any>({
@@ -22,6 +23,7 @@ export function SelectInput<T = any>({
   renderItem,
   renderValue,
   defaultValue,
+  disabled,
   ...props
 }: SelectInputProps<T>) {
   const [showOptions, setShowOptions] = useState<boolean>(false);
@@ -40,7 +42,11 @@ export function SelectInput<T = any>({
 
   return (
     <>
-      <TouchableOpacity onPress={() => setShowOptions(true)} activeOpacity={0.9}>
+      <TouchableOpacity
+        onPress={() => setShowOptions(true)}
+        activeOpacity={0.9}
+        disabled={disabled}
+      >
         <Input
           editable={false}
           endAdornment={<Icon name="ArrowDown2" />}

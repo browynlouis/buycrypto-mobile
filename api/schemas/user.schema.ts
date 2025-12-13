@@ -1,5 +1,7 @@
 import z from 'zod';
 
+import { countrySchema, dobSchema } from './helpers.schema';
+
 const usernameSchema = z.object({
   username: z
     .string()
@@ -18,4 +20,12 @@ const usernameSchema = z.object({
     }),
 });
 
-export { usernameSchema };
+const userProfileSchema = z.object({
+  dob: dobSchema,
+  country: countrySchema,
+  lastName: z.string().min(1),
+  firstName: z.string().min(1),
+  middleName: z.string().nullish(),
+});
+
+export { usernameSchema, userProfileSchema };

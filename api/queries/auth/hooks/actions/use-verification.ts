@@ -2,7 +2,7 @@ import { $queryClient } from '@/api/clients/query-client';
 import { VerificationPurpose, VerificationType } from '@/api/types';
 import { useVerificationContext } from '@/components/shared/providers/auth-provider/hooks';
 import { VerificationCallbacks } from '@/components/shared/providers/auth-provider/types';
-import { toast } from '@/libs/utils';
+import { toast } from '@/lib/utils';
 
 /**
  * useVerification

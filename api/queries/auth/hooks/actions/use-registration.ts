@@ -5,8 +5,7 @@ import { $queryClient } from '@/api/clients/query-client';
 import { FormError } from '@/api/types';
 import { useVerificationContext } from '@/components/shared/providers/auth-provider/hooks';
 import { queryClient } from '@/components/shared/providers/query-provider';
-import { UnprocessableEntityException } from '@/constants/exceptions';
-import { mapServerErrorsToClient, toast } from '@/libs/utils';
+import { mapServerErrorsToClient, toast } from '@/lib/utils';
 import { useAuthStore } from '@/store';
 
 import { RegistrationFormContext } from '../../../../../components/features/auth/screens/registration/form-provider/registration-form-provider';
@@ -59,10 +58,10 @@ export function useRegistration(): UseRegisterReturn {
         },
       });
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast().error(error.message);
 
-      if (error.name === UnprocessableEntityException) {
+      if (error.statusCode === 422) {
         mapServerErrorsToClient(form.setError, error.details?.formErrors as FormError[]);
       }
     },

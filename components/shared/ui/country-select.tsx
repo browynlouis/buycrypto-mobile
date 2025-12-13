@@ -1,23 +1,27 @@
 import { Suspense } from '@suspensive/react';
-import { Control, Controller, UseFormSetValue } from 'react-hook-form';
+import { Control, Controller } from 'react-hook-form';
 import { View } from 'react-native';
 
 import { $queryClient } from '@/api/clients/query-client';
 
+import { useAppTheme } from '../providers/theme-provider/hooks';
 import { Icon } from './icon';
-import { InputGroup, InputHelperText } from './input';
+import { InputGroup, InputHelperText, inputVariants } from './input';
 import { Loader } from './loader';
 import { SelectInput } from './select-input';
 import { Text } from './text';
 
 interface CountrySelectInputProps {
+  disabled?: boolean;
   control: Control<any>;
-  setValue: UseFormSetValue<any>;
+  placeholder?: string;
 }
 
 const CountrySelectInput = Suspense.with(
   { fallback: <Loader isLoading /> },
-  ({ control, setValue }: CountrySelectInputProps) => {
+  ({ control, placeholder = 'Select your country…', disabled }: CountrySelectInputProps) => {
+    const theme = useAppTheme();
+
     const {
       data: { data: countries },
     } = $queryClient.useSuspenseQuery('get', '/app/metadata/supported-countries');
@@ -26,22 +30,19 @@ const CountrySelectInput = Suspense.with(
       <Controller
         name="country"
         control={control}
-        render={({ field, fieldState: { error } }) => (
-          <InputGroup>
+        render={({ field, fieldState: { error, invalid } }) => (
+          <InputGroup style={{ flex: 1 }}>
             <SelectInput<(typeof countries)[0]>
               options={countries}
-              placeholder="Select your country…"
+              disabled={disabled}
+              placeholder={placeholder}
               startAdornment={<Icon name="Flag" />}
               endAdornment={<Icon name="ArrowDown2" />}
               value={countries.find((c) => c.code === field.value) ?? null}
               onSelect={(item) => {
-                field.onChange(item.code);
-                setValue('country', item.code, {
-                  shouldDirty: true,
-                  shouldTouch: true,
-                  shouldValidate: true,
-                });
+                !disabled && field.onChange(item.code);
               }}
+              wrapperStyle={invalid ? { borderColor: inputVariants(theme, 'danger') } : undefined}
               renderValue={(item) => `${item?.name} - (${item?.callingCode})`}
               renderItem={(item) => (
                 <View style={{ paddingVertical: 24 }}>

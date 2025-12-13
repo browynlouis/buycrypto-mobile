@@ -36,7 +36,7 @@ export interface ControlledInputProps<T extends FieldValues> extends InputProps 
   helperText?: React.ReactNode;
 }
 
-const inputVariants = (theme: AppTheme, variants: InputVariants) => {
+export const inputVariants = (theme: AppTheme, variants: InputVariants) => {
   const styles = {
     default: 'transparent',
     danger: theme.colors.Error[400],
@@ -131,7 +131,7 @@ function ControlledInput<T extends FieldValues>({
       name={name}
       control={control}
       render={({ field: { onChange, value, onBlur }, fieldState: { error, invalid } }) => (
-        <InputGroup>
+        <InputGroup style={{ flex: 1 }}>
           {label && <InputLabel weight={500}>{label}</InputLabel>}
           <Input
             value={value ?? ''} // controlled value

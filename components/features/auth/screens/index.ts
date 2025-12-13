@@ -1,4 +1,4 @@
-export * from './login/login.screen';
+export * from './login.screen';
 
 export * from './forgot-password/forgot-password.screen';
 export * from './forgot-password/reset-password.screen';

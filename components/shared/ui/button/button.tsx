@@ -25,14 +25,14 @@ function Button({ children, style, startAdornment, endAdornment, variant, ...pro
 
   switch (props.size) {
     case 'md':
-      textSize = 'text-lg';
-      break;
-    case 'lg':
-      textSize = 'text-xl';
-    case 'sm':
       textSize = 'text-md';
       break;
+    case 'lg':
+      textSize = 'text-lg';
+      break;
+    case 'sm':
     default:
+      textSize = 'text-sm';
   }
 
   return (

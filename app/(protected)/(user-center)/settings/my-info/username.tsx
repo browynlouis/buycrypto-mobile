@@ -1,21 +1,16 @@
-import { zodResolver } from '@hookform/resolvers/zod';
 import { Suspense } from '@suspensive/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
+import React from 'react';
+import { Controller } from 'react-hook-form';
 
-import { $queryClient } from '@/api/clients/query-client';
-import { getMeQueryOptions, userKeys } from '@/api/queries/user';
-import { usernameSchema } from '@/api/schemas/user.schema';
+import { getMeQueryOptions, useUsernameUpdateAction } from '@/api/queries/user';
 import { Page } from '@/components/shared/layouts/page';
-import { queryClient } from '@/components/shared/providers/query-provider';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Header } from '@/components/shared/ui/header';
 import { Icon } from '@/components/shared/ui/icon';
 import { Input, InputGroup, InputHelperText } from '@/components/shared/ui/input';
 import { Loader } from '@/components/shared/ui/loader';
-import { mapServerErrorsToClient, toast } from '@/libs/utils';
 
 /**
  * UsernamePage Component
@@ -31,45 +26,16 @@ const UsernamePage = Suspense.with({ fallback: <Loader isLoading /> }, () => {
     data: { data: user },
   } = useSuspenseQuery(getMeQueryOptions({ refetchOnMount: true }));
 
-  // Setup form with default values and validation
-  const { control, getValues, handleSubmit, ...form } = useForm({
-    mode: 'all',
-    resolver: zodResolver(usernameSchema),
-    defaultValues: {
-      username: user.username ?? '',
-    },
+  const { form, submit, isSubmitting } = useUsernameUpdateAction({
+    username: user.username,
   });
 
-  useEffect(() => {
-    user.username && form.reset({ username: user.username });
-  }, [user]);
-
-  // Mutation to update username
-  const { mutate, isPending, reset } = $queryClient.useMutation('post', '/users/me/username', {
-    onSuccess(data, variables) {
-      // Reset mutation state and form values
-      reset();
-      form.reset(variables.body);
-
-      // Set username of the user query
-      queryClient.invalidateQueries({
-        queryKey: userKeys.me,
-      });
-    },
-    onError(error) {
-      toast().error(error.message);
-
-      // Map server-side validation errors to form fields
-      if (error.details?.formErrors) {
-        mapServerErrorsToClient(form.setError, error.details?.formErrors);
-      }
-    },
-  });
+  const { handleSubmit, control } = form;
 
   return (
     <>
       {/* Loading Indicator */}
-      <Loader isLoading={isPending} />
+      <Loader isLoading={isSubmitting} />
 
       {/* Page Header */}
       <Header title="Username" />
@@ -98,7 +64,7 @@ const UsernamePage = Suspense.with({ fallback: <Loader isLoading /> }, () => {
                 <Button
                   disabled={invalid || !isDirty}
                   onPress={handleSubmit((values) => {
-                    mutate({ body: values });
+                    submit(values);
                   })}
                 >
                   Update
