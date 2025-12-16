@@ -88,7 +88,7 @@ function Routes() {
 
   const { auth } = useAuthStore();
   const { resolvedTheme } = useAppStore();
-
+  console.log(auth);
   return (
     <View
       style={{
@@ -109,6 +109,7 @@ function Routes() {
       >
         <Stack.Protected guard={!auth}>
           <Stack.Screen name="(auth)" />
+          <Stack.Screen name="index" />
         </Stack.Protected>
 
         <Stack.Protected guard={!!auth}>

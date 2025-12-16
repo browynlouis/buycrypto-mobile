@@ -3,11 +3,12 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import { snakeCase } from 'lodash';
 import React, { useMemo } from 'react';
-import { ScrollView, View } from 'react-native';
+import { ScrollView } from 'react-native';
 
 import { getMeQueryOptions } from '@/api/queries/user';
 import { ProfileHeader } from '@/components/features/user/_partials/profile-header';
 import { Badge } from '@/components/shared/ui/badge';
+import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { Loader } from '@/components/shared/ui/loader';
 import { MenuList, MenuListItem } from '@/components/shared/ui/menu-list-item';
@@ -28,15 +29,15 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
           {
             title: 'Username',
             data: {
-              leftEl: <Icon name="UserEdit" />,
+              leftEl: <Icon name="UserEdit" size={'sm'} />,
               rightEl: <Text size="text-sm">{user.username ?? '--'}</Text>,
               action: () => router.push('/(protected)/(user-center)/settings/my-info/username'),
             },
           },
           {
-            title: 'Identity Verification',
+            title: 'KYC Verification',
             data: {
-              leftEl: <Icon name="Personalcard" />,
+              leftEl: <Icon name="Personalcard" size={'sm'} />,
               rightEl: <Badge status={!!user.kycLevel}>{resolveKycLevel(user.kycLevel)}</Badge>,
               action: () => router.push('/(protected)/(kyc)'),
             },
@@ -44,7 +45,7 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
           {
             title: 'Security',
             data: {
-              leftEl: <Icon name="Key" />,
+              leftEl: <Icon name="Key" size={'sm'} />,
               action: () => router.push('/(protected)/(user-center)/settings/my-info/security'),
             },
           },
@@ -81,10 +82,12 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
         if (!section) return null;
 
         return (
-          <ScrollView contentContainerStyle={{ paddingVertical: 16, gap: 32 }}>
-            {section.data.map((item) => (
-              <MenuListItem data={item.data} title={item.title} key={toKey(item.title)} />
-            ))}
+          <ScrollView contentContainerStyle={{ paddingVertical: 16 }}>
+            <Col gap={32}>
+              {section.data.map((item) => (
+                <MenuListItem data={item.data} title={item.title} key={toKey(item.title)} />
+              ))}
+            </Col>
           </ScrollView>
         );
       },
@@ -92,7 +95,7 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   );
 
   return (
-    <View style={{ gap: 24, flex: 1 }}>
+    <Col gap={32} style={{ flex: 1 }}>
       <ProfileHeader user={user} />
 
       {/* Tabbed view of settings section */}
@@ -103,7 +106,7 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
         routes={routes}
         renderScene={renderScene}
       />
-    </View>
+    </Col>
   );
 });
 

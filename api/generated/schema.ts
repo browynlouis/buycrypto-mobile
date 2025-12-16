@@ -375,7 +375,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/kyc": {
+    "/kyc/status": {
         parameters: {
             query?: never;
             header?: never;
@@ -383,6 +383,22 @@ export interface paths {
             cookie?: never;
         };
         get: operations["KycController_getKycInfo"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/kyc/request": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
         put?: never;
         post: operations["KycController_createKyc"];
         delete?: never;
@@ -606,13 +622,6 @@ export interface components {
         };
         UpdateUsernameDto: {
             username: string;
-        };
-        /** @enum {number} */
-        KycType: 1 | 2;
-        KycResourceDto: {
-            id: string;
-            nextVerification: components["schemas"]["KycType"] | null;
-            currentVerification: components["schemas"]["KycType"] | null;
         };
         FormError: {
             field: string;
@@ -1385,7 +1394,12 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ResponseSchema"] & {
-                        data?: components["schemas"]["KycResourceDto"];
+                        data?: {
+                            /** @enum {string|null} */
+                            currentKycLevel: 0 | 1 | 2 | null;
+                            /** @enum {string|null} */
+                            nextKycLevel: 0 | 1 | 2 | null;
+                        };
                     };
                 };
             };
@@ -1395,6 +1409,14 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
                 };
             };
         };
@@ -1412,7 +1434,21 @@ export interface operations {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: {
+                            url: string;
+                        };
+                    };
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestException"];
+                };
             };
             401: {
                 headers: {
@@ -1420,6 +1456,14 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
                 };
             };
         };

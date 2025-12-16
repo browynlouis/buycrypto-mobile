@@ -9,7 +9,7 @@ import { mapServerErrorsToClient, toast } from '@/lib/utils';
 
 import { userKeys } from '../../keys';
 
-export function useUsernameUpdateAction({ username }: { username: string | null }) {
+export function useUpdateUsername({ username }: { username: string | null }) {
   // Setup form with default values and validation
   const form = useForm({
     mode: 'all',
@@ -25,15 +25,20 @@ export function useUsernameUpdateAction({ username }: { username: string | null 
 
   // Mutation to update username
   const { mutate, isPending, reset } = $queryClient.useMutation('post', '/users/me/username', {
-    onSuccess(data, variables) {
+    async onSuccess(data, variables) {
       // Reset mutation state and form values
       reset();
       form.reset(variables.body);
 
-      // Set username of the user query
-      queryClient.invalidateQueries({
-        queryKey: userKeys.me,
-      });
+      try {
+        // Set username of the user query
+        await queryClient.invalidateQueries({
+          queryKey: userKeys.me,
+          refetchType: 'all',
+        });
+      } catch (error: any) {
+        toast().error('An error occurred! Please try again later');
+      }
     },
     onError(error) {
       toast().error(error.message);

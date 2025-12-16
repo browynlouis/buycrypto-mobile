@@ -3,8 +3,10 @@ import { useSuspenseQueries } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
 import React from 'react';
 
-import { getMeProfileQueryOptions, getMeQueryOptions } from '@/api/queries/user';
+import { getKycInfoQueryOptions } from '@/api/queries/kyc';
+import { getMeProfileQueryOptions } from '@/api/queries/user';
 import { UserProfileResource } from '@/api/types';
+import { BottomScreenWrapper } from '@/components/shared/ui/bottom-screen-wrapper';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
@@ -19,50 +21,44 @@ const KycScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
 
   const [
     {
-      data: { data: user },
-    },
-    {
       data: { data: profile },
     },
+    {
+      data: { data: kyc },
+    },
   ] = useSuspenseQueries({
-    queries: [getMeQueryOptions(), getMeProfileQueryOptions()],
+    queries: [getMeProfileQueryOptions(), getKycInfoQueryOptions()],
   });
 
   return (
     <>
       <Col gap={32}>
         {/* Header */}
-        <Intro kycLevel={user.kycLevel} />
+        <Intro kycLevel={kyc.currentKycLevel} />
 
         {/* Personal Info */}
         <PersonalInfo profile={profile as UserProfileResource | null} />
 
         {/* Verifications */}
-        <KycLimits kycLevel={user.kycLevel} />
+        <KycLimits kycLevel={kyc.currentKycLevel} />
       </Col>
 
       {/* If user kyc is yet to be verified, allow profile update -  */}
-      {user.kycLevel === 0 ? (
+      <BottomScreenWrapper>
         <Button
           variant="plain"
           size="lg"
-          style={{ marginTop: 'auto' }}
           endAdornment={<Icon name="ArrowRight2" />}
-          onPress={() => router.push('/(protected)/(user-center)/settings/my-info/personal-info')}
+          onPress={() => {
+            if (!kyc.currentKycLevel) {
+              router.push('/(protected)/(user-center)/settings/my-info/personal-info');
+            } else {
+            }
+          }}
         >
           Continue
         </Button>
-      ) : (
-        <Button
-          variant="plain"
-          size="lg"
-          onPress={() => {}}
-          style={{ marginTop: 'auto' }}
-          endAdornment={<Icon name="ArrowRight2" />}
-        >
-          {!user.kycLevel ? 'Begin Verification' : 'Upgrade Verification'}
-        </Button>
-      )}
+      </BottomScreenWrapper>
     </>
   );
 });

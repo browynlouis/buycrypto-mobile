@@ -8,8 +8,10 @@ import { Button } from './button';
 import { Icon } from './icon';
 import { Text } from './text';
 
-export interface AppModalProps
-  extends Omit<React.ComponentProps<typeof Modal>, 'onDismiss' | 'onRequestClose'> {
+export interface AppModalProps extends Omit<
+  React.ComponentProps<typeof Modal>,
+  'onDismiss' | 'onRequestClose'
+> {
   handleClose?: (visible?: boolean) => void;
   modalTitle?: string;
   fullHeight?: boolean;
@@ -36,8 +38,9 @@ const Header = styled.View`
   padding: 8px 24px;
 `;
 
-const Content = styled.View<{ fullHeight?: boolean }>`
+const Content = styled.View`
   padding: 8px 24px;
+  flex: 1;
 `;
 
 export function AppModal({
@@ -86,7 +89,7 @@ export function AppModal({
               </Button>
             </Header>
 
-            <Content fullHeight={fullHeight}>{children}</Content>
+            <Content>{children}</Content>
           </Wrapper>
         </Backdrop>
       </TouchableWithoutFeedback>

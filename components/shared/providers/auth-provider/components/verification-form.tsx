@@ -1,11 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import React, { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { View } from 'react-native';
 import z from 'zod';
 
 import { TwoFactorAuthVerificationDto, VerificationType } from '@/api/types';
+import { BottomScreenWrapper } from '@/components/shared/ui/bottom-screen-wrapper';
 import { Button, StyledButton } from '@/components/shared/ui/button';
+import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
 import { ControlledInput } from '@/components/shared/ui/input';
 import { Text } from '@/components/shared/ui/text';
@@ -49,48 +50,52 @@ export function VerificationForm({ types, onSubmit, onSend }: VerificationFormPr
   });
 
   return (
-    <View style={{ gap: 24 }}>
-      {types.map((type) => {
-        const config = verificationMap[type];
+    <Col gap={48}>
+      <Col gap={24}>
+        {types.map((type) => {
+          const config = verificationMap[type];
 
-        if (!config) return null;
+          if (!config) return null;
 
-        return (
-          <ControlledInput
-            key={type}
-            name={type}
-            control={control}
-            label={config.label}
-            startAdornment={config.startIcon}
-            endAdornment={
-              config.showSend &&
-              onSend?.[type] && (
-                <StyledButton
-                  variant="text"
-                  style={{ height: 'auto' }}
-                  onPress={() => onSend[type]?.()}
-                >
-                  <Text>Send</Text>
-                </StyledButton>
-              )
-            }
-          />
-        );
-      })}
-
-      <Button
-        disabled={!isValid}
-        onPress={handleSubmit((formValues) => {
-          const values = Object.entries(formValues).map(([key, value]) => ({
-            key,
-            value,
-          })) as TwoFactorAuthVerificationDto;
-
-          onSubmit?.(values);
+          return (
+            <ControlledInput
+              key={type}
+              name={type}
+              control={control}
+              label={config.label}
+              startAdornment={config.startIcon}
+              endAdornment={
+                config.showSend &&
+                onSend?.[type] && (
+                  <StyledButton
+                    variant="text"
+                    style={{ height: 'auto' }}
+                    onPress={() => onSend[type]?.()}
+                  >
+                    <Text>Send</Text>
+                  </StyledButton>
+                )
+              }
+            />
+          );
         })}
-      >
-        Submit
-      </Button>
-    </View>
+      </Col>
+
+      <BottomScreenWrapper>
+        <Button
+          disabled={!isValid}
+          onPress={handleSubmit((formValues) => {
+            const values = Object.entries(formValues).map(([key, value]) => ({
+              key,
+              value,
+            })) as TwoFactorAuthVerificationDto;
+
+            onSubmit?.(values);
+          })}
+        >
+          Submit
+        </Button>
+      </BottomScreenWrapper>
+    </Col>
   );
 }

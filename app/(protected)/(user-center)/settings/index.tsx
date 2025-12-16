@@ -2,6 +2,7 @@ import React from 'react';
 
 import { SettingsScreen } from '@/components/features/user/screens';
 import { Page } from '@/components/shared/layouts/page';
+import { BottomScreenWrapper } from '@/components/shared/ui/bottom-screen-wrapper';
 import { Button } from '@/components/shared/ui/button';
 import { Header } from '@/components/shared/ui/header';
 import { Icon } from '@/components/shared/ui/icon';
@@ -36,10 +37,17 @@ export default function SettingsPage() {
         {/* Main Content */}
         <SettingsScreen />
 
-        {/* Logout Button -- Just clears token client side for now */}
-        <Button variant="plain" size="md" style={{ marginTop: 'auto' }} onPress={clear}>
-          Logout
-        </Button>
+        <BottomScreenWrapper>
+          {/* Logout Button -- Just clears token client side for now */}
+          <Button
+            variant="plain"
+            size="md"
+            onPress={clear}
+            endAdornment={<Icon name="LogoutCurve" />}
+          >
+            Logout
+          </Button>
+        </BottomScreenWrapper>
       </Page>
     </>
   );

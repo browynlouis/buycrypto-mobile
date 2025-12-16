@@ -31,21 +31,23 @@ export function ResetPasswordScreen() {
           subText="Create a new password for your account below"
         />
 
-        <ControlledInput
-          hiddenField
-          name="password"
-          control={control}
-          startAdornment={<Icon name="Lock" />}
-          placeholder="Please enter your password"
-        />
+        <Col gap={24}>
+          <ControlledInput
+            hiddenField
+            name="password"
+            control={control}
+            startAdornment={<Icon name="Lock" />}
+            placeholder="Please enter your password"
+          />
 
-        <ControlledInput
-          hiddenField
-          control={control}
-          name="confirmPassword"
-          startAdornment={<Icon name="Lock" />}
-          placeholder="Please confirm your password"
-        />
+          <ControlledInput
+            hiddenField
+            control={control}
+            name="confirmPassword"
+            startAdornment={<Icon name="Lock" />}
+            placeholder="Please confirm your password"
+          />
+        </Col>
 
         <Button disabled={!isValid} onPress={handleSubmit((values) => submit(email, values))}>
           Submit

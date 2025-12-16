@@ -1,4 +1,5 @@
 import { useFonts } from 'expo-font';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { useColorScheme } from 'react-native';
 import { ThemeProvider as StyledComponentThemeProvider } from 'styled-components/native';
@@ -21,6 +22,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       theme={getTheme(themeAppearance === 'system' ? colorScheme : resolvedTheme)}
     >
       {children}
+      <StatusBar
+        style={themeAppearance === 'system' ? 'auto' : resolvedTheme === 'light' ? 'dark' : 'light'}
+      />
     </StyledComponentThemeProvider>
   );
 }

@@ -9,7 +9,7 @@ import { Text } from '@/components/shared/ui/text';
 export default function Index() {
   return (
     <Page>
-      <Link href="/(auth)" asChild>
+      <Link href="/(auth)/login" asChild>
         <Text>Go to Auth</Text>
       </Link>
 

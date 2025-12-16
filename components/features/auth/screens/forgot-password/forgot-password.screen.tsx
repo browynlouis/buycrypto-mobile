@@ -32,12 +32,14 @@ export function ForgotPasswordScreen() {
           subText="Provide the email associated with your account"
         />
 
-        <ControlledInput
-          name="email"
-          control={control}
-          placeholder="e.g jon@doe.com"
-          startAdornment={<Icon name="User" />}
-        />
+        <Col gap={24}>
+          <ControlledInput
+            name="email"
+            control={control}
+            placeholder="e.g jon@doe.com"
+            startAdornment={<Icon name="User" />}
+          />
+        </Col>
 
         <Button size="md" disabled={!isValid || isSubmitting} onPress={handleSubmit(submit)}>
           Submit

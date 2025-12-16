@@ -1,4 +1,4 @@
-import { usePasswordUpdateAction } from '@/api/queries/user';
+import { useUpdatePassword } from '@/api/queries/user';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks';
 const PasswordScreen = () => {
   const auth = useAuth();
 
-  const { submit, isSubmitting, form } = usePasswordUpdateAction();
+  const { submit, isSubmitting, form } = useUpdatePassword();
 
   const {
     control,
@@ -22,21 +22,23 @@ const PasswordScreen = () => {
       <Loader isLoading={isSubmitting} />
 
       <Col gap={32}>
-        <ControlledInput
-          hiddenField
-          name="password"
-          control={control}
-          startAdornment={<Icon name="Lock" />}
-          placeholder="Please enter your password"
-        />
+        <Col gap={24}>
+          <ControlledInput
+            hiddenField
+            name="password"
+            control={control}
+            startAdornment={<Icon name="Lock" />}
+            placeholder="Please enter your password"
+          />
 
-        <ControlledInput
-          hiddenField
-          control={control}
-          name="confirmPassword"
-          startAdornment={<Icon name="Lock" />}
-          placeholder="Please confirm your password"
-        />
+          <ControlledInput
+            hiddenField
+            control={control}
+            name="confirmPassword"
+            startAdornment={<Icon name="Lock" />}
+            placeholder="Please confirm your password"
+          />
+        </Col>
 
         <Button disabled={!isValid} onPress={handleSubmit((values) => submit(auth.twofaAuths))}>
           Update Password

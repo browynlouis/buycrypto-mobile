@@ -1,13 +1,9 @@
 import { Suspense } from '@suspensive/react';
 import { useSuspenseQueries } from '@tanstack/react-query';
 import { Controller } from 'react-hook-form';
-import { View } from 'react-native';
 
-import {
-  getMeProfileQueryOptions,
-  getMeQueryOptions,
-  useProfileUpdateAction,
-} from '@/api/queries/user';
+import { getKycInfoQueryOptions } from '@/api/queries/kyc';
+import { getMeProfileQueryOptions, useUpdateProfile } from '@/api/queries/user';
 import { Button } from '@/components/shared/ui/button';
 import { CountrySelectInput } from '@/components/shared/ui/country-select';
 import { DatePicker } from '@/components/shared/ui/date-picker';
@@ -25,16 +21,16 @@ import { Loader } from '@/components/shared/ui/loader';
 const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const [
     {
-      data: { data: user },
-    },
-    {
       data: { data: profile },
     },
+    {
+      data: { data: kyc },
+    },
   ] = useSuspenseQueries({
-    queries: [getMeQueryOptions(), getMeProfileQueryOptions()],
+    queries: [getMeProfileQueryOptions(), getKycInfoQueryOptions()],
   });
 
-  const { form, submit, isSubmitting } = useProfileUpdateAction({
+  const { form, submit, isSubmitting } = useUpdateProfile({
     defaultValues: {
       country: profile?.country ?? '',
       firstName: profile?.firstName ?? '',
@@ -50,7 +46,7 @@ const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () 
     formState: { isValid },
   } = form;
 
-  const isDisabled = isSubmitting || Boolean(user.kycLevel);
+  const isDisabled = isSubmitting || Boolean(kyc.currentKycLevel);
 
   return (
     <>
@@ -114,15 +110,12 @@ const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () 
             <CountrySelectInput control={control} disabled={isDisabled} />
           </InputGroup>
         </Col>
-      </Col>
 
-      {!user.kycLevel && (
-        <View style={{ marginTop: 'auto' }}>
+        {/* Display only when user has no kyc level  */}
+        {!kyc.currentKycLevel && (
           <Button
             size="lg"
             disabled={!isValid}
-            style={{ marginTop: 24 }}
-            variant="plain"
             endAdornment={<Icon name="ArrowRight2" />}
             onPress={handleSubmit((values) => {
               submit({
@@ -133,8 +126,8 @@ const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () 
           >
             Continue
           </Button>
-        </View>
-      )}
+        )}
+      </Col>
     </>
   );
 });

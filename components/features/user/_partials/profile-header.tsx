@@ -14,7 +14,7 @@ export function ProfileHeader({ user }: { user: UserResource }) {
         <Avatar size={52} />
 
         <UserInfo>
-          <Text size="text-xl">{user.username ?? '--'}</Text>
+          <Text size="text-lg">{user.username ?? '--'}</Text>
 
           <CopyButton
             size="sm"
@@ -45,7 +45,6 @@ const Content = styled.View`
 `;
 
 const UserInfo = styled.View`
-  gap: 6px;
   align-items: flex-start;
 `;
 

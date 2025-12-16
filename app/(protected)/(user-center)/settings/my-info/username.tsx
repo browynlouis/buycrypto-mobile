@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 
-import { getMeQueryOptions, useUsernameUpdateAction } from '@/api/queries/user';
+import { getMeQueryOptions, useUpdateUsername } from '@/api/queries/user';
 import { Page } from '@/components/shared/layouts/page';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
@@ -26,7 +26,7 @@ const UsernamePage = Suspense.with({ fallback: <Loader isLoading /> }, () => {
     data: { data: user },
   } = useSuspenseQuery(getMeQueryOptions({ refetchOnMount: true }));
 
-  const { form, submit, isSubmitting } = useUsernameUpdateAction({
+  const { form, submit, isSubmitting } = useUpdateUsername({
     username: user.username,
   });
 

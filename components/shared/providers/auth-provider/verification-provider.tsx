@@ -25,7 +25,7 @@ export function VerificationProvider({ children }: { children: ReactNode }) {
       {children}
 
       {currentFlow && (
-        <AppModal visible={!!currentFlow} handleClose={endVerification}>
+        <AppModal visible={!!currentFlow} handleClose={endVerification} style={{ flex: 1 }}>
           <VerificationForm
             types={currentFlow.types}
             onSend={currentFlow.onSend}

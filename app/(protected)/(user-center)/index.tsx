@@ -16,8 +16,10 @@ export default function UserCenterPage() {
         title="User Center"
         showBackButton
         rightElement={
-          <Link href="/(protected)/(user-center)/settings">
-            <Icon name="Setting" size="lg" />
+          <Link href="/(protected)/(user-center)/settings" asChild>
+            <Button variant="text">
+              <Icon name="Setting" size="lg" />
+            </Button>
           </Link>
         }
       />

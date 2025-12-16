@@ -13,7 +13,7 @@ import { mapServerErrorsToClient, toast } from '@/lib/utils';
 
 import { userKeys } from '../../keys';
 
-export const useProfileUpdateAction = ({
+export const useUpdateProfile = ({
   defaultValues,
 }: {
   defaultValues: z.infer<typeof userProfileSchema>;
@@ -38,15 +38,17 @@ export const useProfileUpdateAction = ({
         firstName: profile.firstName,
         middleName: profile.middleName,
       });
-
-      endConfirmation();
       updateProfileMutation.reset();
 
-      await queryClient.invalidateQueries({
-        queryKey: userKeys.profile,
-      });
+      try {
+        await queryClient.invalidateQueries({
+          queryKey: userKeys.profile,
+        });
+      } catch (error: any) {
+        toast().error('An error occurred! Please try again later');
+      }
 
-      router.push('/(protected)/(kyc)/verification/confirmation');
+      router.push('/(protected)/(kyc)/confirmation');
     },
     onError(error) {
       toast().error(error.message);
@@ -55,14 +57,16 @@ export const useProfileUpdateAction = ({
         mapServerErrorsToClient(form.setError, error.details.formErrors);
       }
     },
+    onSettled() {
+      endConfirmation();
+    },
   });
 
   const submit = useCallback(
     (values: UpdateProfileDto) =>
       startConfirmation({
         title: 'Are you sure?',
-        subText:
-          'The provided information would be use for your KYC verification! Do you want to proceed',
+        subText: 'The provided information would be use for your KYC verification!',
         onProceed() {
           updateProfileMutation.mutate({ body: values });
         },

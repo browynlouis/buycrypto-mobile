@@ -5,6 +5,7 @@ import { Card } from '@/components/shared/ui/card';
 import { Col, Row } from '@/components/shared/ui/flex';
 import { TabbedView } from '@/components/shared/ui/tabbed-view';
 import { Text } from '@/components/shared/ui/text';
+import { resolveKycLevel } from '@/lib/utils';
 
 const kycLevels = ['Not Verified', 'Identity Verified'];
 
@@ -13,14 +14,14 @@ const routes: { key: string; title: string }[] = kycLevels.map((level) => ({
   title: level,
 }));
 
-export function KycLimits({ kycLevel }: { kycLevel: number }) {
+export function KycLimits({ kycLevel }: { kycLevel: number | null }) {
   return (
     <Col gap={12}>
       <Row gap={12} justify="space-between">
         <Text weight={700} size="text-xl">
           KYC limits
         </Text>
-        <Badge status={!!kycLevel}>You're {kycLevels[kycLevel]}</Badge>
+        <Badge status={!!kycLevel}>{resolveKycLevel(kycLevel)}</Badge>
       </Row>
 
       <Card>

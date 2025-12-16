@@ -107,7 +107,7 @@ export const Icon: React.FC<IconProps> = ({
     return (
       <IconComponent
         size={iconSize}
-        color={color ?? theme.colors.Neutral[400]}
+        color={color ?? theme.colors.Neutral[500]}
         variant={variant}
         style={style}
       />
@@ -121,7 +121,7 @@ export const Icon: React.FC<IconProps> = ({
     <IconSet
       name={name as any}
       size={iconSize}
-      color={color ?? theme.colors.Neutral[400]}
+      color={color ?? theme.colors.Neutral[500]}
       style={style}
     />
   );

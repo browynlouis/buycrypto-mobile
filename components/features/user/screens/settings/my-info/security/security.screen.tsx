@@ -20,15 +20,19 @@ const SecurityScreen = () => {
         title="Email"
         data={{
           showArrow: false,
-          rightEl: <Text>{auth.email}</Text>,
-          leftEl: <Icon name="alternate-email" family="MaterialIcons" />,
+          rightEl: (
+            <Text size="text-sm" style={{ opacity: 0.5 }}>
+              {auth.email}
+            </Text>
+          ),
+          leftEl: <Icon size={'sm'} name="alternate-email" family="MaterialIcons" />,
         }}
       />
 
       <MenuListItem
         title="Change Password"
         data={{
-          leftEl: <Icon name="Lock" />,
+          leftEl: <Icon size={'sm'} name="Lock" />,
           action(e) {
             router.push('/(protected)/(user-center)/settings/my-info/security/password');
           },
@@ -39,7 +43,7 @@ const SecurityScreen = () => {
         title="Authenticator App"
         data={{
           showArrow: false,
-          leftEl: <Icon name="Shield" />,
+          leftEl: <Icon size={'sm'} name="Shield" />,
           rightEl: <ToggleAuthenticatorApp />,
         }}
       />

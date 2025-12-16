@@ -1,4 +1,4 @@
-export function resolveKycLevel(kycLevel: number) {
+export function resolveKycLevel(kycLevel: number | null) {
   switch (kycLevel) {
     case 0:
       return 'Not Verified';
@@ -7,6 +7,6 @@ export function resolveKycLevel(kycLevel: number) {
     case 2:
       return 'Advanced Verification';
     default:
-      return null;
+      return 'Unable to resolve KYC';
   }
 }

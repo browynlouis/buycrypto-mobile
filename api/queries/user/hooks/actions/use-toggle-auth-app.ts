@@ -47,7 +47,7 @@ export function useToggleAuthApp({
    *   { status: false, secretKey: null } when disabling
    */
   const toggleAuthApp = $queryClient.useMutation('post', '/auth/configure-totp', {
-    onSuccess: ({ data }) => {
+    onSuccess: async ({ data }) => {
       // Enabling -> show setup modal if enabled
       setShowSetup(data.status);
 
@@ -56,10 +56,14 @@ export function useToggleAuthApp({
         setStatus(false);
         endVerification();
       }
-
-      queryClient.invalidateQueries({
-        queryKey: getAuthQueryOptions().queryKey,
-      });
+      try {
+        await queryClient.invalidateQueries({
+          refetchType: 'all',
+          queryKey: getAuthQueryOptions().queryKey,
+        });
+      } catch (error: any) {
+        toast().error('An error occurred! Please try again later');
+      }
     },
     onError: (error) => toast().error(error.message),
   });

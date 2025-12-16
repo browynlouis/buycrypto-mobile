@@ -1,10 +1,9 @@
-import { UserResource } from '@/api/types';
 import { Badge } from '@/components/shared/ui/badge';
 import { Col } from '@/components/shared/ui/flex';
 import { Text } from '@/components/shared/ui/text';
 import { resolveKycLevel } from '@/lib/utils';
 
-export function Intro({ kycLevel }: { kycLevel: UserResource['kycLevel'] }) {
+export function Intro({ kycLevel }: { kycLevel: number | null }) {
   return (
     <Col gap={12}>
       <Text size="text-xl" weight={700}>
