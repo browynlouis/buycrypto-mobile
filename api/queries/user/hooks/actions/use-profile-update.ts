@@ -28,21 +28,22 @@ export const useUpdateProfile = ({
   const { isConfirming, startConfirmation, endConfirmation } = useConfirmationContext();
 
   const updateProfileMutation = $queryClient.useMutation('post', '/users/me/profile', {
-    async onSuccess(data) {
-      const { data: profile } = data;
+    async onSuccess(data, variables) {
+      const { body } = variables;
 
       form.reset({
-        country: profile.country,
-        dob: new Date(profile.dob),
-        lastName: profile.lastName,
-        firstName: profile.firstName,
-        middleName: profile.middleName,
+        country: body.country,
+        dob: new Date(body.dob),
+        lastName: body.lastName,
+        firstName: body.firstName,
+        middleName: body.middleName,
       });
+
       updateProfileMutation.reset();
 
       try {
         await queryClient.invalidateQueries({
-          queryKey: userKeys.profile,
+          queryKey: userKeys.me,
         });
       } catch (error: any) {
         toast().error('An error occurred! Please try again later');

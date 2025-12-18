@@ -4,8 +4,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 
 import { getKycInfoQueryOptions } from '@/api/queries/kyc';
-import { getMeProfileQueryOptions } from '@/api/queries/user';
-import { UserProfileResource } from '@/api/types';
+import { getMeQueryOptions } from '@/api/queries/user';
 import { BottomScreenWrapper } from '@/components/shared/ui/bottom-screen-wrapper';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
@@ -21,13 +20,13 @@ const KycScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
 
   const [
     {
-      data: { data: profile },
+      data: { data: user },
     },
     {
       data: { data: kyc },
     },
   ] = useSuspenseQueries({
-    queries: [getMeProfileQueryOptions(), getKycInfoQueryOptions()],
+    queries: [getMeQueryOptions(), getKycInfoQueryOptions()],
   });
 
   return (
@@ -37,7 +36,7 @@ const KycScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
         <Intro kycLevel={kyc.currentKycLevel} />
 
         {/* Personal Info */}
-        <PersonalInfo profile={profile as UserProfileResource | null} />
+        <PersonalInfo profile={user.profile} />
 
         {/* Verifications */}
         <KycLimits kycLevel={kyc.currentKycLevel} />

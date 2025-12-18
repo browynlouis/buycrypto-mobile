@@ -6,7 +6,7 @@ import { Card } from '@/components/shared/ui/card';
 import { Col, Row } from '@/components/shared/ui/flex';
 import { Text } from '@/components/shared/ui/text';
 
-export function PersonalInfo({ profile }: { profile: UserProfileResource | null }) {
+export function PersonalInfo({ profile }: { profile: UserProfileResource }) {
   return (
     <Col gap={12}>
       <Text weight={700} size="text-xl">

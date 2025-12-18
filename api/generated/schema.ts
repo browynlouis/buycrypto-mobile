@@ -20,6 +20,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/app/metadata/callback": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["MetadataController_handle"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth": {
         parameters: {
             query?: never;
@@ -350,7 +366,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        get: operations["UserController_getMeProfile"];
+        get?: never;
         put?: never;
         post: operations["UserController_updateMeProfile"];
         delete?: never;
@@ -425,7 +441,6 @@ export interface components {
             email: string;
             emailVerifiedAt: string | null;
             twofaAuths: components["schemas"]["VerificationType"][];
-            createdAt: string;
         };
         UnauthorizedException: {
             /** @example UnauthorizedException */
@@ -576,25 +591,22 @@ export interface components {
         };
         /** @enum {number} */
         KycLevel: 0 | 1 | 2;
-        UserResourceDto: {
-            id: string;
-            authId: string;
-            uniqueId: string;
-            kycLevel: components["schemas"]["KycLevel"];
-            username: string | null;
-            createdAt: string;
-        };
         UserProfileResourceDto: {
             id: string;
-            userId: string;
             /** Format: date-time */
             dob: string;
             country: string;
             firstName: string;
             lastName: string;
             middleName: string | null;
-            createdAt: string;
-            updatedAt: string;
+        };
+        UserResourceDto: {
+            id: string;
+            authId: string;
+            uniqueId: string;
+            kycLevel: components["schemas"]["KycLevel"];
+            username: string | null;
+            profile: components["schemas"]["UserProfileResourceDto"];
         };
         UpdateProfileDto: {
             firstName: string;
@@ -659,6 +671,23 @@ export interface operations {
                         }[];
                     };
                 };
+            };
+        };
+    };
+    MetadataController_handle: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
@@ -1238,43 +1267,6 @@ export interface operations {
             };
         };
     };
-    UserController_getMeProfile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ResponseSchema"] & {
-                        data?: components["schemas"]["UserProfileResourceDto"];
-                    };
-                };
-            };
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ResponseSchema"];
-                };
-            };
-            401: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UnauthorizedException"];
-                };
-            };
-        };
-    };
     UserController_updateMeProfile: {
         parameters: {
             query?: never;
@@ -1293,9 +1285,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": components["schemas"]["ResponseSchema"] & {
-                        data?: components["schemas"]["UserProfileResourceDto"];
-                    };
+                    "application/json": components["schemas"]["ResponseSchema"];
                 };
             };
             400: {

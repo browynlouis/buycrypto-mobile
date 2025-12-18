@@ -3,7 +3,7 @@ import { useSuspenseQueries } from '@tanstack/react-query';
 import { Controller } from 'react-hook-form';
 
 import { getKycInfoQueryOptions } from '@/api/queries/kyc';
-import { getMeProfileQueryOptions, useUpdateProfile } from '@/api/queries/user';
+import { getMeQueryOptions, useUpdateProfile } from '@/api/queries/user';
 import { Button } from '@/components/shared/ui/button';
 import { CountrySelectInput } from '@/components/shared/ui/country-select';
 import { DatePicker } from '@/components/shared/ui/date-picker';
@@ -21,22 +21,22 @@ import { Loader } from '@/components/shared/ui/loader';
 const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
   const [
     {
-      data: { data: profile },
+      data: { data: user },
     },
     {
       data: { data: kyc },
     },
   ] = useSuspenseQueries({
-    queries: [getMeProfileQueryOptions(), getKycInfoQueryOptions()],
+    queries: [getMeQueryOptions(), getKycInfoQueryOptions()],
   });
 
   const { form, submit, isSubmitting } = useUpdateProfile({
     defaultValues: {
-      country: profile?.country ?? '',
-      firstName: profile?.firstName ?? '',
-      lastName: profile?.lastName ?? '',
-      middleName: profile?.middleName ?? '',
-      dob: profile?.dob ? new Date(profile?.dob) : new Date(),
+      country: user.profile.country,
+      firstName: user.profile.firstName,
+      lastName: user.profile.lastName,
+      middleName: user.profile.middleName,
+      dob: new Date(user.profile.dob),
     },
   });
 

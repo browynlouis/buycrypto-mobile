@@ -1,4 +1,4 @@
-import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
 import { useCallback } from 'react';
 
 import { $queryClient } from '@/api/clients/query-client';
@@ -14,15 +14,9 @@ export function useKycRequest() {
     onSuccess: async ({ data }) => {
       requestKycMutation.reset();
       try {
-        const canOpen = await Linking.canOpenURL(data.url);
-
-        if (!canOpen) {
-          throw new Error(`Cannot open url: ${data.url}`);
-        }
-
-        await Linking.openURL(data.url);
-      } catch (error) {
-        console.log(error);
+        const canOpen = await WebBrowser.openBrowserAsync(data.url);
+      } catch (error: any) {
+        toast().error(error.message);
         toast().error("An error occurred! Unable to open app's browser");
       }
     },

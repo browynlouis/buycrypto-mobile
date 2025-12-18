@@ -88,7 +88,7 @@ function Routes() {
 
   const { auth } = useAuthStore();
   const { resolvedTheme } = useAppStore();
-  console.log(auth);
+
   return (
     <View
       style={{
