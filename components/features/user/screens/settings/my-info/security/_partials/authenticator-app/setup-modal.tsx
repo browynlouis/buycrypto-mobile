@@ -6,7 +6,6 @@ import { InputHelperText } from '@/components/shared/ui/input';
 import { AppModal, AppModalProps } from '@/components/shared/ui/modal';
 import { QrCodeDisplay } from '@/components/shared/ui/qr-code';
 import { Text } from '@/components/shared/ui/text';
-import { toast } from '@/lib/utils';
 
 export function SetupModal({
   visible,
@@ -19,12 +18,6 @@ export function SetupModal({
   secretKey?: string | null;
   handleClose: AppModalProps['handleClose'];
 }) {
-  if (visible && !secretKey) {
-    toast().error('Unable to fetch secret key');
-
-    return;
-  }
-
   return (
     <AppModal
       visible={visible}

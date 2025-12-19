@@ -95,7 +95,7 @@ export const AuthMiddleWare: Middleware = {
       clear();
       return Promise.reject(retry);
     }
-
+    // clear();
     return response;
   },
 };
