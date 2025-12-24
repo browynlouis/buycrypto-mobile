@@ -9,7 +9,7 @@ import { mapServerErrorsToClient, toast } from '@/lib/utils';
 
 import { userKeys } from '../../keys';
 
-export function useUpdateUsername({ username }: { username: string | null }) {
+export function useUsernameUpdate({ username }: { username: string | null }) {
   // Setup form with default values and validation
   const form = useForm({
     mode: 'all',

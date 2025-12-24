@@ -13,16 +13,12 @@ import { mapServerErrorsToClient, toast } from '@/lib/utils';
 
 import { userKeys } from '../../keys';
 
-export const useUpdateProfile = ({
-  defaultValues,
-}: {
-  defaultValues: z.infer<typeof userProfileSchema>;
-}) => {
+export const useProfileUpdate = ({ profile }: { profile: z.infer<typeof userProfileSchema> }) => {
   const router = useRouter();
   const form = useForm({
     mode: 'all',
     resolver: zodResolver(userProfileSchema),
-    defaultValues,
+    defaultValues: profile,
   });
 
   const { isConfirming, startConfirmation, endConfirmation } = useConfirmationContext();

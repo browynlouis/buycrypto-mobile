@@ -1,4 +1,4 @@
-import { useUpdatePassword } from '@/api/queries/user';
+import { usePasswordUpdate } from '@/api/queries/user';
 import { Button } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
@@ -9,7 +9,7 @@ import { useAuth } from '@/hooks';
 const PasswordScreen = () => {
   const auth = useAuth();
 
-  const { submit, isSubmitting, form } = useUpdatePassword();
+  const { submit, isSubmitting, form } = usePasswordUpdate();
 
   const {
     control,

@@ -3,7 +3,7 @@ import { useSuspenseQueries } from '@tanstack/react-query';
 import { Controller } from 'react-hook-form';
 
 import { getKycInfoQueryOptions } from '@/api/queries/kyc';
-import { getMeQueryOptions, useUpdateProfile } from '@/api/queries/user';
+import { getMeQueryOptions, useProfileUpdate } from '@/api/queries/user';
 import { Button } from '@/components/shared/ui/button';
 import { CountrySelectInput } from '@/components/shared/ui/country-select';
 import { DatePicker } from '@/components/shared/ui/date-picker';
@@ -30,7 +30,7 @@ const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () 
     queries: [getMeQueryOptions(), getKycInfoQueryOptions()],
   });
 
-  const { form, submit, isSubmitting } = useUpdateProfile({
+  const { form, submit, isSubmitting } = useProfileUpdate({
     defaultValues: {
       country: user.profile.country,
       firstName: user.profile.firstName,

@@ -55,11 +55,54 @@ const SettingsScreen = Suspense.with({ fallback: <Loader isLoading /> }, () => {
         title: 'Preferences',
         data: [
           {
+            title: 'Fiat Currency',
+            data: {
+              leftEl: <Icon name="Money" size={'sm'} />,
+              rightEl: (
+                <Text size="text-xs" style={{ opacity: 0.5 }}>
+                  {user.settings.fiatCurrency}
+                </Text>
+              ),
+              action: () =>
+                router.push('/(protected)/(user-center)/settings/preferences/fiat-currency'),
+            },
+          },
+          {
+            title: 'Token Currency',
+            data: {
+              leftEl: <Icon name="Coin" size={'sm'} />,
+              rightEl: (
+                <Text size="text-xs" style={{ opacity: 0.5 }}>
+                  {user.settings.tokenCurrency}
+                </Text>
+              ),
+              action: () =>
+                router.push('/(protected)/(user-center)/settings/preferences/token-currency'),
+            },
+          },
+          {
+            title: 'Deposit Wallet',
+            data: {
+              leftEl: <Icon name="Wallet" size={'sm'} />,
+              rightEl: (
+                <Text size="text-xs" style={{ opacity: 0.5 }}>
+                  {user.settings.depositWallet} Wallet
+                </Text>
+              ),
+              action: () =>
+                router.push('/(protected)/(user-center)/settings/preferences/deposit-wallet'),
+            },
+          },
+        ],
+      },
+      {
+        title: 'Others',
+        data: [
+          {
             title: 'Appearance',
             data: {
               leftEl: <Icon family="MaterialCommunityIcons" name="theme-light-dark" />,
-              action: () =>
-                router.push('/(protected)/(user-center)/settings/preferences/appearance'),
+              action: () => router.push('/(protected)/(user-center)/settings/others/appearance'),
             },
           },
         ],

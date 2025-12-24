@@ -6,7 +6,7 @@ import { useVerification } from '@/api/queries/auth';
 import { resetPasswwordSchema as updatePasswordSchema } from '@/api/schemas/auth.schema';
 import { toast } from '@/lib/utils';
 
-export const useUpdatePassword = () => {
+export const usePasswordUpdate = () => {
   const form = useForm({
     mode: 'all',
     resolver: zodResolver(updatePasswordSchema),

@@ -24,17 +24,28 @@ buy-crypto-mobile
 │  │  │  ├─ index.ts
 │  │  │  ├─ keys.ts
 │  │  │  └─ options.ts
+│  │  ├─ kyc
+│  │  │  ├─ hooks
+│  │  │  │  └─ actions
+│  │  │  │     ├─ index.ts
+│  │  │  │     └─ use-kyc-request.ts
+│  │  │  ├─ index.ts
+│  │  │  ├─ keys.ts
+│  │  │  └─ options.ts
 │  │  └─ user
 │  │     ├─ hooks
 │  │     │  └─ actions
 │  │     │     ├─ index.ts
 │  │     │     ├─ use-password-update.ts
-│  │     │     └─ use-toggle-auth-app.ts
+│  │     │     ├─ use-profile-update.ts
+│  │     │     ├─ use-toggle-auth-app.ts
+│  │     │     └─ use-update-username.ts
 │  │     ├─ index.ts
 │  │     ├─ keys.ts
 │  │     └─ options.ts
 │  ├─ schemas
 │  │  ├─ auth.schema.ts
+│  │  ├─ helpers.schema.ts
 │  │  └─ user.schema.ts
 │  └─ types.ts
 ├─ app
@@ -53,12 +64,22 @@ buy-crypto-mobile
 │  │  │  └─ _layout.tsx
 │  │  └─ _layout.tsx
 │  ├─ (protected)
+│  │  ├─ (app)
+│  │  │  ├─ assets
+│  │  │  │  └─ index.tsx
+│  │  │  ├─ home
+│  │  │  │  └─ index.tsx
+│  │  │  └─ _layout.tsx
+│  │  ├─ (kyc)
+│  │  │  ├─ confirmation.tsx
+│  │  │  ├─ index.tsx
+│  │  │  └─ _layout.tsx
 │  │  ├─ (user-center)
 │  │  │  ├─ index.tsx
 │  │  │  └─ settings
 │  │  │     ├─ index.tsx
 │  │  │     ├─ my-info
-│  │  │     │  ├─ kyc
+│  │  │     │  ├─ personal-info
 │  │  │     │  │  └─ index.tsx
 │  │  │     │  ├─ security
 │  │  │     │  │  ├─ index.tsx
@@ -88,44 +109,44 @@ buy-crypto-mobile
 ├─ components
 │  ├─ features
 │  │  ├─ auth
-│  │  │  ├─ screens
-│  │  │  │  ├─ forgot-password
-│  │  │  │  │  ├─ forgot-password.screen.tsx
-│  │  │  │  │  └─ reset-password.screen.tsx
-│  │  │  │  ├─ index.ts
-│  │  │  │  ├─ login
-│  │  │  │  │  └─ login.screen.tsx
-│  │  │  │  └─ registration
-│  │  │  │     ├─ country-selection.screen.tsx
-│  │  │  │     ├─ form-provider
-│  │  │  │     │  └─ registration-form-provider.tsx
-│  │  │  │     └─ registration.screen.tsx
-│  │  │  └─ _partials
-│  │  │     ├─ auth-screen-title.tsx
-│  │  │     └─ index.ts
+│  │  │  └─ screens
+│  │  │     ├─ forgot-password
+│  │  │     │  ├─ forgot-password.screen.tsx
+│  │  │     │  └─ reset-password.screen.tsx
+│  │  │     ├─ index.ts
+│  │  │     ├─ login.screen.tsx
+│  │  │     └─ registration
+│  │  │        ├─ country-selection.screen.tsx
+│  │  │        ├─ form-provider
+│  │  │        │  └─ registration-form-provider.tsx
+│  │  │        └─ registration.screen.tsx
+│  │  ├─ kyc
+│  │  │  └─ screens
+│  │  │     ├─ confirmation.screen.tsx
+│  │  │     ├─ index.ts
+│  │  │     ├─ kyc.screen.tsx
+│  │  │     └─ _partials
+│  │  │        ├─ intro.tsx
+│  │  │        ├─ kyc-limits.tsx
+│  │  │        └─ personal-info.tsx
 │  │  └─ user
 │  │     ├─ screens
 │  │     │  ├─ index.ts
-│  │     │  └─ user-center
-│  │     │     ├─ index.tsx
-│  │     │     ├─ settings
-│  │     │     │  ├─ my-info
-│  │     │     │  │  ├─ kyc
-│  │     │     │  │  │  ├─ kyc.screen.tsx
-│  │     │     │  │  │  └─ _partials
-│  │     │     │  │  │     ├─ kyc-limits.tsx
-│  │     │     │  │  │     └─ personal-info.tsx
-│  │     │     │  │  └─ security
-│  │     │     │  │     ├─ authenticator-app
-│  │     │     │  │     │  ├─ toggle-auth-app.tsx
-│  │     │     │  │     │  └─ _partials
-│  │     │     │  │     │     └─ setup-modal.tsx
-│  │     │     │  │     ├─ password.screen.tsx
-│  │     │     │  │     └─ security.screen.tsx
-│  │     │     │  ├─ preferences
-│  │     │     │  │  └─ appearance.screen.tsx
-│  │     │     │  └─ settings.screen.tsx
-│  │     │     └─ user-center.screen.tsx
+│  │     │  ├─ settings
+│  │     │  │  ├─ my-info
+│  │     │  │  │  ├─ personal-info
+│  │     │  │  │  │  └─ personal-info.screen.tsx
+│  │     │  │  │  └─ security
+│  │     │  │  │     ├─ password.screen.tsx
+│  │     │  │  │     ├─ security.screen.tsx
+│  │     │  │  │     └─ _partials
+│  │     │  │  │        └─ authenticator-app
+│  │     │  │  │           ├─ setup-modal.tsx
+│  │     │  │  │           └─ toggle-auth-app.tsx
+│  │     │  │  ├─ preferences
+│  │     │  │  │  └─ appearance.screen.tsx
+│  │     │  │  └─ settings.screen.tsx
+│  │     │  └─ user-center.screen.tsx
 │  │     └─ _partials
 │  │        └─ profile-header.tsx
 │  └─ shared
@@ -141,6 +162,12 @@ buy-crypto-mobile
 │     │  │  ├─ types
 │     │  │  │  └─ index.ts
 │     │  │  └─ verification-provider.tsx
+│     │  ├─ confirmation-provider
+│     │  │  ├─ confirmation-provider.tsx
+│     │  │  ├─ hooks
+│     │  │  │  └─ index.tsx
+│     │  │  └─ types
+│     │  │     └─ index.ts
 │     │  ├─ query-provider.tsx
 │     │  └─ theme-provider
 │     │     ├─ hooks
@@ -149,6 +176,7 @@ buy-crypto-mobile
 │     └─ ui
 │        ├─ avatar.tsx
 │        ├─ badge.tsx
+│        ├─ bottom-screen-wrapper.tsx
 │        ├─ button
 │        │  ├─ button.styled.ts
 │        │  ├─ button.tsx
@@ -157,6 +185,9 @@ buy-crypto-mobile
 │        │  ├─ card.styled.ts
 │        │  └─ index.ts
 │        ├─ copy-button.tsx
+│        ├─ country-select.tsx
+│        ├─ date-picker.tsx
+│        ├─ description-header.tsx
 │        ├─ flex.tsx
 │        ├─ header.tsx
 │        ├─ icon.tsx
@@ -176,23 +207,28 @@ buy-crypto-mobile
 │        ├─ switch.tsx
 │        ├─ tabbed-view.tsx
 │        ├─ text.tsx
-│        └─ toaster.tsx
+│        ├─ toaster.tsx
+│        └─ wallet
+│           └─ wallet-panel.tsx
 ├─ constants
 │  ├─ common.ts
 │  └─ exceptions.ts
+├─ eas.json
 ├─ eslint.config.js
 ├─ hooks
 │  ├─ index.ts
 │  └─ use-auth.ts
-├─ libs
+├─ lib
 │  ├─ config
 │  │  ├─ app-config.ts
 │  │  ├─ index.ts
 │  │  └─ toast-config.tsx
 │  └─ utils
+│     ├─ countries.ts
 │     ├─ index.ts
 │     ├─ map-server-errors.ts
 │     ├─ print-json.ts
+│     ├─ resolve-kyc-level.ts
 │     └─ toast.ts
 ├─ package.json
 ├─ README.md
@@ -203,9 +239,7 @@ buy-crypto-mobile
 ├─ styles
 │  ├─ colors.ts
 │  ├─ index.ts
-│  └─ theme
-│     ├─ index.ts
-│     └─ theme.ts
+│  └─ theme.ts
 ├─ tree.md
 ├─ tsconfig.json
 └─ types

@@ -7,7 +7,7 @@ export default function Layout() {
 
   return (
     <Stack
-      initialRouteName="(user-center)/index"
+      initialRouteName="(app)"
       screenOptions={{
         headerShown: false,
         contentStyle: {

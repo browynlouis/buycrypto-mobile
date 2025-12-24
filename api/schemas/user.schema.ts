@@ -1,6 +1,7 @@
 import z from 'zod';
 
-import { countrySchema, dobSchema } from './helpers.schema';
+import { countrySchema } from './helpers/country.schema';
+import { dobSchema } from './helpers/dob.schema';
 
 const usernameSchema = z.object({
   username: z

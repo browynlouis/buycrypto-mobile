@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { countrySchema } from './helpers.schema';
+import { countrySchema } from './helpers/country.schema';
 
 const registerSchema = z.object({
   email: z.email(),

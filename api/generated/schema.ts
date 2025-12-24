@@ -20,16 +20,48 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/app/metadata/callback": {
+    "/app/metadata/supported-fiats": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        get?: never;
+        get: operations["MetadataController_getSupportedFiats"];
         put?: never;
-        post: operations["MetadataController_handle"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/metadata/supported-tokens": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MetadataController_getSupportedTokens"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/app/metadata/wallet-types": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MetadataController_getWalletTypes"];
+        put?: never;
+        post?: never;
         delete?: never;
         options?: never;
         head?: never;
@@ -391,6 +423,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/me/settings/fiat-currency": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["UserController_updateFiatCurrencySettings"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/me/settings/token-currency": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["UserController_updateTokenCurrencySettings"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/me/settings/deposit-wallet": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["UserController_updateDepositWalletSettings"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/kyc/status": {
         parameters: {
             query?: never;
@@ -589,16 +669,29 @@ export interface components {
         UpdatePasswordDto: {
             password: string;
         };
+        /** @enum {string} */
+        VerificationPurpose: "LOGIN" | "PASSWORD_UPDATE" | "PASSWORD_RESET" | "EMAIL_VERIFICATION" | "TWO_FA_AUTH_CHANGE" | "TOTP_SETUP";
         /** @enum {number} */
         KycLevel: 0 | 1 | 2;
         UserProfileResourceDto: {
-            id: string;
-            /** Format: date-time */
-            dob: string;
+            id?: string;
+            dob: string | null;
             country: string;
             firstName: string;
             lastName: string;
             middleName: string | null;
+        };
+        /** @enum {string} */
+        Fiat: "USD" | "NGN";
+        /** @enum {string} */
+        Token: "ETH" | "USDC";
+        /** @enum {string} */
+        WalletType: "Funding" | "Unified Trading";
+        UserSettingsResourceDto: {
+            id?: string;
+            fiatCurrency: components["schemas"]["Fiat"];
+            tokenCurrency: components["schemas"]["Token"];
+            depositWallet: components["schemas"]["WalletType"];
         };
         UserResourceDto: {
             id: string;
@@ -607,6 +700,7 @@ export interface components {
             kycLevel: components["schemas"]["KycLevel"];
             username: string | null;
             profile: components["schemas"]["UserProfileResourceDto"];
+            settings: components["schemas"]["UserSettingsResourceDto"];
         };
         UpdateProfileDto: {
             firstName: string;
@@ -634,6 +728,18 @@ export interface components {
         };
         UpdateUsernameDto: {
             username: string;
+        };
+        UpdateFiatCurrencySettingsDto: {
+            /** @enum {string} */
+            fiat: "USD" | "NGN";
+        };
+        UpdateTokenCurrencySettingsDto: {
+            /** @enum {string} */
+            token: "ETH" | "USDC";
+        };
+        UpdateDepositWalletSettingsDto: {
+            /** @enum {string} */
+            type: "Funding" | "Unified Trading";
         };
         FormError: {
             field: string;
@@ -674,7 +780,7 @@ export interface operations {
             };
         };
     };
-    MetadataController_handle: {
+    MetadataController_getSupportedFiats: {
         parameters: {
             query?: never;
             header?: never;
@@ -683,11 +789,57 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            201: {
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: ("USD" | "NGN")[];
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getSupportedTokens: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: ("ETH" | "USDC")[];
+                    };
+                };
+            };
+        };
+    };
+    MetadataController_getWalletTypes: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: ("Funding" | "Unified Trading")[];
+                    };
+                };
             };
         };
     };
@@ -1155,7 +1307,7 @@ export interface operations {
         parameters: {
             query: {
                 type: components["schemas"]["VerificationType"];
-                purpose: string;
+                purpose: components["schemas"]["VerificationPurpose"];
             };
             header?: never;
             path?: never;
@@ -1192,7 +1344,7 @@ export interface operations {
     AuthTwoFaController_verifyTwoFaRequest: {
         parameters: {
             query: {
-                purpose: string;
+                purpose: components["schemas"]["VerificationPurpose"];
             };
             header?: never;
             path?: never;
@@ -1357,6 +1509,171 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConflictResponseSchema"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
+        };
+    };
+    UserController_updateFiatCurrencySettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateFiatCurrencySettingsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestException"];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
+        };
+    };
+    UserController_updateTokenCurrencySettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateTokenCurrencySettingsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestException"];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
+                };
+            };
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
+        };
+    };
+    UserController_updateDepositWalletSettings: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateDepositWalletSettingsDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"];
+                };
+            };
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BadRequestException"];
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
                 };
             };
             422: {
