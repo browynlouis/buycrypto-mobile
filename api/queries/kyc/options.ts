@@ -3,6 +3,8 @@ import { QueryClientOptions } from '@/api/types';
 
 import { kycKeys } from './keys';
 
-export const getKycInfoQueryOptions = (options?: QueryClientOptions) => {
-  return $queryClient.queryOptions(...kycKeys.info, undefined, options);
+export const getKycInfoQueryOptions = (options: QueryClientOptions<'get', '/kyc/status'> = {}) => {
+  const { fetchOptions, queryClientOptions } = options;
+
+  return $queryClient.queryOptions(...kycKeys.info, fetchOptions, queryClientOptions);
 };

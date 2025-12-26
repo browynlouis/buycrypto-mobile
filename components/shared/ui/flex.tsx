@@ -13,10 +13,12 @@ type FlexProps = ViewProps & {
   gap?: number; // native gap
   padding?: number;
   margin?: number;
+  wrap?: 'wrap' | 'no-wrap' | 'wrap-reverse';
 };
 
 export const Row = styled.View<FlexProps>`
   flex-direction: row;
+  flex-wrap: ${({ wrap }) => wrap};
   justify-content: ${({ justify }) => justify || 'flex-start'};
   align-items: ${({ align }) => align || 'center'};
   gap: ${({ gap }) => (gap !== undefined ? `${gap}px` : '0px')};

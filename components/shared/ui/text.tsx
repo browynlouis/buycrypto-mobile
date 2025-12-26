@@ -8,6 +8,7 @@ export const Text = styled.Text.attrs<{
   color?: string | 'link';
   align?: TextStyle['textAlign'];
   size?: keyof AppTheme['fontSizes'];
+  faded?: boolean;
 }>((props) => ({
   color:
     props.color === 'link'
@@ -18,6 +19,8 @@ export const Text = styled.Text.attrs<{
   color: ${(props) => props.color};
   font-family: ${(props) => fontFamilyMap[props.weight ?? 400] || 'circular-std-medium'};
   font-size: ${(props) => props.theme.fontSizes[props.size ?? 'text-md']}px;
+  opacity: ${(props) => (props.faded ? '0.5' : 1)};
+  line-height: 30px;
 `;
 
 const fontFamilyMap: Record<number, string> = {

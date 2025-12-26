@@ -19,7 +19,7 @@ export function Avatar({ imageSource, size = 48, style }: AvatarProps) {
 }
 
 type AvatarProps = {
-  imageSource?: ImageSourcePropType;
+  imageSource?: ImageSourcePropType | null;
   size?: number;
   style?: StyleProp<ViewStyle>;
 };

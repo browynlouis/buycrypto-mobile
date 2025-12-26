@@ -31,12 +31,12 @@ const PersonalInfoScreen = Suspense.with({ fallback: <Loader isLoading /> }, () 
   });
 
   const { form, submit, isSubmitting } = useProfileUpdate({
-    defaultValues: {
+    profile: {
       country: user.profile.country,
       firstName: user.profile.firstName,
       lastName: user.profile.lastName,
       middleName: user.profile.middleName,
-      dob: new Date(user.profile.dob),
+      dob: user.profile.dob ? new Date(user.profile.dob) : new Date(),
     },
   });
 

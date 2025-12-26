@@ -471,6 +471,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/me/wallet-address/{network}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["UserController_getWalletAddressForNetwork"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/blockchain/tokens": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["BlockchainController_getTokens"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/blockchain/tokens/{token}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["BlockchainController_getToken"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/kyc/status": {
         parameters: {
             query?: never;
@@ -740,6 +788,38 @@ export interface components {
         UpdateDepositWalletSettingsDto: {
             /** @enum {string} */
             type: "Funding" | "Unified Trading";
+        };
+        /** @enum {string} */
+        Network: "ethereum";
+        TokenNetworkDetailsDto: {
+            name: components["schemas"]["Network"];
+            /** @example 0x123...abc */
+            address?: string;
+            /** @example 18 */
+            decimals: number;
+            /** @example https://etherscan.io/... */
+            explorerUrl: string;
+        };
+        TokenResourceDto: {
+            name: string;
+            symbol: components["schemas"]["Token"];
+            decimals: number;
+            /**
+             * @description Token metadata including icon and social links
+             * @example {
+             *       "icon": "https://...",
+             *       "description": "My Token"
+             *     }
+             */
+            metadata: {
+                icon?: string | null;
+                description?: string | null;
+                website?: string | null;
+            } & {
+                [key: string]: unknown;
+            };
+            /** @description Map of network keys to token deployment details */
+            networks: components["schemas"]["TokenNetworkDetailsDto"][];
         };
         FormError: {
             field: string;
@@ -1682,6 +1762,100 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["UnprocessableEntityException"];
+                };
+            };
+        };
+    };
+    UserController_getWalletAddressForNetwork: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                network: "ethereum";
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: {
+                            address: string;
+                            networks: string;
+                        };
+                    };
+                };
+            };
+            401: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["UnauthorizedException"];
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
+                };
+            };
+        };
+    };
+    BlockchainController_getTokens: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: components["schemas"]["TokenResourceDto"][];
+                    };
+                };
+            };
+        };
+    };
+    BlockchainController_getToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                token: components["schemas"]["Token"];
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResponseSchema"] & {
+                        data?: components["schemas"]["TokenResourceDto"];
+                    };
+                };
+            };
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NotFoundException"];
                 };
             };
         };

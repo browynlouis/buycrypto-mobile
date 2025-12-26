@@ -7,7 +7,6 @@ import { Avatar } from '@/components/shared/ui/avatar';
 import { Button } from '@/components/shared/ui/button';
 import { Header } from '@/components/shared/ui/header';
 import { Icon } from '@/components/shared/ui/icon';
-import { Text } from '@/components/shared/ui/text';
 
 export type TabBarElement = {
   name: string;
@@ -81,7 +80,7 @@ export default function AppTabsLayout() {
         tabBarStyle: [
           {
             borderTopWidth: 0,
-            height: 56,
+            height: 45,
             backgroundColor: theme.colors.Neutral[800],
             alignItems: 'center',
             justifyContent: 'center',
@@ -89,11 +88,7 @@ export default function AppTabsLayout() {
           // 👇 Hide tab bar on child routes
           isChildRoute && { display: 'none' },
         ],
-        tabBarLabel: ({ focused, children }) => (
-          <Text size="text-xs" style={focused ? { color: theme.colors.Primary[500] } : undefined}>
-            {children}
-          </Text>
-        ),
+        tabBarLabel: ({ focused, children }) => undefined,
       })}
     >
       {tabs.map((tab) => (

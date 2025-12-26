@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, FlatListProps, Pressable } from 'react-native';
+import { FlatList, FlatListProps, Pressable, View } from 'react-native';
 
 import { Header } from '../header';
 import { Icon } from '../icon';
@@ -49,11 +49,13 @@ export function DataList<T>({
           {
             id: 'searchInput',
             component: (
-              <Input
-                placeholder="Search..."
-                onChangeText={(text) => setFilter(text)}
-                startAdornment={<Icon name="SearchNormal" />}
-              />
+              <View style={{ marginBottom: 12 }}>
+                <Input
+                  placeholder="Search..."
+                  onChangeText={(text) => setFilter(text)}
+                  startAdornment={<Icon name="SearchNormal" />}
+                />
+              </View>
             ),
           },
         ]),
