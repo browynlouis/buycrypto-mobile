@@ -1,8 +1,10 @@
 import { Suspense } from '@suspensive/react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useRouter } from 'expo-router';
+import { useCallback } from 'react';
 
 import { getTokensDataQueryOptions } from '@/api/queries/blockchain';
+import { TokenResource } from '@/api/types';
 import { Page } from '@/components/shared/layouts/page';
 import { Avatar } from '@/components/shared/ui/avatar';
 import { Row } from '@/components/shared/ui/flex';
@@ -18,6 +20,25 @@ const DepositViaCryptoListPage = Suspense.with({ fallback: <Loader isLoading /> 
     data: { data },
   } = useSuspenseQuery(getTokensDataQueryOptions());
 
+  const filterFn = useCallback(
+    (value: string, data: TokenResource[]) => {
+      const normalizedValue = value.trim().toLowerCase();
+
+      return data.filter((item) => {
+        const name = item.name.toLowerCase();
+        const symbol = item.symbol.toString().toLowerCase();
+
+        return (
+          name.includes(normalizedValue) ||
+          name.startsWith(normalizedValue) ||
+          symbol.includes(normalizedValue) ||
+          symbol.startsWith(normalizedValue)
+        );
+      });
+    },
+    [data],
+  );
+
   return (
     <>
       {/* Header */}
@@ -28,18 +49,7 @@ const DepositViaCryptoListPage = Suspense.with({ fallback: <Loader isLoading /> 
         <DataList
           hideHeader
           data={data}
-          filterFn={(value, data) =>
-            data.filter((item) => {
-              const normalizedValue = value.trim().toLowerCase();
-
-              return (
-                item.name.toLowerCase().includes(normalizedValue) ||
-                item.name.toLowerCase().startsWith(normalizedValue) ||
-                item.symbol.toString().toLowerCase().includes(normalizedValue) ||
-                item.symbol.toString().toLowerCase().startsWith(normalizedValue)
-              );
-            })
-          }
+          filterFn={(value, data) => filterFn(value, data)}
           onSelect={(item) => router.push(`/(protected)/(deposit)/crypto/${item.symbol}`)}
           renderItem={(token) => (
             <Row gap={12} style={{ paddingTop: 12, paddingBottom: 12 }}>

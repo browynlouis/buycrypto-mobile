@@ -38,8 +38,8 @@ function Deposit() {
         <Col gap={24}>
           {/* DEPOSIT VIA CRYPTO */}
           <Col gap={12}>
-            <Text size="text-lg" weight={700}>
-              Deposit Crypto
+            <Text size="text-sm" faded>
+              Deposit with Crypto
             </Text>
             {/* Deposit Onchain Crypto */}
             <TouchableOpacity
@@ -52,7 +52,7 @@ function Deposit() {
                 <Col gap={12}>
                   <Row gap={8}>
                     <Icon name="Wallet" size={'sm'} />
-                    <Text size="text-sm">Deposit Crypto?</Text>
+                    <Text size="text-md">Deposit Crypto?</Text>
                   </Row>
 
                   <Text size="text-xs" faded>
@@ -63,23 +63,30 @@ function Deposit() {
             </TouchableOpacity>
 
             {/* Deposit Internal Crypto */}
-            <Panel>
-              <Col gap={12}>
-                <Row gap={8}>
-                  <Icon name="MoneyRecive" size={'sm'} />
-                  <Text size="text-sm">Receive via BuyCrypto pay</Text>
-                </Row>
-                <Text size="text-xs" faded>
-                  Receive crypto immediately from a BuyCrypto user
-                </Text>
-              </Col>
-            </Panel>
+            <TouchableOpacity
+              onPress={() => {
+                setShowDepositOptions(false);
+                router.push('/(protected)/(deposit)/buy-crypto-pay');
+              }}
+            >
+              <Panel>
+                <Col gap={12}>
+                  <Row gap={8}>
+                    <Icon name="MoneyRecive" size={'sm'} />
+                    <Text size="text-md">Receive via BuyCrypto pay</Text>
+                  </Row>
+                  <Text size="text-xs" faded>
+                    Receive crypto immediately from a BuyCrypto user
+                  </Text>
+                </Col>
+              </Panel>
+            </TouchableOpacity>
           </Col>
 
           {/* DEPOSIT VIA FIAT */}
           <Col gap={12}>
-            <Text size="text-lg" weight={700}>
-              Deposit with Fiat
+            <Text size="text-sm" faded>
+              Buy Crypto with Fiat
             </Text>
 
             {/* Deposit with P2P */}
@@ -87,7 +94,7 @@ function Deposit() {
               <Col gap={12}>
                 <Row gap={8}>
                   <Icon name="Profile2User" size={'sm'} />
-                  <Text size="text-sm">Buy Crypto via P2P Trading</Text>
+                  <Text size="text-md">P2P Trading</Text>
                 </Row>
                 <Text size="text-xs" faded>
                   Pay with your local currency to other users and receive crypto

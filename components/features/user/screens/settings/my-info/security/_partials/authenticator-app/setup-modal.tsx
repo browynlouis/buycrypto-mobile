@@ -25,7 +25,7 @@ export function SetupModal({
       modalTitle="Set up your authenticator app"
     >
       <Col gap={24}>
-        <Text>
+        <Text size="text-sm">
           Scan the QR code using your authenticator app or copy the secret key manually, then click
           "Proceed" to continue.
         </Text>

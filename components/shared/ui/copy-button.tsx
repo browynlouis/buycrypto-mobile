@@ -22,7 +22,7 @@ export function CopyButton({
 
         toast().success('Copied successfully');
       }}
-      endAdornment={showIcon ? <Icon name="Copy" /> : undefined}
+      endAdornment={showIcon ? <Icon name="Copy" size={'sm'} /> : undefined}
       {...props}
     />
   );

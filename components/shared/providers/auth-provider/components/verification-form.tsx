@@ -4,7 +4,6 @@ import { useForm } from 'react-hook-form';
 import z from 'zod';
 
 import { TwoFactorAuthVerificationDto, VerificationType } from '@/api/types';
-import { BottomScreenWrapper } from '@/components/shared/ui/bottom-screen-wrapper';
 import { Button, StyledButton } from '@/components/shared/ui/button';
 import { Col } from '@/components/shared/ui/flex';
 import { Icon } from '@/components/shared/ui/icon';
@@ -50,7 +49,7 @@ export function VerificationForm({ types, onSubmit, onSend }: VerificationFormPr
   });
 
   return (
-    <Col gap={48}>
+    <Col gap={64} style={{ flex: 1 }}>
       <Col gap={24}>
         {types.map((type) => {
           const config = verificationMap[type];
@@ -81,21 +80,19 @@ export function VerificationForm({ types, onSubmit, onSend }: VerificationFormPr
         })}
       </Col>
 
-      <BottomScreenWrapper>
-        <Button
-          disabled={!isValid}
-          onPress={handleSubmit((formValues) => {
-            const values = Object.entries(formValues).map(([key, value]) => ({
-              key,
-              value,
-            })) as TwoFactorAuthVerificationDto;
+      <Button
+        disabled={!isValid}
+        onPress={handleSubmit((formValues) => {
+          const values = Object.entries(formValues).map(([key, value]) => ({
+            key,
+            value,
+          })) as TwoFactorAuthVerificationDto;
 
-            onSubmit?.(values);
-          })}
-        >
-          Submit
-        </Button>
-      </BottomScreenWrapper>
+          onSubmit?.(values);
+        })}
+      >
+        Submit
+      </Button>
     </Col>
   );
 }

@@ -1,14 +1,14 @@
 import { Suspense } from '@suspensive/react';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useState } from 'react';
 
 import { getTokenDataQueryOptions } from '@/api/queries/blockchain';
 import { getUserWalleAddresQueryOptions } from '@/api/queries/user';
-import { Network, Token } from '@/api/types';
+import { Network, Token, TokenResource } from '@/api/types';
 import { Page } from '@/components/shared/layouts/page';
-import { useAppTheme } from '@/components/shared/providers/theme-provider/hooks';
 import { Avatar } from '@/components/shared/ui/avatar';
+import { BottomScreenWrapper } from '@/components/shared/ui/bottom-screen-wrapper';
 import { Button } from '@/components/shared/ui/button';
 import { CopyButton } from '@/components/shared/ui/copy-button';
 import { Col } from '@/components/shared/ui/flex';
@@ -17,13 +17,21 @@ import { Icon } from '@/components/shared/ui/icon';
 import { DataList } from '@/components/shared/ui/list/data-list';
 import { Loader } from '@/components/shared/ui/loader';
 import { AppModal } from '@/components/shared/ui/modal';
-import { Panel } from '@/components/shared/ui/panel.';
 import { QrCodeDisplay } from '@/components/shared/ui/qr-code';
 import { Text } from '@/components/shared/ui/text';
+import { toast } from '@/lib/utils';
 
 const DepositViaCryptoPage = Suspense.with({ fallback: <Loader isLoading /> }, () => {
-  const theme = useAppTheme();
+  const router = useRouter();
   const { token } = useLocalSearchParams<{ token: Token }>();
+
+  if (!token) {
+    toast().error('Token not provided');
+
+    router.back();
+
+    return;
+  }
 
   const {
     data: { data },
@@ -37,28 +45,11 @@ const DepositViaCryptoPage = Suspense.with({ fallback: <Loader isLoading /> }, (
     }),
   );
 
-  const [showSelection, setShowSelection] = useState<boolean>(false);
-  const [network, setNetwork] = useState<Network>(data.networks[0]!.name);
-
-  const { isFetching, data: walletAddress } = useQuery(
-    getUserWalleAddresQueryOptions({
-      fetchOptions: {
-        params: {
-          path: { network: network },
-        },
-      },
-      queryClientOptions: {
-        enabled: !!network,
-      },
-    }),
-  );
-
-  const address = (walletAddress?.data.address ?? '').toLowerCase();
+  const [network, setNetwork] = useState<Network | null>(null);
+  const [showSelection, setShowSelection] = useState<boolean>(true);
 
   return (
     <>
-      <Loader isLoading={isFetching} />
-
       {/* Page Header */}
       <Header
         showBackButton
@@ -80,23 +71,7 @@ const DepositViaCryptoPage = Suspense.with({ fallback: <Loader isLoading /> }, (
 
         {/* Network Details Display */}
 
-        {address && (
-          <Col gap={32}>
-            <QrCodeDisplay value={address} />
-
-            <Col gap={24}>
-              <Panel>
-                <CopyButton variant="text" value={address} style={{ height: 'auto' }} showIcon>
-                  {address}
-                </CopyButton>
-              </Panel>
-
-              <Text size="text-xs" style={{ color: theme.colors.Error[400] }}>
-                Send only {token} tokens under the {network.toUpperCase()} network to this address
-              </Text>
-            </Col>
-          </Col>
-        )}
+        {network && <AddressDisplay network={network} token={data} />}
       </Page>
 
       {/* Network Selection Modal */}
@@ -123,6 +98,69 @@ const DepositViaCryptoPage = Suspense.with({ fallback: <Loader isLoading /> }, (
     </>
   );
 });
+
+function AddressDisplay({ network, token }: { network: Network; token: TokenResource }) {
+  const { isFetching, data: walletAddress } = useQuery(
+    getUserWalleAddresQueryOptions({
+      fetchOptions: {
+        params: {
+          path: { network: network },
+        },
+      },
+      queryClientOptions: {
+        enabled: !!network,
+      },
+    }),
+  );
+
+  const address = walletAddress?.data.address;
+
+  return (
+    <>
+      {address && (
+        <>
+          <Loader isLoading={isFetching} />
+
+          <Col gap={32}>
+            <QrCodeDisplay
+              logoSize={24}
+              value={address}
+              logo={{ uri: token.metadata.icon ?? undefined }}
+            />
+
+            <Col gap={24}>
+              <Col gap={6} align="flex-start" justify="flex-start">
+                <Text size="text-md" faded>
+                  Wallet Address
+                </Text>
+                <CopyButton
+                  size="md"
+                  variant="text"
+                  value={address}
+                  style={{ height: 'auto', paddingLeft: 6, paddingRight: 6 }}
+                >
+                  {address}
+                </CopyButton>
+              </Col>
+            </Col>
+          </Col>
+
+          <BottomScreenWrapper>
+            <CopyButton
+              size="md"
+              value={address}
+              variant="plain"
+              style={{ width: '100%' }}
+              showIcon
+            >
+              Copy Address
+            </CopyButton>
+          </BottomScreenWrapper>
+        </>
+      )}
+    </>
+  );
+}
 
 DepositViaCryptoPage.displayName = 'DepositViaCryptoPage';
 

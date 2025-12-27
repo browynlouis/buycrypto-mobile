@@ -93,6 +93,7 @@ export function Page({ children, scrollable = true, style, gesture, noScrollView
         <DismissKeyboardPressable
           onPress={Keyboard.dismiss}
           accessible={false}
+          style={{ flex: 1 }}
           android_disableSound
         >
           <Background style={style} themeColors={backgroundColor}>

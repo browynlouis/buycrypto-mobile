@@ -20,7 +20,7 @@ export const Text = styled.Text.attrs<{
   font-family: ${(props) => fontFamilyMap[props.weight ?? 400] || 'circular-std-medium'};
   font-size: ${(props) => props.theme.fontSizes[props.size ?? 'text-md']}px;
   opacity: ${(props) => (props.faded ? '0.5' : 1)};
-  line-height: 30px;
+  line-height: 25px;
 `;
 
 const fontFamilyMap: Record<number, string> = {

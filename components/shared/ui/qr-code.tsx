@@ -10,8 +10,8 @@ export function QrCodeDisplay(props: QRCodeProps) {
   return (
     <QrCodeWrapper>
       <QRCode
-        size={220}
-        quietZone={16}
+        size={150}
+        quietZone={0}
         backgroundColor={theme.colors.Shades.White}
         logoBorderRadius={9999}
         {...props}
@@ -21,8 +21,10 @@ export function QrCodeDisplay(props: QRCodeProps) {
 }
 
 const QrCodeWrapper = styled.View`
-  align-self: center;
-  padding: 16px;
   width: auto;
   height: auto;
+  padding: 12px;
+  align-self: center;
+  border-radius: 12px;
+  background-color: white;
 `;
